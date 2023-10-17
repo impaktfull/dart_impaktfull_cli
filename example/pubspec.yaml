@@ -1,0 +1,15 @@
+name: impaktfull_cli_example
+description: A cli that contains everything you need to build your own CI & Development tools
+version: 1.0.0
+publish_to: 'none'
+repository: https://github.com/impaktfull/impaktfull_cli
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  impaktfull_cli:
+    path: ../
+
+dev_dependencies:
+  lints: ^2.1.1
