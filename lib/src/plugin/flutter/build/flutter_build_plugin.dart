@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/model/data/build/android_build_extension.dart';
 import 'package:impaktfull_cli/src/model/data/build/ios_build_extension.dart';
+import 'package:impaktfull_cli/src/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/plugin/cli_plugin.dart';
+import 'package:impaktfull_cli/src/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/util/extensions/iterable_extensions.dart';
 import 'package:path/path.dart';
 import 'package:path/path.dart' as path;
@@ -16,7 +17,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   Future<File> buildAndroid({
     String? flavor,
     String? mainDartFile = 'lib/main.dart',
-    AndroidBuildExtension extension = AndroidBuildExtension.abb,
+    AndroidBuildExtension extension = AndroidBuildExtension.aab,
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
@@ -46,17 +47,11 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
-    final file = File(join(
-        'build',
-        'app',
-        'outputs',
-        extension.flutterBuildArgument,
-        flavor,
-        'release',
+    final file = File(join(extension.getBuildDirectory(flavor: flavor).path,
         'app-$flavor-release.${extension.fileExtension}'));
     if (!file.existsSync()) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, ${file.path} does not exists.');
+          'After building $flavor for Android, `${file.path}` does not exists.');
     }
     return file;
   }
@@ -101,16 +96,16 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     ]);
     final buildDirectory = Directory(join('build', 'ios', 'ipa'));
     final files = buildDirectory.listSync();
-    final result = files.find(
-        (element) => path.extension(element.path) == extension.fileExtension);
+    final result = files.find((element) =>
+        path.extension(element.path) == '.${extension.fileExtension}');
     if (result == null) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, ${buildDirectory.path} does not contain an ${extension.fileExtension} file.');
+          'After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
     }
     final ipaFile = File(result.path);
     if (!ipaFile.existsSync()) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, ${ipaFile.path} does not exists.');
+          'After building $flavor for iOS, `${ipaFile.path}` does not exists.');
     }
     return ipaFile;
   }

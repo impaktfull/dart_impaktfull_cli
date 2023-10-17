@@ -26,7 +26,7 @@ class CiCdFlow {
   Future<void> buildAndroidWithFlavor({
     required String flavor,
     String mainDartPrefix = 'lib/main_',
-    AndroidBuildExtension extension = AndroidBuildExtension.abb,
+    AndroidBuildExtension extension = AndroidBuildExtension.aab,
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
@@ -44,7 +44,7 @@ class CiCdFlow {
   Future<void> buildAndroid({
     String? flavor,
     String mainDartFile = 'lib/main.dart',
-    AndroidBuildExtension extension = AndroidBuildExtension.abb,
+    AndroidBuildExtension extension = AndroidBuildExtension.aab,
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,

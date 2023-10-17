@@ -12,6 +12,7 @@ String _tempDirectoryPath =
     join("build", 'impaktfull_cli', 'appcenter', 'upload');
 const _extensionMimeTypeMapper = {
   'apk': 'application/vnd.android.package-archive',
+  'aab': 'application/x-authorware-bin',
   'ipa': 'application/octet-stream',
 };
 
