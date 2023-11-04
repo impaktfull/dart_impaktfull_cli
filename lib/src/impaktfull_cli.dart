@@ -1,27 +1,34 @@
-import 'package:impaktfull_cli/src/command/apple_certificate/install/install_apple_certificate_command.dart';
-import 'package:impaktfull_cli/src/command/apple_certificate/remove/remove_apple_certificate_command.dart';
-import 'package:impaktfull_cli/src/command/cli_command.dart';
-import 'package:impaktfull_cli/src/command/help/help_command.dart';
-import 'package:impaktfull_cli/src/util/args/cli/cli_args_parser.dart';
-import 'package:impaktfull_cli/src/util/runner/runner.dart';
+import 'package:args/command_runner.dart';
+import 'package:impaktfull_cli/impaktfull_cli.dart';
+import 'package:impaktfull_cli/src/apple_certificate/command/apple_certificate_root_command.dart';
+import 'package:impaktfull_cli/src/cli/util/extensions/arg_parser_extensions.dart';
+import 'package:impaktfull_cli/src/cli/util/extensions/arg_result_extensions.dart';
+import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 
 class ImpaktfullCli {
-  static const List<CliCommand<dynamic>> defaultCommands = [
-    InstallAppleCertificateCommand(),
-    RemoveAppleCertificateCommand(),
-    HelpCommand(),
-  ];
-  final CliArgumentsParser cliArgsParser;
+  final ProcessRunner processRunner;
 
-  const ImpaktfullCli({
-    this.cliArgsParser = const CliArgumentsParser(commands: defaultCommands),
+  ImpaktfullCli({
+    required this.processRunner,
   });
+
+  List<Command<dynamic>> getCommands() => [
+        AppleCertificateRootCommand(processRunner: processRunner),
+      ];
 
   Future<void> run(List<String> args) async {
     await runImpaktfullCli(() async {
-      final cliArgs = cliArgsParser.parse(args);
-      await cliArgs.cliCommand
-          .run(cliArgs.originalArgParser, cliArgs.argResults);
+      final runner = CommandRunner('impaktfull_cli',
+          'A cli that replaces `fastlane` by simplifying the CI/CD process.');
+      runner.argParser.addGlobalFlags();
+
+      for (final command in getCommands()) {
+        runner.addCommand(command);
+      }
+      final argResults = runner.argParser.parse(args);
+      CliLogger.init(
+          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      await runner.run(args);
     });
   }
 }

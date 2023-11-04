@@ -1,6 +1,6 @@
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 
-import 'config.dart';
+import 'example_config.dart';
 
 Future<void> main(List<String> arguments) async {
   await runImpaktfullCli(
@@ -8,9 +8,9 @@ Future<void> main(List<String> arguments) async {
       final onePasswordPlugin = OnePasswordPlugin();
       final keyChainPlugin = MacOsKeyChainPlugin();
 
-      final keyChainName = Config.keyChainName;
-      final opUuid = Config.onePasswordUuid;
-      final globalKeyChainPasswordSecret = Config.globalKeyChainPassword;
+      final keyChainName = ExampleConfig.keyChainName;
+      final opUuid = ExampleConfig.onePasswordUuid;
+      final globalKeyChainPasswordSecret = ExampleConfig.globalKeyChainPassword;
       ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
 
       final certFile = await onePasswordPlugin.downloadDistributionCertificate(
@@ -25,7 +25,7 @@ Future<void> main(List<String> arguments) async {
       await keyChainPlugin.addCertificateToKeyChain(
           keyChainName, certFile, certPassword);
 
-      ImpaktfullCliLogger.debug('Execute build');
+      CliLogger.debug('Execute build');
       await Future.delayed(const Duration(seconds: 2));
 
       await keyChainPlugin.removeKeyChain(keyChainName);
