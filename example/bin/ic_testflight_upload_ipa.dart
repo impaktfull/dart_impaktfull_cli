@@ -10,9 +10,9 @@ Future<void> main(List<String> arguments) async {
       final processRunner = CliProcessRunner();
       final testFlightPlugin = TestFlightPlugin(processRunner: processRunner);
       await testFlightPlugin.uploadToTestflightWithEmailPassword(
-        filePath: File('app.ipa'),
+        file: File('app.ipa'),
         userName: ExampleConfig.appleEmailAdress,
-        password: ExampleConfig.appleAppSpecificPassword,
+        appSpecificPassword: ExampleConfig.appleAppSpecificPassword,
       );
     },
     isVerboseLoggingEnabled: true,

@@ -7,6 +7,8 @@ class ImpaktfullCliEnvironmentVariables {
   static const _envKeyCiKeyChainPassword = 'CI_KEYCHAIN_PASSWORD';
   static const _envKeyAppCenterOwnerName = 'APPCENTER_OWNER_NAME';
   static const _envKeyAppCenterToken = 'APPCENTER_API_TOKEN';
+  static const _envKeyAppleEmail = 'APPLE_EMAIL';
+  static const _envKeyAppleAppSpecificPassword = 'APPLE_APP_SPECIFIC_PASSWORD';
 
   const ImpaktfullCliEnvironmentVariables._();
 
@@ -21,8 +23,8 @@ class ImpaktfullCliEnvironmentVariables {
   }
 
   static String _getNonOptionalEnvVariable(String key) {
-    final value = String.fromEnvironment(key);
-    if (value.isEmpty) {
+    final value = _getEnvVariable(key);
+    if (value == null) {
       throw ImpaktfullCliError(
           '$_envKeyAppCenterOwnerName env variable is not set');
     }
@@ -33,6 +35,15 @@ class ImpaktfullCliEnvironmentVariables {
     final value = _getEnvVariable(key);
     if (value == null) return null;
     return Secret(value);
+  }
+
+  static Secret _getNonOptionalEnvVariableSecret(String key) {
+    final value = _getEnvVariableSecret(key);
+    if (value == null) {
+      throw ImpaktfullCliError(
+          '$_envKeyAppCenterOwnerName env variable is not set.');
+    }
+    return value;
   }
 
   static Secret? _getUnlockKeyChainPassword() =>
@@ -61,4 +72,10 @@ class ImpaktfullCliEnvironmentVariables {
     }
     return secret;
   }
+
+  static String getAppleEmail() =>
+      _getNonOptionalEnvVariable(_envKeyAppleEmail);
+
+  static Secret getAppleAppSpecificPassword() =>
+      _getNonOptionalEnvVariableSecret(_envKeyAppleAppSpecificPassword);
 }

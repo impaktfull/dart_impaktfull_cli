@@ -5,6 +5,7 @@ import 'package:impaktfull_cli/src/cli/model/data/secret.dart';
 import 'package:impaktfull_cli/src/cli/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/cli/plugin/cli_plugin.dart';
 import 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment.dart';
+import 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:path/path.dart';
 
 class TestFlightPlugin extends ImpaktfullCliPlugin {
@@ -13,33 +14,10 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
   });
 
   Future<void> uploadToTestflightWithEmailPassword({
-    required File filePath,
-    required String userName,
-    required Secret password,
-  }) async =>
-      _uploadToTestflight(
-        file: filePath,
-        userName: userName,
-        password: password,
-      );
-
-  Future<void> uploadToTestflightWithApiKey({
-    required File filePath,
-    required String issuerId,
-    required Secret apiKey,
-  }) async =>
-      _uploadToTestflight(
-        file: filePath,
-        issuerId: issuerId,
-        apiKey: apiKey,
-      );
-
-  Future<void> _uploadToTestflight({
     required File file,
     String? userName,
-    Secret? password,
-    String? issuerId,
-    Secret? apiKey,
+    Secret? appSpecificPassword,
+    String type = 'ios',
   }) async {
     if (!file.existsSync()) {
       throw ImpaktfullCliError('File `${file.path}` does not exists');
@@ -57,30 +35,22 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
       throw ImpaktfullCliError(
           '`${aToolFile.path}` does not exists, `altool` is required to upload to testflight');
     }
-    final hasEmailPasswordConfig = userName == null || password == null;
-    final hasApiKeyWithIssuerConfig = apiKey == null || issuerId == null;
-    if (!hasApiKeyWithIssuerConfig && !hasApiKeyWithIssuerConfig) {
-      throw ImpaktfullCliError(
-          'In order to authenticate `username` + `password` or `apiKey + issuerId` is required');
-    }
+
+    userName = userName ?? ImpaktfullCliEnvironmentVariables.getAppleEmail();
+    appSpecificPassword = appSpecificPassword ??
+        ImpaktfullCliEnvironmentVariables.getAppleAppSpecificPassword();
+
     final result = await processRunner.runProcessVerbose([
       aToolFile.path,
       '--upload-app',
       '--file',
       file.path,
-      if (!hasApiKeyWithIssuerConfig) ...[
-        '--apiIssuer',
-        issuerId,
-        '--api_key',
-        apiKey.value,
-      ] else if (!hasEmailPasswordConfig) ...[
-        '--username',
-        userName,
-        '--password',
-        password.value,
-      ],
+      '--username',
+      userName,
+      '--password',
+      appSpecificPassword.value,
       '--type',
-      'ios',
+      type,
     ]);
     if (result.contains('ITunesConnectionOperationErrorDomain Code=-19000')) {
       throw ImpaktfullCliError(
