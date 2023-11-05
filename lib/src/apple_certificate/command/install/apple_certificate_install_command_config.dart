@@ -3,7 +3,8 @@ import 'package:impaktfull_cli/src/apple_certificate/model/install/apple_certifi
 import 'package:impaktfull_cli/src/cli/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/cli/util/extensions/arg_result_extensions.dart';
 
-class AppleCertificateInstallCommandConfig extends CommandConfig<AppleCertificateInstallConfigData> {
+class AppleCertificateInstallCommandConfig
+    extends CommandConfig<AppleCertificateInstallConfigData> {
   static const String _optionOnePasswordUuid = 'onePasswordUuid';
   static const String _optionKeyChainName = 'keyChainName';
   final String defaultKeyChainName;
@@ -28,7 +29,8 @@ class AppleCertificateInstallCommandConfig extends CommandConfig<AppleCertificat
   }
 
   @override
-  AppleCertificateInstallConfigData parseResult(ArgResults? argResults) => AppleCertificateInstallConfigData(
+  AppleCertificateInstallConfigData parseResult(ArgResults? argResults) =>
+      AppleCertificateInstallConfigData(
         onePasswordUuid: argResults.getRequiredOption(_optionOnePasswordUuid),
         keyChainName: argResults.getRequiredOption(_optionKeyChainName),
       );

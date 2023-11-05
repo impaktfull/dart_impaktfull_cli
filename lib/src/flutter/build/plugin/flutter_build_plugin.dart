@@ -10,7 +10,7 @@ import 'package:path/path.dart' as path;
 
 class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   const FlutterBuildPlugin({
-    super.processRunner,
+    required super.processRunner,
   });
 
   Future<File> buildAndroid({

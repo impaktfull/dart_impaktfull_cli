@@ -5,6 +5,6 @@ abstract class ImpaktfullCliPlugin extends ImpaktfullPlugin {
   final ProcessRunner processRunner;
 
   const ImpaktfullCliPlugin({
-    this.processRunner = const CliProcessRunner(),
+    required this.processRunner,
   });
 }

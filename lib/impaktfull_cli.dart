@@ -11,7 +11,10 @@ export 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment.
 export 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment_variables.dart';
 export 'package:impaktfull_cli/src/cli/util/input_reader/impaktfull_cli_input_reader.dart';
 export 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
+export 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 export 'package:impaktfull_cli/src/cli/util/runner/runner.dart';
 export 'package:impaktfull_cli/src/flutter/build/model/flutter_build_android_extension.dart';
 export 'package:impaktfull_cli/src/flutter/build/model/flutter_build_ios_extension.dart';
+export 'package:impaktfull_cli/src/flutter/build/plugin/flutter_build_plugin.dart';
 export 'package:impaktfull_cli/src/one_password/plugin/one_password_plugin.dart';
+export 'package:impaktfull_cli/src/testflight/plugin/testflight_plugin.dart';

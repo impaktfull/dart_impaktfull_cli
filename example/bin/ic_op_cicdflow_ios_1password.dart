@@ -5,7 +5,13 @@ import 'example_config.dart';
 Future<void> main(List<String> arguments) async {
   await runImpaktfullCli(
     () async {
-      final ciCdFlow = CiCdFlow();
+      final processRunner = CliProcessRunner();
+      final ciCdFlow = CiCdFlow(
+        onePasswordPlugin: OnePasswordPlugin(processRunner: processRunner),
+        macOsKeyChainPlugin: MacOsKeyChainPlugin(processRunner: processRunner),
+        flutterBuildPlugin: FlutterBuildPlugin(processRunner: processRunner),
+        appCenterPlugin: AppCenterPlugin(),
+      );
       await ciCdFlow.startBuildWithCertificateAndPasswordFromOnePassword(
         opUuid: ExampleConfig.onePasswordUuid,
         keyChainName: ExampleConfig.keyChainName,

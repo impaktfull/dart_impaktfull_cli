@@ -6,7 +6,7 @@ import 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
 
 class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   const MacOsKeyChainPlugin({
-    super.processRunner,
+    required super.processRunner,
   });
 
   String _fullKeyChainName(String keyChainName) => '$keyChainName.keychain';

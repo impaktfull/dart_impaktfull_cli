@@ -5,7 +5,8 @@ import 'package:impaktfull_cli/src/apple_certificate/model/remove/apple_certific
 import 'package:impaktfull_cli/src/cli/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/cli/command/config/command_config.dart';
 
-class AppleCertificateRemoveCommand extends CliCommand<AppleCertificateRemoveConfigData> {
+class AppleCertificateRemoveCommand
+    extends CliCommand<AppleCertificateRemoveConfigData> {
   final AppleCertificateUtil util;
 
   AppleCertificateRemoveCommand({
@@ -20,13 +21,14 @@ class AppleCertificateRemoveCommand extends CliCommand<AppleCertificateRemoveCon
   String get description => 'Remove Apple certificates from the keychain';
 
   @override
-  CommandConfig<AppleCertificateRemoveConfigData> getConfig() => AppleCertificateRemoveCommandConfig(
+  CommandConfig<AppleCertificateRemoveConfigData> getConfig() =>
+      AppleCertificateRemoveCommandConfig(
         defaultKeyChainName: util.defaultKeyChainName,
       );
 
   @override
   Future<void> runCommand(AppleCertificateRemoveConfigData configData) async {
-    final keyChainPlugin = MacOsKeyChainPlugin();
+    final keyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
     await keyChainPlugin.removeKeyChain(configData.keyChainName);
   }
 }

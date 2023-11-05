@@ -4,7 +4,8 @@ import 'package:impaktfull_cli/src/apple_certificate/model/install/apple_certifi
 import 'package:impaktfull_cli/src/cli/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/cli/command/config/command_config.dart';
 
-class AppleCertificateInstallCommand extends CliCommand<AppleCertificateInstallConfigData> {
+class AppleCertificateInstallCommand
+    extends CliCommand<AppleCertificateInstallConfigData> {
   final AppleCertificateUtil util;
 
   AppleCertificateInstallCommand({
@@ -19,7 +20,8 @@ class AppleCertificateInstallCommand extends CliCommand<AppleCertificateInstallC
   String get description => 'Install Apple certificates into the keychain.';
 
   @override
-  CommandConfig<AppleCertificateInstallConfigData> getConfig() => AppleCertificateInstallCommandConfig(
+  CommandConfig<AppleCertificateInstallConfigData> getConfig() =>
+      AppleCertificateInstallCommandConfig(
         defaultKeyChainName: util.defaultKeyChainName,
       );
 

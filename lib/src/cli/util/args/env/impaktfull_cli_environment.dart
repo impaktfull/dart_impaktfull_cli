@@ -1,8 +1,10 @@
 import 'dart:io';
 
-import 'package:impaktfull_cli/impaktfull_cli.dart';
+import 'package:impaktfull_cli/src/cli/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/cli/model/data/environment/installed_cli_tool.dart';
 import 'package:impaktfull_cli/src/cli/model/data/environment/operating_system.dart';
+import 'package:impaktfull_cli/src/cli/model/error/impaktfull_cli_error.dart';
+import 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 import 'package:path/path.dart';
 

@@ -15,12 +15,14 @@ import 'package:impaktfull_cli/src/one_password/plugin/one_password_plugin.dart'
 class CiCdFlow {
   final OnePasswordPlugin onePasswordPlugin;
   final MacOsKeyChainPlugin macOsKeyChainPlugin;
+  final FlutterBuildPlugin flutterBuildPlugin;
   final AppCenterPlugin appCenterPlugin;
 
   const CiCdFlow({
-    this.onePasswordPlugin = const OnePasswordPlugin(),
-    this.macOsKeyChainPlugin = const MacOsKeyChainPlugin(),
-    this.appCenterPlugin = const AppCenterPlugin(),
+    required this.onePasswordPlugin,
+    required this.macOsKeyChainPlugin,
+    required this.flutterBuildPlugin,
+    required this.appCenterPlugin,
   });
 
   Future<void> buildAndroidWithFlavor({
@@ -51,7 +53,6 @@ class CiCdFlow {
     AppCenterBuildConfig? appCenterBuildConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
-    final flutterBuildPlugin = FlutterBuildPlugin();
     final file = await flutterBuildPlugin.buildAndroid(
       flavor: flavor,
       mainDartFile: mainDartFile,
@@ -100,7 +101,6 @@ class CiCdFlow {
     AppCenterBuildConfig? appCenterBuildConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
-    final flutterBuildPlugin = FlutterBuildPlugin();
     final file = await flutterBuildPlugin.buildIos(
       flavor: flavor,
       mainDartFile: mainDartFile,

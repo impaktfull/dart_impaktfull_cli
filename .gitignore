@@ -30,3 +30,11 @@
 
 # Certificates
 certificates/
+
+# Credentials
+example/bin/example_config.dart
+
+# Builds
+**.ipa
+**.aab
+**.apk

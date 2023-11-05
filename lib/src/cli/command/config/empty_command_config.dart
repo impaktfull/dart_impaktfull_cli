@@ -6,7 +6,8 @@ class EmptyommandConfig extends CommandConfig<EmptyCommandConfigData> {
   void addConfig(ArgParser argParser) {}
 
   @override
-  EmptyCommandConfigData parseResult(ArgResults? argResults) => EmptyCommandConfigData();
+  EmptyCommandConfigData parseResult(ArgResults? argResults) =>
+      EmptyCommandConfigData();
 }
 
 class EmptyCommandConfigData extends ConfigData {}

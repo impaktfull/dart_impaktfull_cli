@@ -12,10 +12,7 @@ abstract class ProcessRunner {
     List<String> args,
   );
 
-  Future<void> runProcessVerbose(
-    List<String> args, [
-    void Function(String lines)? onLineWrite,
-  ]);
+  Future<String> runProcessVerbose(List<String> args);
 }
 
 class CliProcessRunner extends ProcessRunner {
@@ -39,31 +36,48 @@ class CliProcessRunner extends ProcessRunner {
   }
 
   @override
-  Future<void> runProcessVerbose(
-    List<String> args, [
-    void Function(String lines)? onLineWrite,
-  ]) async {
+  Future<String> runProcessVerbose(List<String> args) async {
     final fullCommand = args.join(' ');
     CliLogger.verbose(fullCommand);
-    final completer = Completer<void>();
+    final completer = Completer<String>();
     final result = await Process.start(
       args.first,
       args.length > 1 ? args.sublist(1) : [],
       mode: ProcessStartMode.detachedWithStdio,
     );
+    final stringBuffer = StringBuffer();
     CliLogger.verboseSeperator();
-    final subscription = result.stdout.listen((codeUnits) {
+    final subscriptionOut = result.stdout.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
-      onLineWrite?.call(line);
+      stringBuffer.writeln(line);
       stdout.write(line);
     });
-    subscription.onDone(() {
-      CliLogger.verboseSeperator();
-      completer.complete();
-      subscription.cancel();
+    final subscriptionError = result.stderr.listen((codeUnits) {
+      final line = utf8.decode(codeUnits);
+      stringBuffer.writeln(line);
+      stderr.write('Error: $line');
     });
-    subscription.onError((dynamic error) =>
-        completer.completeError('Failed to complete `$fullCommand`: $error'));
+
+    subscriptionOut.onDone(() async {
+      CliLogger.verboseSeperator();
+      await subscriptionOut.cancel();
+      await subscriptionError.cancel();
+      if (exitCode == 0) {
+        completer.complete(stringBuffer.toString());
+      } else {
+        completer.completeError('Failed to complete `$fullCommand`');
+      }
+    });
+    subscriptionError.onDone(() async {
+      CliLogger.verboseSeperator();
+      await subscriptionOut.cancel();
+      await subscriptionError.cancel();
+      if (exitCode == 0) {
+        completer.complete(stringBuffer.toString());
+      } else {
+        completer.completeError('Failed to complete `$fullCommand`');
+      }
+    });
     return completer.future;
   }
 }

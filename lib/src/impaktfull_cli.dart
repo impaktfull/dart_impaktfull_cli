@@ -1,9 +1,10 @@
 import 'package:args/command_runner.dart';
-import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/apple_certificate/command/apple_certificate_root_command.dart';
 import 'package:impaktfull_cli/src/cli/util/extensions/arg_parser_extensions.dart';
 import 'package:impaktfull_cli/src/cli/util/extensions/arg_result_extensions.dart';
+import 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
+import 'package:impaktfull_cli/src/cli/util/runner/runner.dart';
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;

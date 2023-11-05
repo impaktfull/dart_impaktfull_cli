@@ -5,8 +5,9 @@ import 'example_config.dart';
 Future<void> main(List<String> arguments) async {
   await runImpaktfullCli(
     () async {
-      final onePasswordPlugin = OnePasswordPlugin();
-      final keyChainPlugin = MacOsKeyChainPlugin();
+      final processRunner = CliProcessRunner();
+      final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
+      final keyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
 
       final keyChainName = ExampleConfig.keyChainName;
       final opUuid = ExampleConfig.onePasswordUuid;

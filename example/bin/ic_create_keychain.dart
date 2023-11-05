@@ -5,7 +5,8 @@ import 'example_config.dart';
 Future<void> main(List<String> arguments) async {
   await runImpaktfullCli(
     () async {
-      final keyChainPlugin = MacOsKeyChainPlugin();
+      final processRunner = CliProcessRunner();
+      final keyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
       final keyChainName = ExampleConfig.keyChainName;
       final globalKeyChainPasswordSecret = ExampleConfig.globalKeyChainPassword;
 

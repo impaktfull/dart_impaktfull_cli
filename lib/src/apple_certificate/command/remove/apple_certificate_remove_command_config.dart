@@ -3,7 +3,8 @@ import 'package:impaktfull_cli/src/apple_certificate/model/remove/apple_certific
 import 'package:impaktfull_cli/src/cli/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/cli/util/extensions/arg_result_extensions.dart';
 
-class AppleCertificateRemoveCommandConfig extends CommandConfig<AppleCertificateRemoveConfigData> {
+class AppleCertificateRemoveCommandConfig
+    extends CommandConfig<AppleCertificateRemoveConfigData> {
   static const String _optionKeyChainName = 'keyChainName';
   final String defaultKeyChainName;
   AppleCertificateRemoveCommandConfig({
@@ -19,7 +20,8 @@ class AppleCertificateRemoveCommandConfig extends CommandConfig<AppleCertificate
   }
 
   @override
-  AppleCertificateRemoveConfigData parseResult(ArgResults? argResults) => AppleCertificateRemoveConfigData(
+  AppleCertificateRemoveConfigData parseResult(ArgResults? argResults) =>
+      AppleCertificateRemoveConfigData(
         keyChainName: argResults.getRequiredOption(_optionKeyChainName),
       );
 }
