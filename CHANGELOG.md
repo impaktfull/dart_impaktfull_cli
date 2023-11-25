@@ -1,5 +1,12 @@
-## 0.0.1
+# 0.0.2
 
+## Fixes:
+- Typo in `EmptyCommandConfig`
+- meta version set to 1.1.0
+
+# 0.0.1
+
+## Features:
 - Unstable initial version.
 - Support for:
     - build flutter app

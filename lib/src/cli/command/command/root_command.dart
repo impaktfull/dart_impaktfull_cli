@@ -17,7 +17,7 @@ abstract class RootCommand extends CliCommand<EmptyCommandConfigData> {
 
   @nonVirtual
   @override
-  EmptyommandConfig getConfig() => EmptyommandConfig();
+  EmptyCommandConfig getConfig() => EmptyCommandConfig();
 
   @nonVirtual
   @override

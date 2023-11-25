@@ -1,6 +1,6 @@
 name: impaktfull_cli
 description: A cli that combines all tools for development, testing, ci/cd,...
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/impaktfull/impaktfull_cli
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   args: ^2.4.2
   http: ^1.1.0
-  meta: ^1.11.0
+  meta: ^1.1.0
   path: ^1.8.3
   googleapis: ^11.4.0
   googleapis_auth: ^1.4.0
