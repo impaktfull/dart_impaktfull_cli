@@ -56,8 +56,10 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
   }) async {
     AutoRefreshingAuthClient? client_;
     try {
-      final serviceAccountCredentials = _getServiceAccountCredentials(serviceAccountCredentialsFile);
-      client_ = await clientViaServiceAccount(serviceAccountCredentials, scopes);
+      final serviceAccountCredentials =
+          _getServiceAccountCredentials(serviceAccountCredentialsFile);
+      client_ =
+          await clientViaServiceAccount(serviceAccountCredentials, scopes);
 
       return await handler(client_);
     } finally {
@@ -65,12 +67,15 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     }
   }
 
-  ServiceAccountCredentials _getServiceAccountCredentials(File? serviceAccountCredentialsFile) {
+  ServiceAccountCredentials _getServiceAccountCredentials(
+      File? serviceAccountCredentialsFile) {
     Secret credentials;
-    if (serviceAccountCredentialsFile != null && serviceAccountCredentialsFile.existsSync()) {
+    if (serviceAccountCredentialsFile != null &&
+        serviceAccountCredentialsFile.existsSync()) {
       credentials = Secret(serviceAccountCredentialsFile.readAsStringSync());
     } else {
-      credentials = ImpaktfullCliEnvironmentVariables.getGoogleServiceAccountCredentials();
+      credentials = ImpaktfullCliEnvironmentVariables
+          .getGoogleServiceAccountCredentials();
     }
     final serviceAccountCredentialsJson = jsonDecode(credentials.value);
     return ServiceAccountCredentials.fromJson(serviceAccountCredentialsJson);
@@ -82,22 +87,31 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
       final apksFile = File('app.apks');
       final apksZipFile = File('aab_to_apks.zip');
       final apkOutputDirectory = Directory(join('tmp', 'aab_to_apk_output'));
-      final baseApkFile = File(join(apkOutputDirectory.path, 'splits', 'base-master.apk'));
-      await processRunner.runProcess(['bundletool', 'build-apks', '--bundle=${file.path}', '--output=${apksFile.path}']);
+      final baseApkFile =
+          File(join(apkOutputDirectory.path, 'splits', 'base-master.apk'));
+      await processRunner.runProcess([
+        'bundletool',
+        'build-apks',
+        '--bundle=${file.path}',
+        '--output=${apksFile.path}'
+      ]);
       apksFile.renameSync(apksZipFile.path);
       if (apkOutputDirectory.existsSync()) {
         apkOutputDirectory.deleteSync(recursive: true);
       }
       apkOutputDirectory.createSync(recursive: true);
-      await processRunner.runProcess(['unzip', apksZipFile.path, '-d', apkOutputDirectory.path]);
+      await processRunner.runProcess(
+          ['unzip', apksZipFile.path, '-d', apkOutputDirectory.path]);
       apksZipFile.deleteSync(recursive: true);
       final packageName = await _getPackageName(baseApkFile);
       apkOutputDirectory.deleteSync(recursive: true);
       return packageName;
     } else if (fileExtension == '.apk') {
-      return processRunner.runProcess(['aapt2', 'dump', 'packagename', file.path]);
+      return processRunner
+          .runProcess(['aapt2', 'dump', 'packagename', file.path]);
     } else {
-      throw ImpaktfullCliError('Automatic detection of the package name is currently only supported for [.aab & .apk] files');
+      throw ImpaktfullCliError(
+          'Automatic detection of the package name is currently only supported for [.aab & .apk] files');
     }
   }
 }
