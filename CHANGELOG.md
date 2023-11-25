@@ -1,7 +1,16 @@
+# 0.1.0
+
+## Refactor:
+- The plugins should be more flexible now. `ImpaktfullCli()` should be used as a starting point. 
+  These methods should make it more clear how to use the plugins:
+    - runWithPlugin<T>()
+    - runWithCli()
+    - getPlugin()
+
 # 0.0.4
 
 ## Fixes:
-- clenup dependency injection with default implementations
+- cleanup dependency injection with default implementations
 
 # 0.0.3
 

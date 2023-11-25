@@ -2,15 +2,9 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 
-Future<void> main(List<String> arguments) async {
-  await runImpaktfullCli(
-    () async {
-      final processRunner = CliProcessRunner();
-      final testFlightPlugin = PlayStorePlugin(processRunner: processRunner);
-      await testFlightPlugin.uploadToPlayStore(
+Future<void> main(List<String> arguments) =>
+    ImpaktfullCli().runWithPlugin<PlayStorePlugin>(
+      (plugin) => plugin.uploadToPlayStore(
         file: File('app.apk'),
-      );
-    },
-    isVerboseLoggingEnabled: true,
-  );
-}
+      ),
+    );
