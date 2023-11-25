@@ -1,5 +1,10 @@
 # 0.1.0
 
+## Fixes:
+- Export all required files
+
+# 0.1.0
+
 ## Refactor:
 - The plugins should be more flexible now. `ImpaktfullCli()` should be used as a starting point. 
   These methods should make it more clear how to use the plugins:
