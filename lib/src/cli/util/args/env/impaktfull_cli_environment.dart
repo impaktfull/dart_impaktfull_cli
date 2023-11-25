@@ -12,22 +12,18 @@ class ImpaktfullCliEnvironment {
   static late ImpaktfullCliEnvironment _instance;
 
   final bool verboseLoggingEnabled;
-  final OperatingSystem operatingSystem;
   final Directory workingDir;
   final bool isFvmProject;
   final List<InstalledCliTool> allCliTools;
 
   static bool get useFvmForFlutterBuilds => _instance.isFvmProject;
 
-  List<InstalledCliTool> get installedCliTools =>
-      allCliTools.where((element) => element.isInstalled).toList();
+  List<InstalledCliTool> get installedCliTools => allCliTools.where((element) => element.isInstalled).toList();
 
-  List<InstalledCliTool> get notInstalledCliTools =>
-      allCliTools.where((element) => !element.isInstalled).toList();
+  List<InstalledCliTool> get notInstalledCliTools => allCliTools.where((element) => !element.isInstalled).toList();
 
   const ImpaktfullCliEnvironment._({
     required this.verboseLoggingEnabled,
-    required this.operatingSystem,
     required this.workingDir,
     required this.isFvmProject,
     required this.allCliTools,
@@ -39,13 +35,11 @@ class ImpaktfullCliEnvironment {
   }) async {
     CliLogger.init(isVerboseLoggingEnabled: isVerboseLoggingEnabled);
     final workingDir = Directory.current;
-    final operatingSystem = _getOperatingSystem();
     _instance = ImpaktfullCliEnvironment._(
       verboseLoggingEnabled: isVerboseLoggingEnabled,
-      operatingSystem: operatingSystem,
       workingDir: workingDir,
       isFvmProject: await _checkIfActiveProjectIsFvm(workingDir),
-      allCliTools: await _checkInstalledTools(processRunner, operatingSystem),
+      allCliTools: await _checkInstalledTools(processRunner),
     );
     _printCurrentState();
   }
@@ -55,18 +49,11 @@ class ImpaktfullCliEnvironment {
     return fvmConfigFile.exists();
   }
 
-  static Future<List<InstalledCliTool>> _checkInstalledTools(
-          ProcessRunner processRunner, OperatingSystem operatingSystem) async =>
-      CliTool.values
-          .where((element) =>
-              element.supportedOperatingSystems.contains(operatingSystem))
-          .map((cliTool) => _isToolInstalled(processRunner, cliTool))
-          .wait;
+  static Future<List<InstalledCliTool>> _checkInstalledTools(ProcessRunner processRunner) async =>
+      CliTool.values.where((element) => element.supportedOperatingSystems.contains(OperatingSystem.current)).map((cliTool) => _isToolInstalled(processRunner, cliTool)).wait;
 
-  static Future<InstalledCliTool> _isToolInstalled(
-      ProcessRunner processRunner, CliTool cliTool) async {
-    final result =
-        await processRunner.runProcess(['which', cliTool.commandName]);
+  static Future<InstalledCliTool> _isToolInstalled(ProcessRunner processRunner, CliTool cliTool) async {
+    final result = await processRunner.runProcess(['which', cliTool.commandName]);
     if (result.isEmpty) return InstalledCliTool.notInstalled(cliTool: cliTool);
     return InstalledCliTool.installed(
       cliTool: cliTool,
@@ -75,7 +62,7 @@ class ImpaktfullCliEnvironment {
   }
 
   static void requiresMacOs({required String reason}) {
-    if (_instance.operatingSystem != OperatingSystem.macOS) {
+    if (OperatingSystem.current != OperatingSystem.macOS) {
       throw ImpaktfullCliError('${reason.trim()} is only supported on macOS');
     }
   }
@@ -89,23 +76,14 @@ class ImpaktfullCliEnvironment {
       }
     }
     if (requiredToolsFound.length != requiredTools.length) {
-      final missingTools = requiredTools
-          .where((element) => !requiredToolsFound.contains(element));
-      throw ImpaktfullCliError(
-          '${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
+      final missingTools = requiredTools.where((element) => !requiredToolsFound.contains(element));
+      throw ImpaktfullCliError('${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
     }
-  }
-
-  static OperatingSystem _getOperatingSystem() {
-    if (Platform.isMacOS) {
-      return OperatingSystem.macOS;
-    }
-    throw ImpaktfullCliError('Current operating system is not yet supported');
   }
 
   static void _printCurrentState() {
     CliLogger.debugSeperator();
-    CliLogger.debug('Operating system: ${_instance.operatingSystem.name}');
+    CliLogger.debug('Operating system: ${OperatingSystem.current.name}');
     CliLogger.debug('Working Dir: `${_instance.workingDir.path}`');
     CliLogger.debug('Is fvm project: `${_instance.isFvmProject}`');
     if (_instance.installedCliTools.isNotEmpty) {
@@ -116,8 +94,14 @@ class ImpaktfullCliEnvironment {
     }
     if (_instance.notInstalledCliTools.isNotEmpty) {
       CliLogger.debug('Not Installed Tools:');
-      for (final clitool in _instance.notInstalledCliTools) {
-        CliLogger.debug('\t${clitool.cliTool.commandName} - ${clitool.path}');
+      for (final notInstalledCliTool in _instance.notInstalledCliTools) {
+        final cliTool = notInstalledCliTool.cliTool;
+        var log = '\t${cliTool.commandName}';
+        final installationInstructions = cliTool.installationInstructions[OperatingSystem.current];
+        if (installationInstructions != null) {
+          log += ' - Install instructions: $installationInstructions';
+        }
+        CliLogger.debug(log);
       }
     }
     CliLogger.debugSeperator();

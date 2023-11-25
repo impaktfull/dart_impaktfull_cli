@@ -38,3 +38,7 @@ example/bin/example_config.dart
 **.ipa
 **.aab
 **.apk
+
+# aab package name detection
+aab_to_apks.zip
+tmp/aab_to_apk_output/**

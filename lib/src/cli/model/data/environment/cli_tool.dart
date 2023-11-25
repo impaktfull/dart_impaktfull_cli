@@ -12,6 +12,9 @@ enum CliTool {
   fvm(
     name: 'Flutter Version Manager (fvm)',
     commandName: 'fvm',
+    installationInstructions: {
+      OperatingSystem.macOS: 'https://fvm.app/docs/getting_started/installation/',
+    },
   ),
   onePasswordCli(
     name: '1password cli',
@@ -24,6 +27,13 @@ enum CliTool {
   aapt2(
     name: 'Android Asset Packaging Tool',
     commandName: 'aapt',
+  ),
+  bundleTool(
+    name: 'Bundle Tool',
+    commandName: 'bundleTool',
+    installationInstructions: {
+      OperatingSystem.macOS: 'brew install bundletool',
+    },
   ),
   xcodeSelect(
     name: 'xCode Select',
@@ -53,11 +63,13 @@ enum CliTool {
 
   final String name;
   final String commandName;
+  final Map<OperatingSystem, String> installationInstructions;
   final List<OperatingSystem> supportedOperatingSystems;
 
   const CliTool({
     required this.name,
     required this.commandName,
+    this.installationInstructions = const {},
     this.supportedOperatingSystems = OperatingSystem.values,
   });
 }
