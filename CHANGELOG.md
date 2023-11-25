@@ -1,3 +1,8 @@
+# 0.0.4
+
+## Fixes:
+- clenup dependency injection with default implementations
+
 # 0.0.3
 
 ## Fixes:

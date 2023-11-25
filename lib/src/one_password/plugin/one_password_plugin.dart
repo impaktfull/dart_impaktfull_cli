@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/cli/model/data/secret.dart';
 import 'package:impaktfull_cli/src/cli/plugin/cli_plugin.dart';
+import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
   const OnePasswordPlugin({
-    required super.processRunner,
+    super.processRunner = const CliProcessRunner(),
   });
 
   Future<File> downloadDistributionCertificate({

@@ -8,11 +8,12 @@ import 'package:impaktfull_cli/src/cli/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/cli/plugin/cli_plugin.dart';
 import 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
+import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 import 'package:path/path.dart';
 
 class PlayStorePlugin extends ImpaktfullCliPlugin {
   const PlayStorePlugin({
-    required super.processRunner,
+    super.processRunner = const CliProcessRunner(),
   });
 
   Future<void> uploadToPlayStore({

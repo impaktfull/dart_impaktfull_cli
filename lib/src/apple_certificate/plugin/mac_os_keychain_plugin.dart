@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/cli/model/data/secret.dart';
 import 'package:impaktfull_cli/src/cli/plugin/cli_plugin.dart';
 import 'package:impaktfull_cli/src/cli/util/logger/logger.dart';
+import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 
 class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   const MacOsKeyChainPlugin({
-    required super.processRunner,
+    super.processRunner = const CliProcessRunner(),
   });
 
   String _fullKeyChainName(String keyChainName) => '$keyChainName.keychain';

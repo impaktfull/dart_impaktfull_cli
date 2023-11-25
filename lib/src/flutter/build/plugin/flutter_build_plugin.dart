@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/cli/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/cli/plugin/cli_plugin.dart';
 import 'package:impaktfull_cli/src/cli/util/args/env/impaktfull_cli_environment.dart';
+import 'package:impaktfull_cli/src/cli/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/flutter/build/model/flutter_build_android_extension.dart';
 import 'package:impaktfull_cli/src/flutter/build/model/flutter_build_ios_extension.dart';
 import 'package:path/path.dart';
@@ -10,7 +11,7 @@ import 'package:path/path.dart' as path;
 
 class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   const FlutterBuildPlugin({
-    required super.processRunner,
+    super.processRunner = const CliProcessRunner(),
   });
 
   Future<File> buildAndroid({

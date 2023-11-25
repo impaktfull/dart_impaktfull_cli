@@ -11,18 +11,24 @@ import 'package:impaktfull_cli/src/flutter/build/model/flutter_build_android_ext
 import 'package:impaktfull_cli/src/flutter/build/model/flutter_build_ios_extension.dart';
 import 'package:impaktfull_cli/src/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/one_password/plugin/one_password_plugin.dart';
+import 'package:impaktfull_cli/src/playstore/plugin/playstore_plugin.dart';
+import 'package:impaktfull_cli/src/testflight/plugin/testflight_plugin.dart';
 
 class CiCdFlow {
   final OnePasswordPlugin onePasswordPlugin;
   final MacOsKeyChainPlugin macOsKeyChainPlugin;
   final FlutterBuildPlugin flutterBuildPlugin;
   final AppCenterPlugin appCenterPlugin;
+  final TestFlightPlugin testflightPlugin;
+  final PlayStorePlugin playStorePlugin;
 
   const CiCdFlow({
-    required this.onePasswordPlugin,
-    required this.macOsKeyChainPlugin,
-    required this.flutterBuildPlugin,
-    required this.appCenterPlugin,
+    this.onePasswordPlugin = const OnePasswordPlugin(),
+    this.macOsKeyChainPlugin = const MacOsKeyChainPlugin(),
+    this.flutterBuildPlugin = const FlutterBuildPlugin(),
+    this.appCenterPlugin = const AppCenterPlugin(),
+    this.testflightPlugin = const TestFlightPlugin(),
+    this.playStorePlugin = const PlayStorePlugin(),
   });
 
   Future<void> buildAndroidWithFlavor({
