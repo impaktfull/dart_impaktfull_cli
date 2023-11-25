@@ -17,4 +17,5 @@ export 'package:impaktfull_cli/src/flutter/build/model/flutter_build_android_ext
 export 'package:impaktfull_cli/src/flutter/build/model/flutter_build_ios_extension.dart';
 export 'package:impaktfull_cli/src/flutter/build/plugin/flutter_build_plugin.dart';
 export 'package:impaktfull_cli/src/one_password/plugin/one_password_plugin.dart';
+export 'package:impaktfull_cli/src/playstore/plugin/playstore_plugin.dart';
 export 'package:impaktfull_cli/src/testflight/plugin/testflight_plugin.dart';

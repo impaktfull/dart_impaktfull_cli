@@ -21,6 +21,10 @@ enum CliTool {
     name: 'Android development tools (adb)',
     commandName: 'adb',
   ),
+  aapt2(
+    name: 'Android Asset Packaging Tool',
+    commandName: 'aapt',
+  ),
   xcodeSelect(
     name: 'xCode Select',
     commandName: 'xcode-select',

@@ -9,6 +9,8 @@ class ImpaktfullCliEnvironmentVariables {
   static const _envKeyAppCenterToken = 'APPCENTER_API_TOKEN';
   static const _envKeyAppleEmail = 'APPLE_EMAIL';
   static const _envKeyAppleAppSpecificPassword = 'APPLE_APP_SPECIFIC_PASSWORD';
+  static const _envKeyGoogleServiceAccountJsonRaw =
+      'GOOGLE_SERVICE_ACCOUNT_JSON_RAW';
 
   const ImpaktfullCliEnvironmentVariables._();
 
@@ -25,8 +27,7 @@ class ImpaktfullCliEnvironmentVariables {
   static String _getNonOptionalEnvVariable(String key) {
     final value = _getEnvVariable(key);
     if (value == null) {
-      throw ImpaktfullCliError(
-          '$_envKeyAppCenterOwnerName env variable is not set');
+      throw ImpaktfullCliError('$key env variable is not set');
     }
     return value;
   }
@@ -40,8 +41,7 @@ class ImpaktfullCliEnvironmentVariables {
   static Secret _getNonOptionalEnvVariableSecret(String key) {
     final value = _getEnvVariableSecret(key);
     if (value == null) {
-      throw ImpaktfullCliError(
-          '$_envKeyAppCenterOwnerName env variable is not set.');
+      throw ImpaktfullCliError('$key env variable is not set.');
     }
     return value;
   }
@@ -78,4 +78,7 @@ class ImpaktfullCliEnvironmentVariables {
 
   static Secret getAppleAppSpecificPassword() =>
       _getNonOptionalEnvVariableSecret(_envKeyAppleAppSpecificPassword);
+
+  static Secret getGoogleServiceAccountCredentials() =>
+      _getNonOptionalEnvVariableSecret(_envKeyGoogleServiceAccountJsonRaw);
 }

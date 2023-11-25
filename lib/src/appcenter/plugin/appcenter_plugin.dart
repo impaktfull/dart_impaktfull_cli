@@ -16,7 +16,7 @@ const _extensionMimeTypeMapper = {
   'ipa': 'application/octet-stream',
 };
 
-/// Login based on these 2 resources:
+/// Logic based on these 2 resources:
 /// - https://medium.com/@tranhuuphuc20051995/uploading-apk-files-to-appcenter-using-bash-script-bde8a796145d
 /// - https://gist.github.com/ouchadam/c74fa26c639a50d68bc35ee5749f868c
 class AppCenterPlugin extends ImpaktfullPlugin {
