@@ -15,7 +15,8 @@ import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
-typedef ImpaktfullCliRunner = Future<void> Function(ImpaktfullCli cli);
+typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(
+    T cli);
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;
@@ -77,7 +78,8 @@ class ImpaktfullCli {
     return plugin;
   }
 
-  Future<void> run(ImpaktfullCliRunner runner) => runImpaktfullCli(
+  Future<void> run(ImpaktfullCliRunner<ImpaktfullCli> runner) =>
+      runImpaktfullCli(
         () => runner(this),
       );
 

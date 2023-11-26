@@ -2,9 +2,9 @@
 
 **impaktfull_cli is still in unstable & untested. everything under <1.0.0 should not be used unless you want to test the cli**
 
-### ENV Variables:
+## ENV Variables:
 
-#### impaktfull_cli ENV variabhles
+### impaktfull_cli ENV variabhles
 
 - CI_KEYCHAIN_PASSWORD
 - APPCENTER_OWNER_NAME
@@ -16,3 +16,13 @@
 ### 3rth party ENV Variables
 
 - OP_SERVICE_ACCOUNT_TOKEN
+
+
+## Extend ImpaktfullCli
+
+```dart
+class TestCli extends ImpaktfullCli {
+  @override
+  Future<void> run(ImpaktfullCliRunner<TestCli> runner) => super.run(runner as ImpaktfullCliRunner<ImpaktfullCli>);
+}
+```

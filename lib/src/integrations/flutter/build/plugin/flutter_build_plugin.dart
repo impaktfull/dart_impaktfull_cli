@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
-import 'package:impaktfull_cli/src/core/plugin/cli_plugin.dart';
+import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';

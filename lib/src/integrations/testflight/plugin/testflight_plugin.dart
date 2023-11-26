@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
-import 'package:impaktfull_cli/src/core/plugin/cli_plugin.dart';
+import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:path/path.dart';

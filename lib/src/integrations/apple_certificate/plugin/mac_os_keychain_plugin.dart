@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
-import 'package:impaktfull_cli/src/core/plugin/cli_plugin.dart';
+import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 
