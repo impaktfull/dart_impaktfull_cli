@@ -16,8 +16,12 @@ jobs:
           ref: ${{ github.ref }}
       - name: cat pubspec.yaml
         run: cat ./pubspec.yaml
+      - name: Setup Node.js
+        uses: "actions/setup-node@v1"
+        with:
+          node-version: 16
       - name: Automated version bump
-        uses: impaktfull/gh_action_dart_conventional_release@v0.1.4
+        uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
         env:
