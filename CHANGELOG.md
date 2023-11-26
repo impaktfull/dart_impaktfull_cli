@@ -1,3 +1,8 @@
+# 0.2.2
+
+## Features:
+- (ci): Added ci to publish to pub.dev
+
 # 0.2.1
 
 ## Features:
