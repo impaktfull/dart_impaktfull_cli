@@ -1,3 +1,8 @@
+# 0.2.8
+
+## Fix:
+- (ci): Fixed ci to publish to pub.dev
+
 # 0.2.7
 
 ## Fix:
