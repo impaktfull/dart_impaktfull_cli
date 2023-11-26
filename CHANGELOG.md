@@ -1,6 +1,6 @@
 # 0.2.1
 
-## Feat:
+## Features:
 - (AppCenter): Export default distribution group.
 - (cli): Added support to extend the cli with custom plugins.
 
