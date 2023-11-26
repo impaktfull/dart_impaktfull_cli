@@ -13,10 +13,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
-      - name: Configure git to trust the workspace despite the different owner
-        run:
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"          
+          ref: ${{ github.ref }}  
       - name: cat pubspec.yaml
         run: cat ./pubspec.yaml
       - name: Setup Node.js
@@ -24,7 +21,7 @@ jobs:
         with:
           node-version: 16
       - name: Automated version bump
-        uses: impaktfull/gh_action_dart_conventional_release@v0.1.10
+        uses: impaktfull/gh_action_dart_conventional_release@v0.1.11
         with:
           tag-prefix: 'v'
         env:
