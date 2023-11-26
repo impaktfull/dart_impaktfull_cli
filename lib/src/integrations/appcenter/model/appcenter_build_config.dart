@@ -1,6 +1,7 @@
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 
 class AppCenterBuildConfig {
+  static const defaultDistributionGroup = 'Collaborators';
   final String appName;
   final String? ownerName;
   final Secret? apiToken;
@@ -12,7 +13,7 @@ class AppCenterBuildConfig {
     this.ownerName,
     this.apiToken,
     this.distributionGroups = const [
-      'Collaborators',
+      defaultDistributionGroup,
     ],
     this.notifyListeners = false,
   });
