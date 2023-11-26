@@ -1,3 +1,8 @@
+# 0.2.1
+
+## Feat:
+- (AppCenter): Export default distribution group.
+
 # 0.2.0
 
 ## Rafactor:
