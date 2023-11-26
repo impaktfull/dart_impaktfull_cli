@@ -14,23 +14,14 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}  
-      - name: cat pubspec.yaml
-        run: cat ./pubspec.yaml
+          ref: ${{ github.ref }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 18
-      - uses: dart-lang/setup-dart@v1
-      - name: Validate
-        run: dart pub publish --dry-run
       - name: Automated version bump
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: cat pubspec.yaml
-        run: cat ./pubspec.yaml
-      - name: Publish
-        run: dart pub publish --force

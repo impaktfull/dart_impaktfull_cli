@@ -1,3 +1,13 @@
+# 0.2.6
+
+## Fix:
+- (ci): Fixed ci to publish to pub.dev
+
+# 0.2.5
+
+## Fix:
+- (ci): Fixed ci to publish to pub.dev
+
 # 0.2.4
 
 ## Fix:
