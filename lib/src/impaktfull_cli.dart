@@ -30,7 +30,8 @@ class ImpaktfullCli {
 
   List<ImpaktfullPlugin> get _defaultPlugins {
     final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
-    final macOsKeyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
+    final macOsKeyChainPlugin =
+        MacOsKeyChainPlugin(processRunner: processRunner);
     final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
     final appCenterPlugin = AppCenterPlugin();
     final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
@@ -82,14 +83,16 @@ class ImpaktfullCli {
 
   Future<void> runCli(List<String> args) async {
     await runImpaktfullCli(() async {
-      final runner = CommandRunner('impaktfull_cli', 'A cli that replaces `fastlane` by simplifying the CI/CD process.');
+      final runner = CommandRunner('impaktfull_cli',
+          'A cli that replaces `fastlane` by simplifying the CI/CD process.');
       runner.argParser.addGlobalFlags();
 
       for (final command in commands) {
         runner.addCommand(command);
       }
       final argResults = runner.argParser.parse(args);
-      ImpaktfullCliLogger.init(isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      ImpaktfullCliLogger.init(
+          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(args);
     });
   }
