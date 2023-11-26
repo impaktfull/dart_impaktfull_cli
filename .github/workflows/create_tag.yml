@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 16
       - name: Automated version bump
-        uses: impaktfull/gh_action_dart_conventional_release@v0.1.7
+        uses: impaktfull/gh_action_dart_conventional_release@v0.1.8
         with:
           tag-prefix: 'v'
         env:
