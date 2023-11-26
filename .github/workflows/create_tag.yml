@@ -11,13 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: "actions/checkout@v2"
+        uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
+      - name: Configure git to trust the workspace despite the different owner
+        run:
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"          
       - name: cat pubspec.yaml
         run: cat ./pubspec.yaml
       - name: Setup Node.js
-        uses: "actions/setup-node@v1"
+        uses: actions/setup-node@v1
         with:
           node-version: 16
       - name: Automated version bump
