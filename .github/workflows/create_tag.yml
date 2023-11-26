@@ -1,0 +1,26 @@
+name: Automated version bump
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump_version:
+    name: Version bump on main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: "actions/checkout@v2"
+        with:
+          ref: ${{ github.ref }}
+      - name: cat pubspec.yaml
+        run: cat ./pubspec.yaml
+      - name: Automated version bump
+        uses: impaktfull/gh_action_dart_conventional_release@v0.1.4
+        with:
+          tag-prefix: 'v'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: cat pubspec.yaml
+        run: cat ./pubspec.yaml
