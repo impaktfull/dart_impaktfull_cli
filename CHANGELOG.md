@@ -1,7 +1,12 @@
+# 0.2.0
+
+## Rafactor:
+- Rafactor to a setup where it is clear which plugins are available to use.
+
 # 0.1.1
 
 ## Fixes:
-- Export all required files
+- Export all required files.
 
 # 0.1.0
 
@@ -15,12 +20,12 @@
 # 0.0.4
 
 ## Fixes:
-- cleanup dependency injection with default implementations
+- cleanup dependency injection with default implementations.
 
 # 0.0.3
 
 ## Fixes:
-- removed xml dependency
+- Removed xml dependency.
 
 # 0.0.2
 

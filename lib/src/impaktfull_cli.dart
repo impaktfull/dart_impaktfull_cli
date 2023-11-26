@@ -16,8 +16,6 @@ import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugi
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
 typedef ImpaktfullCliRunner = Future<void> Function(ImpaktfullCli cli);
-typedef ImpaktfullCliSinglePluginRunner<T extends ImpaktfullPlugin>
-    = Future<void> Function(T plugin);
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;
@@ -32,8 +30,7 @@ class ImpaktfullCli {
 
   List<ImpaktfullPlugin> get _defaultPlugins {
     final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
-    final macOsKeyChainPlugin =
-        MacOsKeyChainPlugin(processRunner: processRunner);
+    final macOsKeyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
     final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
     final appCenterPlugin = AppCenterPlugin();
     final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
@@ -56,37 +53,43 @@ class ImpaktfullCli {
     ];
   }
 
+  OnePasswordPlugin get onePasswordPlugin => _getPlugin();
+
+  MacOsKeyChainPlugin get macOsKeyChainPlugin => _getPlugin();
+
+  FlutterBuildPlugin get flutterBuildPlugin => _getPlugin();
+
+  AppCenterPlugin get appCenterPlugin => _getPlugin();
+
+  TestFlightPlugin get testflightPlugin => _getPlugin();
+
+  PlayStorePlugin get playStorePlugin => _getPlugin();
+
+  CiCdPlugin get ciCdPlugin => _getPlugin();
+
   List<ImpaktfullPlugin> get plugins => [];
 
-  T getPlugin<T extends ImpaktfullPlugin>() {
+  T _getPlugin<T extends ImpaktfullPlugin>() {
     var plugin = _defaultPlugins.whereType<T>().firstOrNull;
     plugin ??= plugins.whereType<T>().firstOrNull;
     if (plugin == null) throw ImpaktfullCliError('$T not found in plugins');
     return plugin;
   }
 
-  Future<void> runWithPlugin<T extends ImpaktfullPlugin>(
-          ImpaktfullCliSinglePluginRunner<T> runner) =>
-      runImpaktfullCli(
-        () => runner(getPlugin<T>()),
-      );
-
-  Future<void> runWithCli(ImpaktfullCliRunner runner) => runImpaktfullCli(
+  Future<void> run(ImpaktfullCliRunner runner) => runImpaktfullCli(
         () => runner(this),
       );
 
-  Future<void> run(List<String> args) async {
+  Future<void> runCli(List<String> args) async {
     await runImpaktfullCli(() async {
-      final runner = CommandRunner('impaktfull_cli',
-          'A cli that replaces `fastlane` by simplifying the CI/CD process.');
+      final runner = CommandRunner('impaktfull_cli', 'A cli that replaces `fastlane` by simplifying the CI/CD process.');
       runner.argParser.addGlobalFlags();
 
       for (final command in commands) {
         runner.addCommand(command);
       }
       final argResults = runner.argParser.parse(args);
-      ImpaktfullCliLogger.init(
-          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      ImpaktfullCliLogger.init(isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(args);
     });
   }

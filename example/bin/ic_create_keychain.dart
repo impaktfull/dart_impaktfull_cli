@@ -2,23 +2,22 @@ import 'package:impaktfull_cli/impaktfull_cli.dart';
 
 import 'example_config.dart';
 
-Future<void> main(List<String> arguments) =>
-    ImpaktfullCli().runWithPlugin<MacOsKeyChainPlugin>(
-      (plugin) async {
+Future<void> main(List<String> arguments) => ImpaktfullCli().run(
+      (cli) async {
+        final macOsKeyChainPlugin = cli.macOsKeyChainPlugin;
         final keyChainName = ExampleConfig.keyChainName;
-        final globalKeyChainPasswordSecret =
-            ExampleConfig.globalKeyChainPassword;
+        final globalKeyChainPasswordSecret = ExampleConfig.globalKeyChainPassword;
 
-        await plugin.printKeyChainList();
-        await plugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
-        await plugin.printKeyChainList();
-        await plugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
+        await macOsKeyChainPlugin.printKeyChainList();
+        await macOsKeyChainPlugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
+        await macOsKeyChainPlugin.printKeyChainList();
+        await macOsKeyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
 
         ImpaktfullCliLogger.debug('Execute build');
         await Future.delayed(const Duration(seconds: 5));
 
-        await plugin.printKeyChainList();
-        await plugin.removeKeyChain(keyChainName);
-        await plugin.printKeyChainList();
+        await macOsKeyChainPlugin.printKeyChainList();
+        await macOsKeyChainPlugin.removeKeyChain(keyChainName);
+        await macOsKeyChainPlugin.printKeyChainList();
       },
     );
