@@ -1,3 +1,8 @@
+# 0.2.3
+
+## Features:
+- (ci): Automatic publish to pub.dev from github actions
+
 # 0.2.2
 
 ## Features:
