@@ -9,6 +9,8 @@ jobs:
   bump_version:
     name: Version bump on main
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
