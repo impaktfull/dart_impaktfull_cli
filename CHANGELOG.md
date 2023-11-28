@@ -1,42 +1,12 @@
-# 0.2.10
+# 0.2.11
 
 ## Fix:
 - (ci): Fixed ci to publish to pub.dev
 
-# 0.2.9
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.8
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.7
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.6
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.5
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.4
-
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
-
-# 0.2.3
+# 0.2.3 -> 0.2.10
 
 ## Features:
-- (ci): Automatic publish to pub.dev from github actions
+- (ci): Automatic publish to pub.dev from github actions (some trial and error happened)
 
 # 0.2.2
 
