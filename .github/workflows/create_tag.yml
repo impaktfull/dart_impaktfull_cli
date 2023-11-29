@@ -24,6 +24,5 @@ jobs:
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
+          github-token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
           script-pre-run: tool/script_pre_run.dart
-        env:
-          GITHUB_TOKEN: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
