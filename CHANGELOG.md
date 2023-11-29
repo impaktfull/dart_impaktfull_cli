@@ -1,9 +1,9 @@
-# 0.2.11
+# 0.2.12
 
 ## Fix:
 - (ci): Fixed ci to publish to pub.dev
 
-# 0.2.3 -> 0.2.10
+# 0.2.3 -> 0.2.11
 
 ## Features:
 - (ci): Automatic publish to pub.dev from github actions (some trial and error happened)
