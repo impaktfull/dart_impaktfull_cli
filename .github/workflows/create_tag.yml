@@ -14,7 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
-          token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -24,4 +23,5 @@ jobs:
         with:
           tag-prefix: 'v'
           github-token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
+          github-username: ${{ secrets.IMPAKTFULL_GITHUB_PAT_USER_NAME }}
           script-pre-run: tool/script_pre_run.dart
