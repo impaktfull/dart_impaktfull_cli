@@ -13,7 +13,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
           ref: ${{ github.ref }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -23,6 +23,4 @@ jobs:
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
-          github-token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
-          github-username: ${{ secrets.IMPAKTFULL_GITHUB_PAT_USER_NAME }}
           script-pre-run: tool/script_pre_run.dart
