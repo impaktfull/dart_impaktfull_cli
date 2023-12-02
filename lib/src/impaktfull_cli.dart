@@ -15,7 +15,8 @@ import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
-typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(T cli);
+typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(
+    T cli);
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;
@@ -65,7 +66,8 @@ class ImpaktfullCli {
 
   void _initPlugins() {
     final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
-    final macOsKeyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
+    final macOsKeyChainPlugin =
+        MacOsKeyChainPlugin(processRunner: processRunner);
     final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
     final appCenterPlugin = AppCenterPlugin();
     final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
@@ -98,14 +100,16 @@ class ImpaktfullCli {
   Future<void> runCli(List<String> args) async {
     init();
     await runImpaktfullCli(() async {
-      final runner = CommandRunner('impaktfull_cli', 'A cli that replaces `fastlane` by simplifying the CI/CD process.');
+      final runner = CommandRunner('impaktfull_cli',
+          'A cli that replaces `fastlane` by simplifying the CI/CD process.');
       runner.argParser.addGlobalFlags();
 
       for (final command in commands) {
         runner.addCommand(command);
       }
       final argResults = runner.argParser.parse(args);
-      ImpaktfullCliLogger.init(isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      ImpaktfullCliLogger.init(
+          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(args);
     });
   }
