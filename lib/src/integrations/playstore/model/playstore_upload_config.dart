@@ -4,6 +4,6 @@ class PlayStoreUploadConfig {
   final File? serviceAccountCredentialsFile;
 
   const PlayStoreUploadConfig({
-    required this.serviceAccountCredentialsFile,
+    this.serviceAccountCredentialsFile,
   });
 }

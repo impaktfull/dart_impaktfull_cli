@@ -1,3 +1,9 @@
+# 0.3.2
+
+## Fix:
+- `PlayStoreUploadConfig` required fields if needed
+- `TestflightUploadConfig` required fields if needed
+
 # 0.3.1
 
 ## Fix:
