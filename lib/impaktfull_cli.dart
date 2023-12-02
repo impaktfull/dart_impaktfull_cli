@@ -8,6 +8,7 @@ export 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment
 export 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 export 'package:impaktfull_cli/src/core/util/input_reader/impaktfull_cli_input_reader.dart';
 export 'package:impaktfull_cli/src/core/util/logger/logger.dart';
+export 'package:impaktfull_cli/src/core/util/path/path_utils.dart';
 export 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 export 'package:impaktfull_cli/src/impaktfull_cli.dart';
 export 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';

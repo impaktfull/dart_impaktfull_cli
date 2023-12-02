@@ -1,3 +1,8 @@
+# 0.4.0
+
+# Feat:
+- Export `joinPath` which is just an alternative for `join` from `path` package.
+
 # 0.3.3
 
 ## Docs:
