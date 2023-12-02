@@ -7,7 +7,7 @@ import 'example_config.dart';
 Future<void> main(List<String> arguments) => ImpaktfullCli().run(
       (plugin) => plugin.testflightPlugin.uploadToTestflightWithEmailPassword(
         file: File('app.ipa'),
-        userName: ExampleConfig.appleEmailAdress,
+        email: ExampleConfig.appleEmailAdress,
         appSpecificPassword: ExampleConfig.appleAppSpecificPassword,
       ),
     );

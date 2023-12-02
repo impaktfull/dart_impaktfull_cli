@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';
-import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_build_config.dart';
+import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
 import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
@@ -12,7 +12,9 @@ import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_buil
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_ios_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
 class CiCdPlugin extends ImpaktfullPlugin {
@@ -39,7 +41,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
-    AppCenterBuildConfig? appCenterBuildConfig,
+    AppCenterUploadConfig? appCenterUploadConfig,
+    PlayStoreUploadConfig? playStoreUploadConfig,
   }) async =>
       buildAndroid(
         flavor: flavor,
@@ -47,7 +50,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
         extension: extension,
         obfuscate: obfuscate,
         splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
-        appCenterBuildConfig: appCenterBuildConfig,
+        appCenterUploadConfig: appCenterUploadConfig,
+        playStoreUploadConfig: playStoreUploadConfig,
       );
 
   Future<void> buildAndroid({
@@ -57,7 +61,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
-    AppCenterBuildConfig? appCenterBuildConfig,
+    AppCenterUploadConfig? appCenterUploadConfig,
+    PlayStoreUploadConfig? playStoreUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
     final file = await flutterBuildPlugin.buildAndroid(
@@ -68,14 +73,20 @@ class CiCdPlugin extends ImpaktfullPlugin {
       splitDebugInfoPath: splitDebugInfoPath,
       buildNr: buildNr,
     );
-    if (appCenterBuildConfig != null) {
+    if (appCenterUploadConfig != null) {
       await appCenterPlugin.uploadToAppCenter(
         file: file,
-        appName: appCenterBuildConfig.appName,
-        apiToken: appCenterBuildConfig.apiToken,
-        ownerName: appCenterBuildConfig.ownerName,
-        distributionGroups: appCenterBuildConfig.distributionGroups,
-        notifyListeners: appCenterBuildConfig.notifyListeners,
+        appName: appCenterUploadConfig.appName,
+        apiToken: appCenterUploadConfig.apiToken,
+        ownerName: appCenterUploadConfig.ownerName,
+        distributionGroups: appCenterUploadConfig.distributionGroups,
+        notifyListeners: appCenterUploadConfig.notifyListeners,
+      );
+    }
+    if (playStoreUploadConfig != null) {
+      await playStorePlugin.uploadToPlayStore(
+        file: file,
+        serviceAccountCredentialsFile: playStoreUploadConfig.serviceAccountCredentialsFile,
       );
     }
   }
@@ -87,7 +98,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
-    AppCenterBuildConfig? appCenterBuildConfig,
+    AppCenterUploadConfig? appCenterUploadConfig,
+    TestflightUploadConfig? testflightUploadConfig,
   }) async =>
       buildIos(
         flavor: flavor,
@@ -95,7 +107,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
         extension: extension,
         obfuscate: obfuscate,
         splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
-        appCenterBuildConfig: appCenterBuildConfig,
+        appCenterUploadConfig: appCenterUploadConfig,
+        testflightUploadConfig: testflightUploadConfig,
       );
 
   Future<void> buildIos({
@@ -105,9 +118,14 @@ class CiCdPlugin extends ImpaktfullPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
-    AppCenterBuildConfig? appCenterBuildConfig,
+    AppCenterUploadConfig? appCenterUploadConfig,
+    TestflightUploadConfig? testflightUploadConfig,
   }) async {
-    ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
+    ImpaktfullCliEnvironment.requiresInstalledTools([
+      CliTool.flutter,
+      CliTool.cocoaPods,
+      if (testflightUploadConfig != null) CliTool.xcodeSelect,
+    ]);
     final file = await flutterBuildPlugin.buildIos(
       flavor: flavor,
       mainDartFile: mainDartFile,
@@ -116,14 +134,22 @@ class CiCdPlugin extends ImpaktfullPlugin {
       splitDebugInfoPath: splitDebugInfoPath,
       buildNr: buildNr,
     );
-    if (appCenterBuildConfig != null) {
+    if (appCenterUploadConfig != null) {
       await appCenterPlugin.uploadToAppCenter(
         file: file,
-        appName: appCenterBuildConfig.appName,
-        apiToken: appCenterBuildConfig.apiToken,
-        ownerName: appCenterBuildConfig.ownerName,
-        distributionGroups: appCenterBuildConfig.distributionGroups,
-        notifyListeners: appCenterBuildConfig.notifyListeners,
+        appName: appCenterUploadConfig.appName,
+        apiToken: appCenterUploadConfig.apiToken,
+        ownerName: appCenterUploadConfig.ownerName,
+        distributionGroups: appCenterUploadConfig.distributionGroups,
+        notifyListeners: appCenterUploadConfig.notifyListeners,
+      );
+    }
+    if (testflightUploadConfig != null) {
+      await testflightPlugin.uploadToTestflightWithEmailPassword(
+        file: file,
+        email: testflightUploadConfig.userName,
+        appSpecificPassword: testflightUploadConfig.appSpecificPassword,
+        type: testflightUploadConfig.type,
       );
     }
   }
@@ -137,10 +163,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
 
-    final certFile =
-        await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
-    final certPassword =
-        await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
+    final certFile = await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
+    final certPassword = await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
 
     await startBuildWithCertificateAndPassword(
       keyChainName: keyChainName,
@@ -159,15 +183,11 @@ class CiCdPlugin extends ImpaktfullPlugin {
     Secret? globalKeyChainPassword,
   }) async {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
-    final globalKeyChainPasswordSecret = globalKeyChainPassword ??
-        ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
+    final globalKeyChainPasswordSecret = globalKeyChainPassword ?? ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
 
-    await macOsKeyChainPlugin.createKeyChain(
-        keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.unlockKeyChain(
-        keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.addCertificateToKeyChain(
-        keyChainName, certFile, certPassword);
+    await macOsKeyChainPlugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
+    await macOsKeyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
+    await macOsKeyChainPlugin.addCertificateToKeyChain(keyChainName, certFile, certPassword);
     await onStartBuild();
     await macOsKeyChainPlugin.removeKeyChain(keyChainName);
   }

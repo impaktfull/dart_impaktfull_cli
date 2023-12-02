@@ -1,14 +1,15 @@
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 
-class AppCenterBuildConfig {
+class AppCenterUploadConfig {
   static const defaultDistributionGroup = 'Collaborators';
+
   final String appName;
   final String? ownerName;
   final Secret? apiToken;
   final List<String> distributionGroups;
   final bool notifyListeners;
 
-  const AppCenterBuildConfig({
+  const AppCenterUploadConfig({
     required this.appName,
     this.ownerName,
     this.apiToken,

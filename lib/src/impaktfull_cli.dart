@@ -15,45 +15,19 @@ import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
-typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(
-    T cli);
+typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(T cli);
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;
+
+  late final Set<ImpaktfullPlugin> _defaultPlugins;
+  late final Set<Command<dynamic>> _commands;
 
   ImpaktfullCli({
     this.processRunner = const CliProcessRunner(),
   });
 
-  List<Command<dynamic>> get commands => [
-        AppleCertificateRootCommand(processRunner: processRunner),
-      ];
-
-  List<ImpaktfullPlugin> get _defaultPlugins {
-    final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
-    final macOsKeyChainPlugin =
-        MacOsKeyChainPlugin(processRunner: processRunner);
-    final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
-    final appCenterPlugin = AppCenterPlugin();
-    final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
-    final playStorePlugin = PlayStorePlugin(processRunner: processRunner);
-    return [
-      onePasswordPlugin,
-      macOsKeyChainPlugin,
-      flutterBuildPlugin,
-      appCenterPlugin,
-      testflightPlugin,
-      playStorePlugin,
-      CiCdPlugin(
-        onePasswordPlugin: onePasswordPlugin,
-        macOsKeyChainPlugin: macOsKeyChainPlugin,
-        flutterBuildPlugin: flutterBuildPlugin,
-        appCenterPlugin: appCenterPlugin,
-        testflightPlugin: testflightPlugin,
-        playStorePlugin: playStorePlugin,
-      ),
-    ];
-  }
+  Set<Command<dynamic>> get commands => _commands;
 
   OnePasswordPlugin get onePasswordPlugin => _getPlugin();
 
@@ -69,7 +43,7 @@ class ImpaktfullCli {
 
   CiCdPlugin get ciCdPlugin => _getPlugin();
 
-  List<ImpaktfullPlugin> get plugins => [];
+  Set<ImpaktfullPlugin> get plugins => {};
 
   T _getPlugin<T extends ImpaktfullPlugin>() {
     var plugin = _defaultPlugins.whereType<T>().firstOrNull;
@@ -78,23 +52,60 @@ class ImpaktfullCli {
     return plugin;
   }
 
-  Future<void> run(ImpaktfullCliRunner<ImpaktfullCli> runner) =>
-      runImpaktfullCli(
-        () => runner(this),
-      );
+  void init() {
+    _initCommands();
+    _initPlugins();
+  }
+
+  void _initCommands() {
+    _commands = {
+      AppleCertificateRootCommand(processRunner: processRunner),
+    };
+  }
+
+  void _initPlugins() {
+    final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
+    final macOsKeyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
+    final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
+    final appCenterPlugin = AppCenterPlugin();
+    final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
+    final playStorePlugin = PlayStorePlugin(processRunner: processRunner);
+    _defaultPlugins = {
+      onePasswordPlugin,
+      macOsKeyChainPlugin,
+      flutterBuildPlugin,
+      appCenterPlugin,
+      testflightPlugin,
+      playStorePlugin,
+      CiCdPlugin(
+        onePasswordPlugin: onePasswordPlugin,
+        macOsKeyChainPlugin: macOsKeyChainPlugin,
+        flutterBuildPlugin: flutterBuildPlugin,
+        appCenterPlugin: appCenterPlugin,
+        testflightPlugin: testflightPlugin,
+        playStorePlugin: playStorePlugin,
+      ),
+    };
+  }
+
+  Future<void> run(ImpaktfullCliRunner<ImpaktfullCli> runner) async {
+    init();
+    await runImpaktfullCli(
+      () => runner(this),
+    );
+  }
 
   Future<void> runCli(List<String> args) async {
+    init();
     await runImpaktfullCli(() async {
-      final runner = CommandRunner('impaktfull_cli',
-          'A cli that replaces `fastlane` by simplifying the CI/CD process.');
+      final runner = CommandRunner('impaktfull_cli', 'A cli that replaces `fastlane` by simplifying the CI/CD process.');
       runner.argParser.addGlobalFlags();
 
       for (final command in commands) {
         runner.addCommand(command);
       }
       final argResults = runner.argParser.parse(args);
-      ImpaktfullCliLogger.init(
-          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      ImpaktfullCliLogger.init(isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(args);
     });
   }

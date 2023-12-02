@@ -1,9 +1,10 @@
-# 0.2.20
+# 0.2.21
 
-## Fix:
-- (ci): Fixed ci to publish to pub.dev
+## Feat:
+- (ci/cd): Upload to playstore with ci/cd plugin
+- (ci/cd): Upload to appstore with ci/cd plugin
 
-# 0.2.3 -> 0.2.19
+# 0.2.3 -> 0.2.20
 
 ## Features:
 - (ci): Automatic publish to pub.dev from github actions (some trial and error happened)
