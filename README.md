@@ -22,6 +22,10 @@
 
 ```dart
 class TestCli extends ImpaktfullCli {
+  //Add extra custom plugins heere
+  @override
+  Set<ImpaktfullPlugin> get plugins => {};
+
   @override
   Future<void> run(ImpaktfullCliRunner<TestCli> runner) => super.run(runner as ImpaktfullCliRunner<ImpaktfullCli>);
 }
