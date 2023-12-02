@@ -1,3 +1,9 @@
+# 0.3.3
+
+## Docs:
+- `PlayStoreUploadConfig` extra documentation
+- `TestflightUploadConfig` extra documentation
+
 # 0.3.2
 
 ## Fix:
