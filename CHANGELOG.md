@@ -1,4 +1,4 @@
-# 0.2.21
+# 0.3.0
 
 ## Feat:
 - (ci/cd): Upload to playstore with ci/cd plugin
