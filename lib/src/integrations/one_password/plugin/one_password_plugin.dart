@@ -9,9 +9,9 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required super.processRunner,
   });
 
-  Future<File> downloadDistributionCertificate({
+  Future<File> downloadFile({
     required String opUuid,
-    String outputPath = 'certificates/apple_distribution.p12',
+    required String outputPath,
   }) async {
     final exportFile = File(outputPath);
     await processRunner.runProcess([
@@ -50,6 +50,15 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
       processRunner
           .runProcess(['op', 'read', 'op://$vaultName/$opUuid/$fieldName']);
 
+  Future<File> downloadDistributionCertificate({
+    required String opUuid,
+    String outputPath = 'certificates/apple_distribution.p12',
+  }) =>
+      downloadFile(
+        opUuid: opUuid,
+        outputPath: outputPath,
+      );
+
   Future<TestFlightCredentials> getTestFlightCredentials({
     required String vaultName,
     required String opUuid,
@@ -66,4 +75,10 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           fieldName: 'password',
         ),
       );
+
+  Future<File> getServiceAccountCredentials({
+    required String opUuid,
+    String outputPath = 'android/playstore_credentials.json',
+  }) async =>
+      downloadFile(opUuid: opUuid, outputPath: outputPath);
 }

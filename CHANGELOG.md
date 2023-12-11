@@ -1,3 +1,8 @@
+# 0.7.0
+
+# Feat:
+- Added `getServiceAccountCredentials` to `OnePasswordPlugin` to get google service account credentials from 1password.
+
 # 0.6.1
 
 # Fix:
