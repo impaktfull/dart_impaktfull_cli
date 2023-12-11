@@ -86,7 +86,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     if (playStoreUploadConfig != null) {
       await playStorePlugin.uploadToPlayStore(
         file: file,
-        serviceAccountCredentialsFile: playStoreUploadConfig.serviceAccountCredentialsFile,
+        serviceAccountCredentialsFile:
+            playStoreUploadConfig.serviceAccountCredentialsFile,
       );
     }
   }
@@ -148,7 +149,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
       await testflightPlugin.uploadToTestflightWithEmailPassword(
         file: file,
         email: testflightUploadConfig.credentials?.userName,
-        appSpecificPassword: testflightUploadConfig.credentials?.appSpecificPassword,
+        appSpecificPassword:
+            testflightUploadConfig.credentials?.appSpecificPassword,
         type: testflightUploadConfig.type,
       );
     }
@@ -163,8 +165,10 @@ class CiCdPlugin extends ImpaktfullPlugin {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
 
-    final certFile = await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
-    final certPassword = await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
+    final certFile =
+        await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
+    final certPassword =
+        await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
 
     await startBuildWithCertificateAndPassword(
       keyChainName: keyChainName,
@@ -183,11 +187,15 @@ class CiCdPlugin extends ImpaktfullPlugin {
     Secret? globalKeyChainPassword,
   }) async {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
-    final globalKeyChainPasswordSecret = globalKeyChainPassword ?? ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
+    final globalKeyChainPasswordSecret = globalKeyChainPassword ??
+        ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
 
-    await macOsKeyChainPlugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.addCertificateToKeyChain(keyChainName, certFile, certPassword);
+    await macOsKeyChainPlugin.createKeyChain(
+        keyChainName, globalKeyChainPasswordSecret);
+    await macOsKeyChainPlugin.unlockKeyChain(
+        keyChainName, globalKeyChainPasswordSecret);
+    await macOsKeyChainPlugin.addCertificateToKeyChain(
+        keyChainName, certFile, certPassword);
     await onStartBuild();
     await macOsKeyChainPlugin.removeKeyChain(keyChainName);
   }
