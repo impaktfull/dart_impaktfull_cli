@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
+import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
-  String get serviceAccountEnvKey =>
-      ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
+  String get serviceAccountEnvKey => ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
 
   const OnePasswordPlugin({
     required super.processRunner,
@@ -33,14 +33,18 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     Secret? rawServiceAccount,
   }) async {
     final exportFile = File(outputPath);
+    if (exportFile.existsSync()) {
+      ImpaktfullCliLogger.verbose('Deleting existing file: $outputPath');
+      exportFile.deleteSync();
+    }
     await _executeOnePasswordCommand(
       [
         'op',
         'document',
         'get',
-        '"$opUuid"',
+        opUuid,
         '--out-file',
-        '"${exportFile.path}"',
+        exportFile.path,
         if (vaultName != null) ...[
           '--vault',
           vaultName,

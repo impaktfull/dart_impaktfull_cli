@@ -1,3 +1,8 @@
+# 0.9.1
+
+# Fix:
+- Bug when downloading files using `OnePasswordPlugin`
+
 # 0.9.0
 
 # Feat:
