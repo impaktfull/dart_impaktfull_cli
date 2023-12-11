@@ -1,3 +1,8 @@
+# 0.7.1
+
+# Fix:
+- Typo in `getServiceAccountCredentials`
+
 # 0.7.0
 
 # Feat:

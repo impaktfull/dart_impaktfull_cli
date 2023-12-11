@@ -14,14 +14,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String outputPath,
   }) async {
     final exportFile = File(outputPath);
-    await processRunner.runProcess([
-      'op',
-      'document',
-      'get',
-      '"$opUuid"',
-      '--out-file',
-      '"${exportFile.path}"'
-    ]);
+    await processRunner.runProcess(['op', 'document', 'get', '"$opUuid"', '--out-file', '"${exportFile.path}"']);
     return exportFile;
   }
 
@@ -37,8 +30,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String vaultName,
     required String fieldName,
   }) async {
-    final result = await getOnePasswordField(
-        vaultName: vaultName, opUuid: opUuid, fieldName: fieldName);
+    final result = await getOnePasswordField(vaultName: vaultName, opUuid: opUuid, fieldName: fieldName);
     return Secret(result);
   }
 
@@ -47,8 +39,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String opUuid,
     required String fieldName,
   }) =>
-      processRunner
-          .runProcess(['op', 'read', 'op://$vaultName/$opUuid/$fieldName']);
+      processRunner.runProcess(['op', 'read', 'op://$vaultName/$opUuid/$fieldName']);
 
   Future<File> downloadDistributionCertificate({
     required String opUuid,
@@ -76,7 +67,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
         ),
       );
 
-  Future<File> getServiceAccountCredentials({
+  Future<File> downloadServiceAccountCredentials({
     required String opUuid,
     String outputPath = 'android/playstore_credentials.json',
   }) async =>
