@@ -1,3 +1,8 @@
+# 0.5.1
+
+# Fix:
+- Bug where testflight upload would succeed when the app was invalid because of a lower,same version number
+
 # 0.5.0
 
 # Feat:

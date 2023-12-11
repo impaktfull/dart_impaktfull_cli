@@ -12,6 +12,8 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:path/path.dart';
 
 class PlayStorePlugin extends ImpaktfullCliPlugin {
+  static const _defaultTrack = 'internal';
+
   const PlayStorePlugin({
     required super.processRunner,
   });
@@ -42,8 +44,21 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
           packageName,
           appEditId,
           uploadMedia: Media(file.openRead(), await file.length()),
+          uploadOptions: UploadOptions(),
         );
-
+        final trackRelease = TrackRelease(
+          status: 'draft',
+        );
+        await api.edits.tracks.update(
+          Track(
+            releases: [
+              trackRelease,
+            ],
+          ),
+          packageName,
+          appEditId,
+          _defaultTrack,
+        );
         await api.edits.commit(packageName, appEditId);
       },
     );
