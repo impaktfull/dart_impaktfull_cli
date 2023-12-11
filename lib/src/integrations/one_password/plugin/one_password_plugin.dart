@@ -50,7 +50,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
       processRunner
           .runProcess(['op', 'read', 'op://$vaultName/$opUuid/$fieldName']);
 
-  Future<TestFlightCredentials> getTestflightCredentials({
+  Future<TestFlightCredentials> getTestFlightCredentials({
     required String vaultName,
     required String opUuid,
   }) async =>

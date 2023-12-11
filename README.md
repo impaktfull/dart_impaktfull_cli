@@ -17,7 +17,6 @@
 
 - OP_SERVICE_ACCOUNT_TOKEN
 
-
 ## Extend ImpaktfullCli
 
 ```dart

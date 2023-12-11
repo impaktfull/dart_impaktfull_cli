@@ -23,6 +23,7 @@ const _extensionMimeTypeMapper = {
 /// - https://medium.com/@tranhuuphuc20051995/uploading-apk-files-to-appcenter-using-bash-script-bde8a796145d
 /// - https://gist.github.com/ouchadam/c74fa26c639a50d68bc35ee5749f868c
 class AppCenterPlugin extends ImpaktfullPlugin {
+  static const defaultDistributionGroups = ['Collaborators'];
   const AppCenterPlugin();
 
   Future<void> uploadToAppCenter({
@@ -30,7 +31,7 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required File file,
     String? ownerName,
     Secret? apiToken,
-    List<String> distributionGroups = const ['Collaborators'],
+    List<String> distributionGroups = defaultDistributionGroups,
     bool notifyListeners = true,
   }) async {
     final ownerNameValue =

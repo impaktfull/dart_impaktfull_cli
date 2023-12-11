@@ -1,3 +1,8 @@
+# 0.6.1
+
+# Fix:
+- Typo with `getTestFlightCredentials` in `OnePasswordPlugin`
+
 # 0.6.0
 
 # Feat:
