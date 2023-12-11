@@ -1,4 +1,4 @@
-# 0.5.1
+# 0.5.1 - 0.5.2
 
 # Fix:
 - Bug where testflight upload would succeed when the app was invalid because of a lower,same version number
