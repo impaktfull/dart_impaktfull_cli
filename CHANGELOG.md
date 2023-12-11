@@ -1,3 +1,8 @@
+# 0.6.0
+
+# Feat:
+- Better config for testflight upload
+
 # 0.5.1 - 0.5.3
 
 # Fix:

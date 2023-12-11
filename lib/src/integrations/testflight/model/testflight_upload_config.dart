@@ -1,21 +1,15 @@
-import 'package:impaktfull_cli/src/core/model/data/secret.dart';
+import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
-class TestflightUploadConfig {
-  /// username/email to login to appstoreconnect
-  /// defaults to env variable value of `APPLE_EMAIL`
-  final String? userName;
-
-  /// appSpecificPassword to login to appstoreconnect
-  /// defaults to env variable value of `APPLE_APP_SPECIFIC_PASSWORD`
-  final Secret? appSpecificPassword;
+class TestFlightUploadConfig {
+  /// credentials to login to appstoreconnect
+  final TestFlightCredentials? credentials;
 
   /// type of the app to upload
   /// default: `ios`
   final String type;
 
-  const TestflightUploadConfig({
-    this.userName,
-    this.appSpecificPassword,
+  const TestFlightUploadConfig({
+    this.credentials,
     this.type = 'ios',
   });
 }
