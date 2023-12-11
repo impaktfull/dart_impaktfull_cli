@@ -1,3 +1,8 @@
+# 0.9.0
+
+# Feat:
+- Export enable logging
+
 # 0.8.0
 
 # Feat:
