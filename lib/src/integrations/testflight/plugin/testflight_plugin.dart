@@ -58,7 +58,8 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
     } else if (result.contains('The auth server returned a bad status code.')) {
       throw ImpaktfullCliError(
           'Error during authentication with appstoreconnect (check email, app-specific password, connection to the internet)');
-    } else if (result.contains('ContentDelivery Code=90062')) {
+    } else if (result.contains('ContentDelivery Code=-19232') ||
+        result.contains('ContentDelivery Code=90062')) {
       throw ImpaktfullCliError(
           'The bundle version must be higher than the previously uploaded version');
     }
