@@ -12,11 +12,11 @@ class ImpaktfullCliEnvironment {
   static late ImpaktfullCliEnvironment _instance;
 
   final bool verboseLoggingEnabled;
-  final Directory workingDir;
+  final Directory workingDirectory;
   final bool isFvmProject;
   final List<InstalledCliTool> allCliTools;
 
-  static bool get useFvmForFlutterBuilds => _instance.isFvmProject;
+  static ImpaktfullCliEnvironment get instance => _instance;
 
   List<InstalledCliTool> get installedCliTools =>
       allCliTools.where((element) => element.isInstalled).toList();
@@ -26,7 +26,7 @@ class ImpaktfullCliEnvironment {
 
   const ImpaktfullCliEnvironment._({
     required this.verboseLoggingEnabled,
-    required this.workingDir,
+    required this.workingDirectory,
     required this.isFvmProject,
     required this.allCliTools,
   });
@@ -39,7 +39,7 @@ class ImpaktfullCliEnvironment {
     final workingDir = Directory.current;
     _instance = ImpaktfullCliEnvironment._(
       verboseLoggingEnabled: isVerboseLoggingEnabled,
-      workingDir: workingDir,
+      workingDirectory: workingDir,
       isFvmProject: await _checkIfActiveProjectIsFvm(workingDir),
       allCliTools: await _checkInstalledTools(processRunner),
     );
@@ -96,7 +96,8 @@ class ImpaktfullCliEnvironment {
     ImpaktfullCliLogger.debugSeperator();
     ImpaktfullCliLogger.debug(
         'Operating system: ${OperatingSystem.current.name}');
-    ImpaktfullCliLogger.debug('Working Dir: `${_instance.workingDir.path}`');
+    ImpaktfullCliLogger.debug(
+        'Working Dir: `${_instance.workingDirectory.path}`');
     ImpaktfullCliLogger.debug('Is fvm project: `${_instance.isFvmProject}`');
     if (_instance.installedCliTools.isNotEmpty) {
       ImpaktfullCliLogger.debug('Installed Tools:');

@@ -23,7 +23,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     int? buildNr,
   }) async {
     await processRunner.runProcessVerbose([
-      if (ImpaktfullCliEnvironment.useFvmForFlutterBuilds) ...[
+      if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
         'fvm',
       ],
       'flutter',
@@ -65,7 +65,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     int? buildNr,
   }) async {
     await processRunner.runProcessVerbose([
-      if (ImpaktfullCliEnvironment.useFvmForFlutterBuilds) ...[
+      if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
         'fvm',
       ],
       'flutter',

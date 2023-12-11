@@ -6,6 +6,7 @@ import "package:googleapis_auth/auth_io.dart";
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
+import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:path/path.dart';
@@ -69,10 +70,20 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
 
   ServiceAccountCredentials _getServiceAccountCredentials(
       File? serviceAccountCredentialsFile) {
+    var file = serviceAccountCredentialsFile;
+    if (file == null) {
+      final fallbackFile = File(join(
+        ImpaktfullCliEnvironment.instance.workingDirectory.path,
+        'android',
+        'playstore_credentials.json',
+      ));
+      if (fallbackFile.existsSync()) {
+        file = fallbackFile;
+      }
+    }
     Secret credentials;
-    if (serviceAccountCredentialsFile != null &&
-        serviceAccountCredentialsFile.existsSync()) {
-      credentials = Secret(serviceAccountCredentialsFile.readAsStringSync());
+    if (file != null && file.existsSync()) {
+      credentials = Secret(file.readAsStringSync());
     } else {
       credentials = ImpaktfullCliEnvironmentVariables
           .getGoogleServiceAccountCredentials();
