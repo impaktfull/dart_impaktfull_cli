@@ -9,10 +9,9 @@ abstract class ProcessRunner {
   const ProcessRunner();
 
   Future<String> runProcess(
-    List<String> args,
-  );
-
-  Future<String> runProcessVerbose(List<String> args);
+    List<String> args, {
+    Map<String, String>? environment,
+  });
 }
 
 class CliProcessRunner extends ProcessRunner {
@@ -20,64 +19,36 @@ class CliProcessRunner extends ProcessRunner {
 
   @override
   Future<String> runProcess(
-    List<String> args,
-  ) async {
+    List<String> args, {
+    Map<String, String>? environment,
+  }) async {
     final fullCommand = args.join(' ');
+    ImpaktfullCliLogger.verboseSeperator();
     ImpaktfullCliLogger.verbose(fullCommand);
-    final result = await Process.run(
-      args.first,
-      args.length > 1 ? args.sublist(1) : [],
-    );
-    final error = result.stderr.toString();
-    if (error.isNotEmpty) {
-      throw ImpaktfullCliError(error);
-    }
-    return result.stdout.toString().trim();
-  }
-
-  @override
-  Future<String> runProcessVerbose(List<String> args) async {
-    final fullCommand = args.join(' ');
-    ImpaktfullCliLogger.verbose(fullCommand);
-    final completer = Completer<String>();
+    ImpaktfullCliLogger.verboseSeperator();
     final result = await Process.start(
       args.first,
       args.length > 1 ? args.sublist(1) : [],
-      mode: ProcessStartMode.detachedWithStdio,
+      environment: environment,
     );
     final stringBuffer = StringBuffer();
-    ImpaktfullCliLogger.verboseSeperator();
     final subscriptionOut = result.stdout.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      stdout.write(line);
+      ImpaktfullCliLogger.verbose(line);
     });
     final subscriptionError = result.stderr.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      stderr.write('Error: $line');
+      ImpaktfullCliLogger.verbose(line);
     });
-
-    subscriptionOut.onDone(() async {
-      ImpaktfullCliLogger.verboseSeperator();
-      await subscriptionOut.cancel();
-      await subscriptionError.cancel();
-      if (exitCode == 0) {
-        completer.complete(stringBuffer.toString());
-      } else {
-        completer.completeError('Failed to complete `$fullCommand`');
-      }
-    });
-    subscriptionError.onDone(() async {
-      ImpaktfullCliLogger.verboseSeperator();
-      await subscriptionOut.cancel();
-      await subscriptionError.cancel();
-      if (exitCode == 0) {
-        completer.complete(stringBuffer.toString());
-      } else {
-        completer.completeError('Failed to complete `$fullCommand`');
-      }
-    });
-    return completer.future;
+    final exitCode = await result.exitCode;
+    ImpaktfullCliLogger.verboseSeperator();
+    if (exitCode != 0) {
+      throw ImpaktfullCliError('`$fullCommand` exited with code $exitCode');
+    }
+    await subscriptionOut.cancel();
+    await subscriptionError.cancel();
+    return stringBuffer.toString().trim();
   }
 }

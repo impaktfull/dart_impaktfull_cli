@@ -1,3 +1,8 @@
+# 0.8.0
+
+# Feat:
+- Pass service accounts to override the default service account in the `OnePasswordPlugin`
+
 # 0.7.1
 
 # Fix:
