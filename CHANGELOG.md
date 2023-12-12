@@ -1,3 +1,8 @@
+# 0.10.4
+
+# Fix:
+- Delete build/ios/ipa folder before iOS build
+
 # 0.10.3
 
 # Fix:

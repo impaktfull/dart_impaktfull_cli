@@ -64,6 +64,10 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
   }) async {
+    final buildDirectory = extension.getBuildDirectory();
+    if (buildDirectory.existsSync()) {
+      buildDirectory.deleteSync(recursive: true);
+    }
     await processRunner.runProcess([
       if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
         'fvm',
@@ -94,7 +98,6 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
-    final buildDirectory = extension.getBuildDirectory();
     final files = buildDirectory.listSync();
     final result = files.where((element) =>
         path.extension(element.path) == '.${extension.fileExtension}');
