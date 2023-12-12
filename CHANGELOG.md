@@ -1,3 +1,8 @@
+# 0.10.5
+
+# Fix:
+- First check if new keychain already exists before creating a new one
+
 # 0.10.4
 
 # Fix:

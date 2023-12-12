@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
+import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
@@ -17,6 +18,12 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     Secret globalKeyChainPassword,
   ) async {
     final fullKeyChainName = _fullKeyChainName(keyChainName);
+    final originalKeyChains = await _getUserKeyChains();
+    if (originalKeyChains.contains(fullKeyChainName)) {
+      throw ImpaktfullCliError(
+          '$fullKeyChainName already exists, make sure to remove it first.');
+    }
+
     ImpaktfullCliLogger.debug('Create Apple KeyChain ($fullKeyChainName)');
     await processRunner.runProcess([
       'security',
