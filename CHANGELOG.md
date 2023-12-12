@@ -1,4 +1,4 @@
-# 0.10.7 - 0.10.8
+# 0.10.7 - 0.10.9
 
 # Fix:
 - Setting default keychain to newly created on in ci/cd plugin

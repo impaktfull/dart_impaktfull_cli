@@ -48,15 +48,19 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     String keyChainName,
     Secret globalKeyChainPassword,
   ) async {
-    final fullKeyChainName = _fullKeyChainName(keyChainName);
+    final keyChainPath = await _getKeyChainPath(keyChainName);
+    if (keyChainPath == null) {
+      throw ImpaktfullCliError(
+          '`$keyChainName` keychain does not exists. In order to unlock a keychain, it should be created first.');
+    }
     await processRunner
-        .runProcess(['security', 'set-keychain-settings', fullKeyChainName]);
+        .runProcess(['security', 'set-keychain-settings', keyChainPath]);
     await processRunner.runProcess([
       'security',
       'unlock-keychain',
       '-p',
       globalKeyChainPassword.value,
-      fullKeyChainName
+      keyChainPath
     ]);
   }
 
@@ -106,7 +110,8 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   Future<void> setDefaultKeyChain(String keyChain) async {
     final path = await _getKeyChainPath(keyChain);
     if (path == null) {
-      throw ImpaktfullCliError('Keychain path $keyChain not found');
+      throw ImpaktfullCliError(
+          '`$keyChain` keychain does not exists. In order to set the default keychain, it should be created first.');
     }
     ImpaktfullCliLogger.debug('Set default Apple KeyChain ($path)');
     await processRunner
