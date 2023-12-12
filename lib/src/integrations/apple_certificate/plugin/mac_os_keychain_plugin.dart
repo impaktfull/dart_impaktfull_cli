@@ -100,7 +100,12 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   }
 
   Future<void> setDefaultKeyChain(String name) async {
-    final path = await _getKeyChainPath(name);
+    String? path;
+    if (File(name).existsSync()) {
+      path = name;
+    } else {
+      path = await _getKeyChainPath(name);
+    }
     if (path == null) {
       throw ImpaktfullCliError(
           '`$name` keychain does not exists. In order to set the default keychain, it should be created first.');
