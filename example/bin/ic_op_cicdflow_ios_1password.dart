@@ -3,7 +3,8 @@ import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'example_config.dart';
 
 Future<void> main(List<String> arguments) => ImpaktfullCli().run(
-      (cli) => cli.ciCdPlugin.startBuildWithCertificateAndPasswordFromOnePassword(
+      (cli) =>
+          cli.ciCdPlugin.startBuildWithCertificateAndPasswordFromOnePassword(
         vaultName: ExampleConfig.onePasswordVaultName,
         opUuid: ExampleConfig.onePasswordUuid,
         keyChainName: ExampleConfig.keyChainName,
