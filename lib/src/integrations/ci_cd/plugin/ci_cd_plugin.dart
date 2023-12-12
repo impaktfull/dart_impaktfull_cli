@@ -160,15 +160,20 @@ class CiCdPlugin extends ImpaktfullPlugin {
     required String opUuid,
     required String keyChainName,
     required Future<void> Function() onStartBuild,
+    Secret? rawServiceAccount,
     Secret? globalKeyChainPassword,
   }) async {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
 
-    final certFile =
-        await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
-    final certPassword =
-        await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
+    final certFile = await onePasswordPlugin.downloadDistributionCertificate(
+      opUuid: opUuid,
+      rawServiceAccount: rawServiceAccount,
+    );
+    final certPassword = await onePasswordPlugin.getCertificatePassword(
+      opUuid: opUuid,
+      rawServiceAccount: rawServiceAccount,
+    );
 
     await startBuildWithCertificateAndPassword(
       keyChainName: keyChainName,

@@ -1,3 +1,8 @@
+# 0.10.0
+
+# Feat:
+- Added `rawServiceAccount` to `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
+
 # 0.9.1
 
 # Fix:
