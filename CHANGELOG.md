@@ -1,3 +1,8 @@
+# 0.10.6
+
+# Fix:
+- Keychain should be accessible to all from ci/cd plugin
+
 # 0.10.5
 
 # Fix:
