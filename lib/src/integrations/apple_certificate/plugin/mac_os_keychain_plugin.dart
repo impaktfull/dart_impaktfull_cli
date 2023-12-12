@@ -67,22 +67,22 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
       await processRunner.runProcess([
         'security',
         'import',
-        '"${certFile.path}"',
+        (certFile.path),
         '-k',
         fullKeyChainName,
         '-P',
-        '"$certPassword"',
+        certPassword.value,
         '-A'
       ]);
     } else if (accessControlApplications.isNotEmpty) {
       await processRunner.runProcess([
         'security',
         'import',
-        '"${certFile.path}"',
+        certFile.path,
         '-k',
         fullKeyChainName,
         '-P',
-        '"$certPassword"',
+        certPassword.value,
         for (final application in accessControlApplications) ...[
           ...[
             '-T',
@@ -94,11 +94,11 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
       await processRunner.runProcess([
         'security',
         'import',
-        '"${certFile.path}"',
+        certFile.path,
         '-k',
         fullKeyChainName,
         '-P',
-        '"$certPassword"'
+        certPassword.value
       ]);
     }
   }

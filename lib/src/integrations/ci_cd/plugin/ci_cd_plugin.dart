@@ -199,11 +199,16 @@ class CiCdPlugin extends ImpaktfullPlugin {
 
     await macOsKeyChainPlugin.createKeyChain(
         keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.unlockKeyChain(
-        keyChainName, globalKeyChainPasswordSecret);
-    await macOsKeyChainPlugin.addCertificateToKeyChain(
-        keyChainName, certFile, certPassword);
-    await onStartBuild();
-    await macOsKeyChainPlugin.removeKeyChain(keyChainName);
+    try {
+      await macOsKeyChainPlugin.unlockKeyChain(
+          keyChainName, globalKeyChainPasswordSecret);
+      await macOsKeyChainPlugin.addCertificateToKeyChain(
+          keyChainName, certFile, certPassword);
+      await onStartBuild();
+    } catch (e) {
+      rethrow;
+    } finally {
+      await macOsKeyChainPlugin.removeKeyChain(keyChainName);
+    }
   }
 }

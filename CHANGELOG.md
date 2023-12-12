@@ -1,3 +1,8 @@
+# 0.10.3
+
+# Fix:
+- Keychain creation on macOS
+
 # 0.10.2
 
 # Fix:
