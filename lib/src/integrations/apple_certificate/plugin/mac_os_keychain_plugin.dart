@@ -17,19 +17,19 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     String keyChainName,
     Secret globalKeyChainPassword,
   ) async {
-    final fullKeyChainName = _fullKeyChainName(keyChainName);
-    final originalKeyChains = await _getUserKeyChains();
-    if (originalKeyChains.contains(fullKeyChainName)) {
+    final keyChainPath = await _getKeyChainPath(keyChainName);
+    if (keyChainPath != null) {
       throw ImpaktfullCliError(
-          '$fullKeyChainName already exists, make sure to remove it first.');
+          '`$keyChainName` keychain already exists, make sure to remove it first.');
     }
 
+    final fullKeyChainName = _fullKeyChainName(keyChainName);
     ImpaktfullCliLogger.debug('Create Apple KeyChain ($fullKeyChainName)');
     await processRunner.runProcess([
       'security',
       'create-keychain',
       '-p',
-      '$globalKeyChainPassword',
+      globalKeyChainPassword.value,
       fullKeyChainName
     ]);
     final keyChain = await _getUserKeyChains();
@@ -100,6 +100,25 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
         .runProcess(['security', 'delete-keychain', fullKeyChainName]);
   }
 
+  /// Sets the default keychain to the given keychain.
+  /// If the keychain is not found, an error is thrown.
+  /// keyChain can be a name or a path
+  Future<void> setDefaultKeyChain(String keyChain) async {
+    final path = await _getKeyChainPath(keyChain);
+    if (path == null) {
+      throw ImpaktfullCliError('Keychain path $keyChain not found');
+    }
+    ImpaktfullCliLogger.debug('Set default Apple KeyChain ($path)');
+    await processRunner
+        .runProcess(['security', 'default-keychain', '-s', path]);
+  }
+
+  Future<String> getDefaultKeyChain() async {
+    final keychainsString =
+        await processRunner.runProcess(['security', 'default-keychain']);
+    return keychainsString.trim().replaceAll('"', '');
+  }
+
   Future<List<String>> _getUserKeyChains() async {
     final keychainsString = await processRunner
         .runProcess(['security', 'list-keychains', '-d', 'user']);
@@ -108,6 +127,16 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     return keychainsList
         .map((keychain) => keychain.replaceAll('"', '').trim())
         .toList();
+  }
+
+  Future<String?> _getKeyChainPath(String keyChain) async {
+    final userKeyChains = await _getUserKeyChains();
+    for (final keyChain in userKeyChains) {
+      if (keyChain.contains(keyChain)) {
+        return keyChain;
+      }
+    }
+    return null;
   }
 
   Future<void> printKeyChainList() async {

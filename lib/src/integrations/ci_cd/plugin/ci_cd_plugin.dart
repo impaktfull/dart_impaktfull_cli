@@ -197,9 +197,11 @@ class CiCdPlugin extends ImpaktfullPlugin {
     final globalKeyChainPasswordSecret = globalKeyChainPassword ??
         ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
 
+    final defaultKeyChain = await macOsKeyChainPlugin.getDefaultKeyChain();
     await macOsKeyChainPlugin.createKeyChain(
         keyChainName, globalKeyChainPasswordSecret);
     try {
+      await macOsKeyChainPlugin.setDefaultKeyChain(keyChainName);
       await macOsKeyChainPlugin.unlockKeyChain(
           keyChainName, globalKeyChainPasswordSecret);
       await macOsKeyChainPlugin.addCertificateToKeyChain(
@@ -209,6 +211,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
     } catch (e) {
       rethrow;
     } finally {
+      await macOsKeyChainPlugin.setDefaultKeyChain(defaultKeyChain);
       await macOsKeyChainPlugin.removeKeyChain(keyChainName);
     }
   }
