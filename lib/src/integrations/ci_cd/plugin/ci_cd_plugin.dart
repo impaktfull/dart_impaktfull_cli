@@ -158,8 +158,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
 
   Future<void> startBuildWithCertificateAndPasswordFromOnePassword({
     required String opUuid,
+    required String opVaultName,
     required String keyChainName,
-    required String vaultName,
     required Future<void> Function() onStartBuild,
     Secret? rawServiceAccount,
     Secret? globalKeyChainPassword,
@@ -172,7 +172,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
       rawServiceAccount: rawServiceAccount,
     );
     final certPassword = await onePasswordPlugin.getCertificatePassword(
-      vaultName: vaultName,
+      vaultName: opVaultName,
       opUuid: opUuid,
       rawServiceAccount: rawServiceAccount,
     );

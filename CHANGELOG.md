@@ -1,3 +1,8 @@
+# 0.10.2
+
+# Fix:
+- Renamed `valultName` to `opValueName` on `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
+
 # 0.10.1
 
 # Fix:
