@@ -4,6 +4,7 @@ class ExampleConfig {
   static final appleEmailAdress = 'your-apple-email-adress';
   static final appleAppSpecificPassword = Secret('your-app-specific-password');
   static const onePasswordUuid = 'your-1password-uuid';
+  static const onePasswordVaultName = 'Certificates';
   static const keyChainName = 'ImpaktfullCliKeyChain';
   static final globalKeyChainPassword = CliInputReader.readKeyChainPassword();
 }

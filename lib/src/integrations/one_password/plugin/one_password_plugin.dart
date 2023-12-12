@@ -7,8 +7,7 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
-  String get serviceAccountEnvKey =>
-      ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
+  String get serviceAccountEnvKey => ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
 
   const OnePasswordPlugin({
     required super.processRunner,
@@ -34,10 +33,11 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     Secret? rawServiceAccount,
   }) async {
     final exportFile = File(outputPath);
-    if (exportFile.existsSync()) {
-      ImpaktfullCliLogger.verbose('Deleting existing file: $outputPath');
-      exportFile.deleteSync();
+    if (!exportFile.existsSync()) {
+      exportFile.createSync(recursive: true);
     }
+    ImpaktfullCliLogger.verbose('Deleting existing file: $outputPath');
+    exportFile.deleteSync(recursive: true);
     await _executeOnePasswordCommand(
       [
         'op',
@@ -58,7 +58,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
 
   Future<Secret> getCertificatePassword({
     required String opUuid,
-    String vaultName = 'Certificates',
+    required String vaultName,
     String fieldName = 'password',
     Secret? rawServiceAccount,
   }) =>

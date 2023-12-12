@@ -1,3 +1,8 @@
+# 0.10.1
+
+# Fix:
+- Export `valultName` for `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
+
 # 0.10.0
 
 # Feat:

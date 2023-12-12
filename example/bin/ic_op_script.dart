@@ -8,22 +8,19 @@ Future<void> main(List<String> arguments) => ImpaktfullCli().run(
         final keyChainPlugin = cli.macOsKeyChainPlugin;
         final keyChainName = ExampleConfig.keyChainName;
         final opUuid = ExampleConfig.onePasswordUuid;
-        final globalKeyChainPasswordSecret =
-            ExampleConfig.globalKeyChainPassword;
-        ImpaktfullCliEnvironment.requiresInstalledTools(
-            [CliTool.onePasswordCli]);
+        final opVaultName = ExampleConfig.onePasswordUuid;
+        final globalKeyChainPasswordSecret = ExampleConfig.globalKeyChainPassword;
+        ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
 
-        final certFile = await onePasswordPlugin
-            .downloadDistributionCertificate(opUuid: opUuid);
-        final certPassword =
-            await onePasswordPlugin.getCertificatePassword(opUuid: opUuid);
+        final certFile = await onePasswordPlugin.downloadDistributionCertificate(opUuid: opUuid);
+        final certPassword = await onePasswordPlugin.getCertificatePassword(
+          opUuid: opUuid,
+          vaultName: opVaultName,
+        );
 
-        await keyChainPlugin.createKeyChain(
-            keyChainName, globalKeyChainPasswordSecret);
-        await keyChainPlugin.unlockKeyChain(
-            keyChainName, globalKeyChainPasswordSecret);
-        await keyChainPlugin.addCertificateToKeyChain(
-            keyChainName, certFile, certPassword);
+        await keyChainPlugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
+        await keyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
+        await keyChainPlugin.addCertificateToKeyChain(keyChainName, certFile, certPassword);
 
         ImpaktfullCliLogger.debug('Execute build');
         await Future.delayed(const Duration(seconds: 2));
