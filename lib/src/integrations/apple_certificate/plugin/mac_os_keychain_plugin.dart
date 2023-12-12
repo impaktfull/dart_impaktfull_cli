@@ -20,13 +20,28 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     final fullKeyChainName = _fullKeyChainName(keyChainName);
     final originalKeyChains = await _getUserKeyChains();
     if (originalKeyChains.contains(fullKeyChainName)) {
-      throw ImpaktfullCliError('$fullKeyChainName already exists, make sure to remove it first.');
+      throw ImpaktfullCliError(
+          '$fullKeyChainName already exists, make sure to remove it first.');
     }
 
     ImpaktfullCliLogger.debug('Create Apple KeyChain ($fullKeyChainName)');
-    await processRunner.runProcess(['security', 'create-keychain', '-p', '$globalKeyChainPassword', fullKeyChainName]);
+    await processRunner.runProcess([
+      'security',
+      'create-keychain',
+      '-p',
+      '$globalKeyChainPassword',
+      fullKeyChainName
+    ]);
     final keyChain = await _getUserKeyChains();
-    await processRunner.runProcess(['security', 'list-keychains', '-d', 'user', '-s', fullKeyChainName, ...keyChain]);
+    await processRunner.runProcess([
+      'security',
+      'list-keychains',
+      '-d',
+      'user',
+      '-s',
+      fullKeyChainName,
+      ...keyChain
+    ]);
   }
 
   Future<void> unlockKeyChain(
@@ -34,8 +49,15 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     Secret globalKeyChainPassword,
   ) async {
     final fullKeyChainName = _fullKeyChainName(keyChainName);
-    await processRunner.runProcess(['security', 'set-keychain-settings', fullKeyChainName]);
-    await processRunner.runProcess(['security', 'unlock-keychain', '-p', globalKeyChainPassword.value, fullKeyChainName]);
+    await processRunner
+        .runProcess(['security', 'set-keychain-settings', fullKeyChainName]);
+    await processRunner.runProcess([
+      'security',
+      'unlock-keychain',
+      '-p',
+      globalKeyChainPassword.value,
+      fullKeyChainName
+    ]);
   }
 
   Future<void> addCertificateToKeyChain(
@@ -74,13 +96,18 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   ) async {
     final fullKeyChainName = _fullKeyChainName(keyChainName);
     ImpaktfullCliLogger.debug('Remove Apple KeyChain ($fullKeyChainName)');
-    await processRunner.runProcess(['security', 'delete-keychain', fullKeyChainName]);
+    await processRunner
+        .runProcess(['security', 'delete-keychain', fullKeyChainName]);
   }
 
   Future<List<String>> _getUserKeyChains() async {
-    final keychainsString = await processRunner.runProcess(['security', 'list-keychains', '-d', 'user']);
-    final keychainsList = keychainsString.split('\n').where((element) => element.isNotEmpty);
-    return keychainsList.map((keychain) => keychain.replaceAll('"', '').trim()).toList();
+    final keychainsString = await processRunner
+        .runProcess(['security', 'list-keychains', '-d', 'user']);
+    final keychainsList =
+        keychainsString.split('\n').where((element) => element.isNotEmpty);
+    return keychainsList
+        .map((keychain) => keychain.replaceAll('"', '').trim())
+        .toList();
   }
 
   Future<void> printKeyChainList() async {
