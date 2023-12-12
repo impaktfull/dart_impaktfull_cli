@@ -131,9 +131,9 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
 
   Future<String?> _getKeyChainPath(String keyChain) async {
     final userKeyChains = await _getUserKeyChains();
-    for (final keyChain in userKeyChains) {
-      if (keyChain.contains(keyChain)) {
-        return keyChain;
+    for (final userKeyChain in userKeyChains) {
+      if (userKeyChain.contains(keyChain)) {
+        return userKeyChain;
       }
     }
     return null;
