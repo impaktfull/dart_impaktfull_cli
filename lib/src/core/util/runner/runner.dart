@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:impaktfull_cli/src/core/model/error/force_quit_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_argument_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
@@ -32,6 +33,8 @@ Future<void> runImpaktfullCli(
     ImpaktfullCliLogger.error(error.message);
     await onError?.call(error, trace);
     exit(-1);
+  } on ForceQuitError catch (_) {
+    // Ignore because `ForceQuitUtil` already cleaned up the process.
   } catch (error, trace) {
     if (onError == null) rethrow;
     await onError.call(error, trace);

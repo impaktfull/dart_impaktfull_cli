@@ -53,10 +53,11 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
       throw ImpaktfullCliError(
           '`$name` keychain does not exists. In order to unlock a keychain, it should be created first.');
     }
+    final fullName = _fullKeyChainName(name);
     await processRunner
-        .runProcess(['security', 'set-keychain-settings', keyChainPath]);
+        .runProcess(['security', 'set-keychain-settings', fullName]);
     await processRunner.runProcess(
-        ['security', 'unlock-keychain', '-p', password.value, keyChainPath]);
+        ['security', 'unlock-keychain', '-p', password.value, fullName]);
   }
 
   Future<void> addCertificateToKeyChain(
@@ -111,7 +112,6 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
           '`$name` keychain does not exists. In order to set the default keychain, it should be created first.');
     }
     ImpaktfullCliLogger.debug('Set default Apple KeyChain ($path)');
-    await processRunner.runProcess(['security', 'list-keychains', '-s', path]);
     await processRunner
         .runProcess(['security', 'default-keychain', '-s', path]);
   }

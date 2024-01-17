@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
+import 'package:impaktfull_cli/src/core/util/cli/force_quit_util.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
@@ -200,19 +201,23 @@ class CiCdPlugin extends ImpaktfullPlugin {
     final defaultKeyChain = await macOsKeyChainPlugin.getDefaultKeyChain();
     await macOsKeyChainPlugin.createKeyChain(
         keyChainName, globalKeyChainPasswordSecret);
-    try {
-      await macOsKeyChainPlugin.setDefaultKeyChain(keyChainName);
-      await macOsKeyChainPlugin.unlockKeyChain(
-          keyChainName, globalKeyChainPasswordSecret);
-      await macOsKeyChainPlugin.addCertificateToKeyChain(
-          keyChainName, certFile, certPassword,
-          accessControlAll: true);
-      await onStartBuild();
-    } catch (e) {
-      rethrow;
-    } finally {
-      await macOsKeyChainPlugin.setDefaultKeyChain(defaultKeyChain);
-      await macOsKeyChainPlugin.removeKeyChain(keyChainName);
-    }
+
+    await ForceQuitUtil.catchForceQuit(
+      () async {
+        await macOsKeyChainPlugin.setDefaultKeyChain(keyChainName);
+        // await macOsKeyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
+        await macOsKeyChainPlugin.addCertificateToKeyChain(
+          keyChainName,
+          certFile,
+          certPassword,
+          accessControlAll: true,
+        );
+        await onStartBuild();
+      },
+      cleanup: () async {
+        await macOsKeyChainPlugin.setDefaultKeyChain(defaultKeyChain);
+        await macOsKeyChainPlugin.removeKeyChain(keyChainName);
+      },
+    );
   }
 }

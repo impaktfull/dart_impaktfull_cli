@@ -23,4 +23,3 @@ jobs:
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
-          script-pre-run: tool/script_pre_run.dart

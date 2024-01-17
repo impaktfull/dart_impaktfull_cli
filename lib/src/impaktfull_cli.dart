@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
+import 'package:impaktfull_cli/src/core/util/cli/force_quit_util.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple_certificate/command/apple_certificate_root_command.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_parser_extensions.dart';
@@ -56,6 +57,11 @@ class ImpaktfullCli {
   void init() {
     _initCommands();
     _initPlugins();
+    ForceQuitUtil.init();
+  }
+
+  void dispose() {
+    ForceQuitUtil.stopListening();
   }
 
   void _initCommands() {
@@ -99,6 +105,7 @@ class ImpaktfullCli {
       () => runner(this),
       isVerboseLoggingEnabled: isVerboseLoggingEnabled,
     );
+    dispose();
   }
 
   Future<void> runCli(List<String> args) async {
@@ -116,5 +123,6 @@ class ImpaktfullCli {
           isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(args);
     });
+    dispose();
   }
 }
