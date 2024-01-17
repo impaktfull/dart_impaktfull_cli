@@ -1,3 +1,8 @@
+# 0.10.12
+
+# Fix:
+- Cleanup keychain plugin after force quit
+
 # 0.10.7 - 0.10.11
 
 # Fix:
