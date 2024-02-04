@@ -1,3 +1,9 @@
+# 0.11.5
+
+# Fix:
+- CI/CD plugin where the buildnr field was not used
+- verbose logging instead of debug loggin for the version bump
+
 # 0.11.4
 
 # Fix:

@@ -51,7 +51,8 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       }
     }
     buildNr++;
-    ImpaktfullCliLogger.debug('New build_nr: $buildNr (for key: $buildNrKey)');
+    ImpaktfullCliLogger.verbose(
+        'New build_nr: $buildNr (for key: $buildNrKey)');
     newConfigData[buildNrKey] = buildNr;
     if (!file.existsSync()) {
       file.createSync(recursive: true);

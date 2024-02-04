@@ -51,6 +51,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
         extension: extension,
         obfuscate: obfuscate,
         splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
+        buildNr: buildNr,
         appCenterUploadConfig: appCenterUploadConfig,
         playStoreUploadConfig: playStoreUploadConfig,
       );
@@ -109,6 +110,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
         extension: extension,
         obfuscate: obfuscate,
         splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
+        buildNr: buildNr,
         appCenterUploadConfig: appCenterUploadConfig,
         testflightUploadConfig: testflightUploadConfig,
       );
