@@ -5,6 +5,7 @@ import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
+import 'package:impaktfull_cli/src/core/util/git/git_util.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
@@ -20,6 +21,13 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   /// Bumps the version of the app in release_config.yaml
   /// Commits the change & returns the build_nr of the new version
   Future<int> versionBump() async {
+    final isGitProject = ImpaktfullCliEnvironment.isInstalled(CliTool.git);
+    if (isGitProject) {
+      final isGitClean = await GitUtil.isGitClean(processRunner);
+      if (!isGitClean) {
+        throw ImpaktfullCliError('Git is not clean. Please commit or stash your changes before bumping the version.');
+      }
+    }
     final file = File('release_config.json');
     var newConfigData = <String, dynamic>{};
     var buildNr = 0;
@@ -36,11 +44,15 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       file.createSync(recursive: true);
     }
     file.writeAsStringSync(jsonEncode(newConfigData));
-    if (ImpaktfullCliEnvironment.isInstalled(CliTool.git)) {
+    if (isGitProject) {
+      await processRunner.runProcess([
+        'git',
+        'add',
+        'release_config.json',
+      ]);
       await processRunner.runProcess([
         'git',
         'commit',
-        'release_config.json',
         '-m',
         'Bump build_nr to $buildNr',
       ]);

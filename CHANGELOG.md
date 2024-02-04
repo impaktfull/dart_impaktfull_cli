@@ -1,3 +1,10 @@
+# 0.10.13
+
+# Feat:
+- Add the option to check if git is clean
+- Add the option to versionbump using `release_config.json` file
+- Add the option to check if a clitool is installed
+
 # 0.10.12
 
 # Fix:
