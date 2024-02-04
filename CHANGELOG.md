@@ -1,4 +1,4 @@
-# 0.10.14
+# 0.11.0
 
 # Feat:
 - Add the option to add a `flavor` to the versionbump command
