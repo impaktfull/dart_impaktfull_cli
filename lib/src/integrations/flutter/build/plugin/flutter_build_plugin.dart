@@ -20,7 +20,10 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
 
   /// Bumps the version of the app in release_config.yaml
   /// Commits the change & returns the build_nr of the new version
-  Future<int> versionBump() async {
+  Future<int> versionBump({
+    String? flavor,
+    String? suffix,
+  }) async {
     final isGitProject = ImpaktfullCliEnvironment.isInstalled(CliTool.git);
     if (isGitProject) {
       final isGitClean = await GitUtil.isGitClean(processRunner);
@@ -32,15 +35,22 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     final file = File('release_config.json');
     var newConfigData = <String, dynamic>{};
     var buildNr = 0;
+    var buildNrKey = 'build_nr';
+    if (flavor != null) {
+      buildNrKey += '_$flavor';
+    }
+    if (suffix != null) {
+      buildNrKey += '_$suffix';
+    }
     if (file.existsSync()) {
       final content = file.readAsStringSync();
       final orignalConfigData = jsonDecode(content) as Map<String, dynamic>;
       newConfigData = orignalConfigData;
-      buildNr = orignalConfigData['build_nr'] as int;
+      buildNr = orignalConfigData[buildNrKey] as int;
     }
     buildNr++;
-    ImpaktfullCliLogger.debug('New build_nr: $buildNr');
-    newConfigData['build_nr'] = buildNr;
+    ImpaktfullCliLogger.debug('New build_nr: $buildNr (for key: $buildNrKey)');
+    newConfigData[buildNrKey] = buildNr;
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }
@@ -55,7 +65,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         'git',
         'commit',
         '-m',
-        'Bump build_nr to $buildNr',
+        'Bump build_nr to $buildNr (for key: $buildNrKey)',
       ]);
     }
     return buildNr;

@@ -1,3 +1,9 @@
+# 0.10.14
+
+# Feat:
+- Add the option to add a `flavor` to the versionbump command
+- Add the option to add a `suffix`to the versionbump command
+
 # 0.10.13
 
 # Feat:
