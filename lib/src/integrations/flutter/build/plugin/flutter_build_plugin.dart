@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
+import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_ios_extension.dart';
@@ -13,6 +16,37 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   const FlutterBuildPlugin({
     super.processRunner = const CliProcessRunner(),
   });
+
+  /// Bumps the version of the app in release_config.yaml
+  /// Commits the change & returns the build_nr of the new version
+  Future<int> versionBump() async {
+    final file = File('release_config.json');
+    var newConfigData = <String, dynamic>{};
+    var buildNr = 0;
+    if (file.existsSync()) {
+      final content = file.readAsStringSync();
+      final orignalConfigData = jsonDecode(content) as Map<String, dynamic>;
+      newConfigData = orignalConfigData;
+      buildNr = orignalConfigData['build_nr'] as int;
+    }
+    buildNr++;
+    ImpaktfullCliLogger.debug('New build_nr: $buildNr');
+    newConfigData['build_nr'] = buildNr;
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    file.writeAsStringSync(jsonEncode(newConfigData));
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.git)) {
+      await processRunner.runProcess([
+        'git',
+        'commit',
+        'release_config.json',
+        '-m',
+        'Bump build_nr to $buildNr',
+      ]);
+    }
+    return buildNr;
+  }
 
   Future<File> buildAndroid({
     String? flavor,
@@ -47,11 +81,9 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
-    final file = File(join(extension.getBuildDirectory(flavor: flavor).path,
-        'app-$flavor-release.${extension.fileExtension}'));
+    final file = File(join(extension.getBuildDirectory(flavor: flavor).path, 'app-$flavor-release.${extension.fileExtension}'));
     if (!file.existsSync()) {
-      throw ImpaktfullCliError(
-          'After building $flavor for Android, `${file.path}` does not exists.');
+      throw ImpaktfullCliError('After building $flavor for Android, `${file.path}` does not exists.');
     }
     return file;
   }
@@ -99,11 +131,9 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       ],
     ]);
     final files = buildDirectory.listSync();
-    final result = files.where((element) =>
-        path.extension(element.path) == '.${extension.fileExtension}');
+    final result = files.where((element) => path.extension(element.path) == '.${extension.fileExtension}');
     if (result.isEmpty) {
-      throw ImpaktfullCliError(
-          'After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
+      throw ImpaktfullCliError('After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
     }
     if (result.length > 1) {
       throw ImpaktfullCliError(
@@ -112,8 +142,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
 
     final ipaFile = File(result.first.path);
     if (!ipaFile.existsSync()) {
-      throw ImpaktfullCliError(
-          'After building $flavor for iOS, `${ipaFile.path}` does not exists.');
+      throw ImpaktfullCliError('After building $flavor for iOS, `${ipaFile.path}` does not exists.');
     }
     return ipaFile;
   }

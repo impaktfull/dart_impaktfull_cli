@@ -76,6 +76,9 @@ class ImpaktfullCliEnvironment {
     }
   }
 
+  static bool isInstalled(CliTool cliTool) =>
+      _instance.allCliTools.any((element) => element.cliTool == cliTool);
+
   static void requiresInstalledTools(List<CliTool> requiredTools) {
     final requiredToolsFound = <CliTool>[];
     final installedCliTools = _instance.installedCliTools.map((e) => e.cliTool);
