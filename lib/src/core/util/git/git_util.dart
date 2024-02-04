@@ -12,6 +12,7 @@ class GitUtil {
       'status',
       '--porcelain',
     ]);
+    if (result.isEmpty) return [];
     return result.trim().split('\n');
   }
 }

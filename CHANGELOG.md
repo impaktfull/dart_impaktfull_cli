@@ -1,3 +1,8 @@
+# 0.11.2
+
+# Fix:
+- Bug where the git status method would return a list with 1 item if nothing was detected
+
 # 0.11.1
 
 # Fix:
