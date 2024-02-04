@@ -56,7 +56,8 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }
-    file.writeAsStringSync(jsonEncode(newConfigData));
+    final encoder = JsonEncoder.withIndent('  ');
+    file.writeAsStringSync(encoder.convert(newConfigData));
     if (isGitProject) {
       await processRunner.runProcess([
         'git',

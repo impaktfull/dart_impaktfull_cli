@@ -1,3 +1,8 @@
+# 0.11.4
+
+# Fix:
+- Formatting of the release_config.json file
+
 # 0.11.3
 
 # Fix:
