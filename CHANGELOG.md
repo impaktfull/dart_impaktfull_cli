@@ -1,3 +1,8 @@
+# 0.11.1
+
+# Fix:
+- Bug where the git status method would return the wrong value if nothing was detected
+
 # 0.11.0
 
 # Feat:
