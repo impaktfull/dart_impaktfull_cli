@@ -1,3 +1,8 @@
+# 0.11.3
+
+# Fix:
+- Bug where the release_config.json did not contain the correct version and failed because it was expected
+
 # 0.11.2
 
 # Fix:
