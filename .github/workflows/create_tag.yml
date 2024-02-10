@@ -23,3 +23,4 @@ jobs:
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: 'v'
+          use-dart: true

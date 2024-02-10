@@ -1,3 +1,8 @@
+# 0.11.6
+
+# Fix:
+- CI/CD pipeline
+
 # 0.11.5
 
 # Fix:
