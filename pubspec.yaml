@@ -6,6 +6,7 @@ environment:
   sdk: ^3.0.0
 dependencies:
   args: ^2.4.2
+  code_builder: ^4.10.0
   http: ^1.1.0
   meta: ^1.1.0
   path: ^1.8.3

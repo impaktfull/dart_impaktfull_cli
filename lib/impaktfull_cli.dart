@@ -23,3 +23,6 @@ export 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload
 export 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/testflight/model/testflight_upload_config.dart';
 export 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
+
+//third party
+export 'package:code_builder/code_builder.dart';

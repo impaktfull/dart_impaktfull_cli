@@ -1,3 +1,8 @@
+# 0.12.0
+
+# Feat
+- Export code_builder
+
 # 0.11.6 - 0.11.8
 
 # Update
