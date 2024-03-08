@@ -1,3 +1,9 @@
+# 0.13.5
+
+## Fix
+
+- Verbose logger listener (when 2 times startListening is called)
+
 # 0.13.4
 
 ## Update

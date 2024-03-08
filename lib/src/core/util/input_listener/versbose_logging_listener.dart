@@ -9,6 +9,7 @@ class VerboseLoggingListener {
   VerboseLoggingListener._();
 
   static void startInputListener() {
+    _subscription?.cancel();
     _subscription = stdin.listen((data) {
       final input = String.fromCharCodes(data).trim();
 
@@ -21,5 +22,8 @@ class VerboseLoggingListener {
     });
   }
 
-  static void stopListening() => _subscription?.cancel();
+  static void stopListening() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
 }
