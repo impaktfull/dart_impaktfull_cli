@@ -1,6 +1,12 @@
+# 0.13.1
+
+## Updated
+- Updated reamde
+- Updated changelog
+
 # 0.13.0
 
-# Feat
+## Feat
 - Improved logging to easily follow allong
 - Enable/disable verbose logging during run.
 - Print logs to file on error to (impaktfull_cli.log)
@@ -9,151 +15,151 @@
 
 # 0.12.0
 
-# Feat
+## Feat
 - Export code_builder
 
 # 0.11.6 - 0.11.8
 
-# Update
+## Update
 - License BSD-3-Clause license
 
 # 0.11.6 - 0.11.7
 
-# Fix
+## Fix
 - Improve CI/CD pipeline
 
 # 0.11.5
 
-# Fix
+## Fix
 - CI/CD plugin where the buildnr field was not used
 - verbose logging instead of debug loggin for the version bump
 
 # 0.11.4
 
-# Fix
+## Fix
 - Formatting of the release_config.json file
 
 # 0.11.3
 
-# Fix
+## Fix
 - Bug where the release_config.json did not contain the correct version and failed because it was expected
 
 # 0.11.2
 
-# Fix
+## Fix
 - Bug where the git status method would return a list with 1 item if nothing was detected
 
 # 0.11.1
 
-# Fix
+## Fix
 - Bug where the git status method would return the wrong value if nothing was detected
 
 # 0.11.0
 
-# Feat
+## Feat
 - Add the option to add a `flavor` to the versionbump command
 - Add the option to add a `suffix`to the versionbump command
 
 # 0.10.13
 
-# Feat
+## Feat
 - Add the option to check if git is clean
 - Add the option to versionbump using `release_config.json` file
 - Add the option to check if a clitool is installed
 
 # 0.10.12
 
-# Fix
+## Fix
 - Cleanup keychain plugin after force quit
 
 # 0.10.7 - 0.10.11
 
-# Fix
+## Fix
 - Setting default keychain to newly created on in ci/cd plugin
 
 # 0.10.6
 
-# Fix
+## Fix
 - Keychain should be accessible to all from ci/cd plugin
 
 # 0.10.5
 
-# Fix
+## Fix
 - First check if new keychain already exists before creating a new one
 
 # 0.10.4
 
-# Fix
+## Fix
 - Delete build/ios/ipa folder before iOS build
 
 # 0.10.3
 
-# Fix
+## Fix
 - Keychain creation on macOS
 
 # 0.10.2
 
-# Fix
+## Fix
 - Renamed `valultName` to `opValueName` on `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
 # 0.10.1
 
-# Fix
+## Fix
 - Export `valultName` for `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
 # 0.10.0
 
-# Feat
+## Feat
 - Added `rawServiceAccount` to `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
 # 0.9.1
 
-# Fix
+## Fix
 - Bug when downloading files using `OnePasswordPlugin`
 
 # 0.9.0
 
-# Feat
+## Feat
 - Export enable logging
 
 # 0.8.0
 
-# Feat
+## Feat
 - Pass service accounts to override the default service account in the `OnePasswordPlugin`
 
 # 0.7.1
 
-# Fix
+## Fix
 - Typo in `getServiceAccountCredentials`
 
 # 0.7.0
 
-# Feat
+## Feat
 - Added `getServiceAccountCredentials` to `OnePasswordPlugin` to get google service account credentials from 1password.
 
 # 0.6.1
 
-# Fix
+## Fix
 - Typo with `getTestFlightCredentials` in `OnePasswordPlugin`
 
 # 0.6.0
 
-# Feat
+## Feat
 - Better config for testflight upload
 
 # 0.5.1 - 0.5.3
 
-# Fix
+## Fix
 - Bug where testflight upload would succeed when the app was invalid because of a lower,same version number
 
 # 0.5.0
 
-# Feat
+## Feat
 - `PlaystoreUploadConfig` will default to `android/playstore_credentials.json`
 
 # 0.4.0
 
-# Feat
+## Feat
 - Export `joinPath` which is just an alternative for `join` from `path` package.
 
 # 0.3.3

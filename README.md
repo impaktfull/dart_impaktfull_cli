@@ -2,6 +2,10 @@
 
 **impaktfull_cli is still in unstable & untested. everything under <1.0.0 should not be used unless you want to test the cli**
 
+## Usage
+
+[![pub package](https://img.shields.io/pub/v/impaktfull_cli.svg)](https://pub.dartlang.org/packages/impaktfull_cli)
+
 ## ENV Variables:
 
 ### impaktfull_cli ENV variabhles
