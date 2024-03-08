@@ -4,6 +4,8 @@
 - Improved logging to easily follow allong
 - Enable/disable verbose logging during run.
 - Print logs to file on error to (impaktfull_cli.log)
+- Playstore release to `internal` track by default
+- Playstore release to `draft` release status by default
 
 # 0.12.0
 

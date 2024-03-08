@@ -195,7 +195,7 @@ class ImpaktfullCliLogger {
         _cliSpinner?.fail(message);
       }
     }
-    if (e is ImpktfullCliExitError) {
+    if (e is ImpaktfullCliExitError) {
       log('\nCli exited with the following message:\n\n\n${e.message}\n\n\n');
       return;
     }
