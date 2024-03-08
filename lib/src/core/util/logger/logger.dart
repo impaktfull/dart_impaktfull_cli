@@ -13,8 +13,10 @@ class ImpaktfullCliLogger {
   static final _secrets = <String>[];
   static bool _verbose = false;
   static final _pendingLogs = <String>[];
-  static const String _seperator = '================================================================================';
-  static const String _seperatorSingleLine = '--------------------------------------------------------------------------------';
+  static const String _seperator =
+      '================================================================================';
+  static const String _seperatorSingleLine =
+      '--------------------------------------------------------------------------------';
 
   static String? _cliSpinnerActionDescription;
   static CliSpin? _cliSpinner;
@@ -57,9 +59,11 @@ class ImpaktfullCliLogger {
 
   static void log(String message) => _print(message);
 
-  static void logSeperator({bool singleLine = false}) => log(singleLine ? _seperatorSingleLine : _seperator);
+  static void logSeperator({bool singleLine = false}) =>
+      log(singleLine ? _seperatorSingleLine : _seperator);
 
-  static void verboseSeperator({bool singleLine = false}) => verbose(singleLine ? _seperatorSingleLine : _seperator);
+  static void verboseSeperator({bool singleLine = false}) =>
+      verbose(singleLine ? _seperatorSingleLine : _seperator);
 
   static void error(String message) {
     if (message.startsWith('[ERROR]')) {
@@ -79,10 +83,13 @@ class ImpaktfullCliLogger {
       sb.writeln('Something went wrong:');
     }
     if (error is ImpaktfullCliProcessRunnerError) {
-      final errorMessages = error.errorOutput.split('\n').where((element) => element.contains('error:'));
+      final errorMessages = error.errorOutput
+          .split('\n')
+          .where((element) => element.contains('error:'));
       if (errorMessages.isNotEmpty) {
         sb.writeln();
-        sb.writeln('Possible logs we detected could be interesting to investigate:');
+        sb.writeln(
+            'Possible logs we detected could be interesting to investigate:');
         sb.writeln();
         sb.writeln();
         for (final element in errorMessages) {
@@ -156,11 +163,14 @@ class ImpaktfullCliLogger {
   }) {
     if (_cliSpinnerActionDescription != null) {
       if (!overidePreviousSpinner) {
-        throw ImpaktfullCliError('$_cliSpinnerActionDescription is still running, and `overidePreviousSpinner` is set to `false`');
+        throw ImpaktfullCliError(
+            '$_cliSpinnerActionDescription is still running, and `overidePreviousSpinner` is set to `false`');
       }
       endSpinner();
     }
-    final fullDescription = _spinnerPrefix == null || skipPrefix ? actionDescription : '$_spinnerPrefix: $actionDescription';
+    final fullDescription = _spinnerPrefix == null || skipPrefix
+        ? actionDescription
+        : '$_spinnerPrefix: $actionDescription';
     final message = 'Start `$fullDescription`';
     _cliSpinnerActionDescription = fullDescription;
     _cliSpinner = CliSpin(
