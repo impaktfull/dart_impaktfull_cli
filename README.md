@@ -1,6 +1,6 @@
 # impaktfull_cli
 
-**impaktfull_cli is still in unstable & untested. everything under <1.0.0 should not be used unless you want to test the cli**
+**impaktfull_cli is still in unstable & untested. everything under <1.0.0 should not be used unless you want to test it**
 
 ## Usage
 
