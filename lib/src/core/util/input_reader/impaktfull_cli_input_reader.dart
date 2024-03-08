@@ -8,7 +8,7 @@ class CliInputReader {
   const CliInputReader._();
 
   static Secret readSecret(String message) {
-    ImpaktfullCliLogger.debug('$message:');
+    ImpaktfullCliLogger.log('$message:');
     stdin.echoMode = false;
     final secretValue = stdin.readLineSync();
     if (secretValue == null || secretValue.isEmpty) {

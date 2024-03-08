@@ -9,34 +9,25 @@ import 'package:impaktfull_cli/src/core/util/extensions/duration_extensions.dart
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 
 Future<void> runImpaktfullCli(
-  Future<void> Function() run, {
-  bool isVerboseLoggingEnabled = false,
-  Future<void> Function(Object error, StackTrace trace)? onError,
-}) async {
+  Future<void> Function() run,
+) async {
   try {
     final stopwatch = Stopwatch();
     stopwatch.start();
-    await ImpaktfullCliEnvironment.init(
-        isVerboseLoggingEnabled: isVerboseLoggingEnabled);
+    await ImpaktfullCliEnvironment.init();
     await run();
     stopwatch.stop();
-    ImpaktfullCliLogger.log(
-        '✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
+    ImpaktfullCliLogger.log('✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
   } on UsageException catch (e) {
     ImpaktfullCliLogger.error(e.toString());
     exit(64); // Exit code 64 means a usage error occurred.
-  } on ImpaktfullCliArgumentError catch (error, trace) {
+  } on ImpaktfullCliArgumentError catch (error) {
     ImpaktfullCliLogger.error(error.toString());
-    await onError?.call(error, trace);
     exit(-1);
-  } on ImpaktfullCliError catch (error, trace) {
+  } on ImpaktfullCliError catch (error) {
     ImpaktfullCliLogger.error(error.message);
-    await onError?.call(error, trace);
     exit(-1);
   } on ForceQuitError catch (_) {
     // Ignore because `ForceQuitUtil` already cleaned up the process.
-  } catch (error, trace) {
-    if (onError == null) rethrow;
-    await onError.call(error, trace);
   }
 }

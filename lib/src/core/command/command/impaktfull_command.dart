@@ -19,8 +19,7 @@ abstract class ImpaktfullCommand<T extends ConfigData> extends Command<void> {
     } on ArgumentError catch (e) {
       throw ImpaktfullCliArgumentError(
         e.message.toString(),
-        argResults?.name,
-        argParser.usage,
+        argParser: argParser,
       );
     }
     await runCommand(configData);

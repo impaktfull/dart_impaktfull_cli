@@ -7,8 +7,7 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
-  String get serviceAccountEnvKey =>
-      ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
+  String get serviceAccountEnvKey => ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
 
   const OnePasswordPlugin({
     required super.processRunner,
@@ -16,16 +15,24 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
 
   Future<String> _executeOnePasswordCommand<T>(
     List<String> args, {
+    required String log,
     Secret? rawServiceAccount,
-  }) async =>
-      processRunner.runProcess(
-        args,
-        environment: {
-          if (rawServiceAccount != null) ...{
-            serviceAccountEnvKey: rawServiceAccount.value,
-          },
+  }) async {
+    ImpaktfullCliLogger.startSpinner(
+      '1Password: $log',
+      skipPrefix: true,
+    );
+    final result = await processRunner.runProcess(
+      args,
+      environment: {
+        if (rawServiceAccount != null) ...{
+          serviceAccountEnvKey: rawServiceAccount.value,
         },
-      );
+      },
+    );
+    ImpaktfullCliLogger.endSpinner();
+    return result;
+  }
 
   Future<File> downloadFile({
     required String opUuid,
@@ -52,6 +59,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           vaultName,
         ],
       ],
+      log: 'Downloading file from 1Password',
       rawServiceAccount: rawServiceAccount,
     );
     return exportFile;
@@ -97,6 +105,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           'read',
           'op://$vaultName/$opUuid/$fieldName',
         ],
+        log: 'Reading field ($fieldName) from 1Password',
         rawServiceAccount: rawServiceAccount,
       );
 
