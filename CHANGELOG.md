@@ -1,15 +1,21 @@
-# 0.13.2
+# 0.13.3
 
 ## Update
 
 - Updated reamde
+
+# 0.13.2
+
+## Update
+
+- Updated changelog format
 
 # 0.13.1
 
 ## Update
 
 - Updated reamde
-- Updated changelog
+- Updated changelog format
 
 # 0.13.0
 
