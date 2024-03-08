@@ -12,7 +12,8 @@ import 'dart:io';
 
 const _appCenterApiBaseUrl = 'https://api.appcenter.ms/v0.1';
 const _appCenterFilesBaseUrl = 'https://file.appcenter.ms';
-String _tempDirectoryPath = join(CliConstants.buildFolderPath, 'appcenter', 'upload');
+String _tempDirectoryPath =
+    join(CliConstants.buildFolderPath, 'appcenter', 'upload');
 const _extensionMimeTypeMapper = {
   'apk': 'application/vnd.android.package-archive',
   'aab': 'application/x-authorware-bin',
@@ -36,8 +37,10 @@ class AppCenterPlugin extends ImpaktfullPlugin {
   }) async {
     ImpaktfullCliLogger.setSpinnerPrefix('AppCenter upload');
     ImpaktfullCliLogger.startSpinner('Initializing');
-    final ownerNameValue = ownerName ?? ImpaktfullCliEnvironmentVariables.getAppCenterOwnerName();
-    final apiTokenSecret = apiToken ?? ImpaktfullCliEnvironmentVariables.getAppCenterToken();
+    final ownerNameValue =
+        ownerName ?? ImpaktfullCliEnvironmentVariables.getAppCenterOwnerName();
+    final apiTokenSecret =
+        apiToken ?? ImpaktfullCliEnvironmentVariables.getAppCenterToken();
 
     ImpaktfullCliLogger.startSpinner('Create new release');
     final createNewReleaseUploadResponse = await _createNewRelease(
@@ -46,8 +49,10 @@ class AppCenterPlugin extends ImpaktfullPlugin {
       apiToken: apiTokenSecret,
     );
     final id = createNewReleaseUploadResponse['id'] as String;
-    final packageAssetId = createNewReleaseUploadResponse['package_asset_id'] as String;
-    final urlEncodedToken = createNewReleaseUploadResponse['url_encoded_token'] as String;
+    final packageAssetId =
+        createNewReleaseUploadResponse['package_asset_id'] as String;
+    final urlEncodedToken =
+        createNewReleaseUploadResponse['url_encoded_token'] as String;
 
     final fileSizeBytes = await file.length();
     final appType = _getAppTypeFor(file);
@@ -135,7 +140,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required Secret apiToken,
   }) async {
     final response = await http.post(
-      Uri.parse("$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases"),
+      Uri.parse(
+          "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases"),
       headers: _getHeaders(apiToken),
     );
     if (response.statusCode != HttpStatus.created) {
@@ -154,7 +160,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required Secret apiToken,
   }) async {
     final fileName = basename(file.path);
-    final metaDataUrl = "$_appCenterFilesBaseUrl/upload/set_metadata/$packageAssetId?file_name=$fileName&file_size=$fileSize&token=$urlEncodedToken&content_type=$appType";
+    final metaDataUrl =
+        "$_appCenterFilesBaseUrl/upload/set_metadata/$packageAssetId?file_name=$fileName&file_size=$fileSize&token=$urlEncodedToken&content_type=$appType";
     final response = await http.post(
       Uri.parse(metaDataUrl),
       headers: _getHeaders(apiToken),
@@ -184,9 +191,12 @@ class AppCenterPlugin extends ImpaktfullPlugin {
 
     while (chunksUsed < chunks.length) {
       chunksIndex++;
-      final newChunksUsed = chunksUsed + chunkSize > chunks.length ? chunks.length : chunksUsed + chunkSize;
+      final newChunksUsed = chunksUsed + chunkSize > chunks.length
+          ? chunks.length
+          : chunksUsed + chunkSize;
       final chunk = chunks.sublist(chunksUsed, newChunksUsed);
-      final chunkFile = File(join(outputDirectory.path, 'chunk_$chunksIndex.apk'));
+      final chunkFile =
+          File(join(outputDirectory.path, 'chunk_$chunksIndex.apk'));
       await chunkFile.writeAsBytes(chunk);
       chunksUsed = newChunksUsed;
     }
@@ -208,7 +218,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
       final fileName = basenameWithoutExtension(file.path);
       final blockNumber = int.parse(fileName.split('_').last);
       final contentLength = file.lengthSync();
-      final uploadChunkurl = "$_appCenterFilesBaseUrl/upload/upload_chunk/$packageAssetId?token=$urlEncodedToken&block_number=$blockNumber";
+      final uploadChunkurl =
+          "$_appCenterFilesBaseUrl/upload/upload_chunk/$packageAssetId?token=$urlEncodedToken&block_number=$blockNumber";
       final chunkProgress = '$blockNumber/${tempFiles.length}';
 
       ImpaktfullCliLogger.startSpinner('Uploading chunks: $chunkProgress');
@@ -224,7 +235,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
 
       if (response.statusCode != HttpStatus.ok) {
         ImpaktfullCliLogger.verbose(response.body);
-        throw ImpaktfullCliError('Failed to upload chunk ($chunkProgress) to AppCenter');
+        throw ImpaktfullCliError(
+            'Failed to upload chunk ($chunkProgress) to AppCenter');
       }
     }
   }
@@ -234,7 +246,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required String urlEncodedToken,
     required Secret apiToken,
   }) async {
-    final finishedUrl = "$_appCenterFilesBaseUrl/upload/finished/$packageAssetId?token=$urlEncodedToken";
+    final finishedUrl =
+        "$_appCenterFilesBaseUrl/upload/finished/$packageAssetId?token=$urlEncodedToken";
     final response = await http.post(
       Uri.parse(finishedUrl),
       headers: _getHeaders(apiToken),
@@ -251,7 +264,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required String ownerName,
     required Secret apiToken,
   }) async {
-    final commitUrl = "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases/$id";
+    final commitUrl =
+        "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases/$id";
     final response = await http.patch(
       Uri.parse(commitUrl),
       headers: _getHeaders(apiToken),
@@ -271,7 +285,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required String id,
     required Secret apiToken,
   }) async {
-    final releaseStatusUrl = "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases/$id";
+    final releaseStatusUrl =
+        "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases/$id";
 
     int? releaseId;
     var counter = 0;
@@ -283,7 +298,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
         Uri.parse(releaseStatusUrl),
         headers: _getHeaders(apiToken),
       );
-      final pollResultJson = json.decode(pollResult.body) as Map<String, dynamic>;
+      final pollResultJson =
+          json.decode(pollResult.body) as Map<String, dynamic>;
       releaseId = pollResultJson['release_distinct_id'] as int?;
       counter++;
       await Future.delayed(Duration(seconds: 3));
@@ -304,12 +320,15 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     required bool notifyListeners,
     required Secret apiToken,
   }) async {
-    final distributeUrl = "$_appCenterApiBaseUrl/apps/$ownerName/$appName/releases/$releaseId";
+    final distributeUrl =
+        "$_appCenterApiBaseUrl/apps/$ownerName/$appName/releases/$releaseId";
     final response = await http.patch(
       Uri.parse(distributeUrl),
       headers: _getHeaders(apiToken),
       body: json.encode({
-        'destinations': distributionGroups.map((distributionGroup) => {'name': distributionGroup}).toList(),
+        'destinations': distributionGroups
+            .map((distributionGroup) => {'name': distributionGroup})
+            .toList(),
         "notify_testers": notifyListeners,
       }),
     );
@@ -338,6 +357,7 @@ class AppCenterPlugin extends ImpaktfullPlugin {
     if (_extensionMimeTypeMapper.containsKey(extension)) {
       return _extensionMimeTypeMapper[extension]!;
     }
-    throw ImpaktfullCliError('Extension `$extension` is not supported to upload to AppCenter using the impaktfull_cli');
+    throw ImpaktfullCliError(
+        'Extension `$extension` is not supported to upload to AppCenter using the impaktfull_cli');
   }
 }

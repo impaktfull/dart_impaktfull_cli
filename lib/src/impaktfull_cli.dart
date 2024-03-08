@@ -16,7 +16,8 @@ import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
-typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(T cli);
+typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(
+    T cli);
 
 class ImpaktfullCli {
   final ProcessRunner processRunner;
@@ -59,7 +60,8 @@ class ImpaktfullCli {
   void init() {
     ImpaktfullCliLogger.startSpinner('Initializing the cli');
     ImpaktfullCliLogger.init();
-    ImpaktfullCliLogger.enableVerbose(isVerboseLoggingEnabled: isVerboseLoggingEnabled);
+    ImpaktfullCliLogger.enableVerbose(
+        isVerboseLoggingEnabled: isVerboseLoggingEnabled);
     _initCommands();
     _initPlugins();
     ForceQuitListener.init();
@@ -78,7 +80,8 @@ class ImpaktfullCli {
 
   void _initPlugins() {
     final onePasswordPlugin = OnePasswordPlugin(processRunner: processRunner);
-    final macOsKeyChainPlugin = MacOsKeyChainPlugin(processRunner: processRunner);
+    final macOsKeyChainPlugin =
+        MacOsKeyChainPlugin(processRunner: processRunner);
     final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
     final appCenterPlugin = AppCenterPlugin();
     final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
@@ -122,7 +125,8 @@ class ImpaktfullCli {
         runner.addCommand(command);
       }
       final argResults = runner.argParser.parse(arguments);
-      ImpaktfullCliLogger.enableVerbose(isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
+      ImpaktfullCliLogger.enableVerbose(
+          isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(arguments);
     });
     dispose();

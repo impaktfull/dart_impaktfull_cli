@@ -17,7 +17,8 @@ Future<void> runImpaktfullCli(
     await ImpaktfullCliEnvironment.init();
     await run();
     stopwatch.stop();
-    ImpaktfullCliLogger.log('✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
+    ImpaktfullCliLogger.log(
+        '✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
   } on UsageException catch (e) {
     ImpaktfullCliLogger.error(e.toString());
     exit(64); // Exit code 64 means a usage error occurred.

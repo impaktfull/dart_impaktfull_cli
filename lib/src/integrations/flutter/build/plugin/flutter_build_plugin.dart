@@ -30,7 +30,8 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     if (isGitProject) {
       final isGitClean = await GitUtil.isGitClean(processRunner);
       if (!isGitClean) {
-        throw ImpaktfullCliError('Git is not clean. Please commit or stash your changes before bumping the version.');
+        throw ImpaktfullCliError(
+            'Git is not clean. Please commit or stash your changes before bumping the version.');
       }
     }
     final file = File('release_config.json');
@@ -53,7 +54,8 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       }
     }
     buildNr++;
-    ImpaktfullCliLogger.verbose('New build_nr: $buildNr (for key: $buildNrKey)');
+    ImpaktfullCliLogger.verbose(
+        'New build_nr: $buildNr (for key: $buildNrKey)');
     newConfigData[buildNrKey] = buildNr;
     if (!file.existsSync()) {
       file.createSync(recursive: true);
@@ -112,9 +114,11 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
-    final file = File(join(extension.getBuildDirectory(flavor: flavor).path, 'app-$flavor-release.${extension.fileExtension}'));
+    final file = File(join(extension.getBuildDirectory(flavor: flavor).path,
+        'app-$flavor-release.${extension.fileExtension}'));
     if (!file.existsSync()) {
-      throw ImpaktfullCliError('After building $flavor for Android, `${file.path}` does not exists.');
+      throw ImpaktfullCliError(
+          'After building $flavor for Android, `${file.path}` does not exists.');
     }
     ImpaktfullCliLogger.clearSpinnerPrefix();
     return file;
@@ -165,9 +169,11 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       ],
     ]);
     final files = buildDirectory.listSync();
-    final result = files.where((element) => path.extension(element.path) == '.${extension.fileExtension}');
+    final result = files.where((element) =>
+        path.extension(element.path) == '.${extension.fileExtension}');
     if (result.isEmpty) {
-      throw ImpaktfullCliError('After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
+      throw ImpaktfullCliError(
+          'After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
     }
     if (result.length > 1) {
       throw ImpaktfullCliError(
@@ -176,7 +182,8 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
 
     final ipaFile = File(result.first.path);
     if (!ipaFile.existsSync()) {
-      throw ImpaktfullCliError('After building $flavor for iOS, `${ipaFile.path}` does not exists.');
+      throw ImpaktfullCliError(
+          'After building $flavor for iOS, `${ipaFile.path}` does not exists.');
     }
     ImpaktfullCliLogger.clearSpinnerPrefix();
     return ipaFile;

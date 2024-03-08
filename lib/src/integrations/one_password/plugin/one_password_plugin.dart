@@ -7,7 +7,8 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
-  String get serviceAccountEnvKey => ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
+  String get serviceAccountEnvKey =>
+      ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
 
   const OnePasswordPlugin({
     required super.processRunner,
@@ -39,6 +40,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String outputPath,
     String? vaultName,
     Secret? rawServiceAccount,
+    String? logContext,
   }) async {
     final exportFile = File(outputPath);
     if (!exportFile.existsSync()) {
@@ -59,7 +61,8 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           vaultName,
         ],
       ],
-      log: 'Downloading file from 1Password',
+      log:
+          'Downloading file from 1Password ${logContext == null ? null : '($logContext)'}',
       rawServiceAccount: rawServiceAccount,
     );
     return exportFile;
@@ -83,12 +86,14 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String opUuid,
     required String fieldName,
     Secret? rawServiceAccount,
+    String? logContext,
   }) async {
     final result = await getOnePasswordField(
       vaultName: vaultName,
       opUuid: opUuid,
       fieldName: fieldName,
       rawServiceAccount: rawServiceAccount,
+      logContext: logContext,
     );
     return Secret(result);
   }
@@ -98,6 +103,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String opUuid,
     required String fieldName,
     Secret? rawServiceAccount,
+    String? logContext,
   }) async =>
       _executeOnePasswordCommand(
         [
@@ -105,7 +111,8 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           'read',
           'op://$vaultName/$opUuid/$fieldName',
         ],
-        log: 'Reading field ($fieldName) from 1Password',
+        log:
+            'Reading field ($fieldName) from 1Password ${logContext == null ? null : '($logContext)'}',
         rawServiceAccount: rawServiceAccount,
       );
 
@@ -138,6 +145,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           opUuid: opUuid,
           fieldName: 'password',
           rawServiceAccount: rawServiceAccount,
+          logContext: 'Service Account Credentials',
         ),
       );
 
@@ -152,5 +160,6 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
         outputPath: outputPath,
         vaultName: vaultName,
         rawServiceAccount: rawServiceAccount,
+        logContext: 'Service Account Credentials',
       );
 }

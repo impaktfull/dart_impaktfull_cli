@@ -17,9 +17,11 @@ class ImpaktfullCliEnvironment {
 
   static ImpaktfullCliEnvironment get instance => _instance;
 
-  List<InstalledCliTool> get installedCliTools => allCliTools.where((element) => element.isInstalled).toList();
+  List<InstalledCliTool> get installedCliTools =>
+      allCliTools.where((element) => element.isInstalled).toList();
 
-  List<InstalledCliTool> get notInstalledCliTools => allCliTools.where((element) => !element.isInstalled).toList();
+  List<InstalledCliTool> get notInstalledCliTools =>
+      allCliTools.where((element) => !element.isInstalled).toList();
 
   const ImpaktfullCliEnvironment._({
     required this.workingDirectory,
@@ -44,11 +46,18 @@ class ImpaktfullCliEnvironment {
     return fvmConfigFile.exists();
   }
 
-  static Future<List<InstalledCliTool>> _checkInstalledTools(ProcessRunner processRunner) async =>
-      CliTool.values.where((element) => element.supportedOperatingSystems.contains(OperatingSystem.current)).map((cliTool) => _isToolInstalled(processRunner, cliTool)).wait;
+  static Future<List<InstalledCliTool>> _checkInstalledTools(
+          ProcessRunner processRunner) async =>
+      CliTool.values
+          .where((element) => element.supportedOperatingSystems
+              .contains(OperatingSystem.current))
+          .map((cliTool) => _isToolInstalled(processRunner, cliTool))
+          .wait;
 
-  static Future<InstalledCliTool> _isToolInstalled(ProcessRunner processRunner, CliTool cliTool) async {
-    final result = await processRunner.runProcess(['which', cliTool.commandName]);
+  static Future<InstalledCliTool> _isToolInstalled(
+      ProcessRunner processRunner, CliTool cliTool) async {
+    final result =
+        await processRunner.runProcess(['which', cliTool.commandName]);
     if (result.isEmpty) return InstalledCliTool.notInstalled(cliTool: cliTool);
     return InstalledCliTool.installed(
       cliTool: cliTool,
@@ -62,7 +71,8 @@ class ImpaktfullCliEnvironment {
     }
   }
 
-  static bool isInstalled(CliTool cliTool) => _instance.allCliTools.any((element) => element.cliTool == cliTool);
+  static bool isInstalled(CliTool cliTool) =>
+      _instance.allCliTools.any((element) => element.cliTool == cliTool);
 
   static void requiresInstalledTools(List<CliTool> requiredTools) {
     final requiredToolsFound = <CliTool>[];
@@ -73,20 +83,25 @@ class ImpaktfullCliEnvironment {
       }
     }
     if (requiredToolsFound.length != requiredTools.length) {
-      final missingTools = requiredTools.where((element) => !requiredToolsFound.contains(element));
-      throw ImpaktfullCliError('${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
+      final missingTools = requiredTools
+          .where((element) => !requiredToolsFound.contains(element));
+      throw ImpaktfullCliError(
+          '${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
     }
   }
 
   static void _printCurrentState() {
     ImpaktfullCliLogger.verboseSeperator();
-    ImpaktfullCliLogger.verbose('Operating system: ${OperatingSystem.current.name}');
-    ImpaktfullCliLogger.verbose('Working Dir: `${_instance.workingDirectory.path}`');
+    ImpaktfullCliLogger.verbose(
+        'Operating system: ${OperatingSystem.current.name}');
+    ImpaktfullCliLogger.verbose(
+        'Working Dir: `${_instance.workingDirectory.path}`');
     ImpaktfullCliLogger.verbose('Is fvm project: `${_instance.isFvmProject}`');
     if (_instance.installedCliTools.isNotEmpty) {
       ImpaktfullCliLogger.verbose('Installed Tools:');
       for (final clitool in _instance.installedCliTools) {
-        ImpaktfullCliLogger.verbose('\t${clitool.cliTool.commandName} - ${clitool.path}');
+        ImpaktfullCliLogger.verbose(
+            '\t${clitool.cliTool.commandName} - ${clitool.path}');
       }
     }
     if (_instance.notInstalledCliTools.isNotEmpty) {
@@ -94,7 +109,8 @@ class ImpaktfullCliEnvironment {
       for (final notInstalledCliTool in _instance.notInstalledCliTools) {
         final cliTool = notInstalledCliTool.cliTool;
         var log = '\t${cliTool.commandName}';
-        final installationInstructions = cliTool.installationInstructions[OperatingSystem.current];
+        final installationInstructions =
+            cliTool.installationInstructions[OperatingSystem.current];
         if (installationInstructions != null) {
           log += ' - Install instructions: $installationInstructions';
         }

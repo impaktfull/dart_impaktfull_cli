@@ -1,3 +1,10 @@
+# 0.13.0
+
+# Feat
+- Improved logging to easily follow allong
+- Enable/disable verbose logging during run.
+- Print logs to file on error to (impaktfull_cli.log)
+
 # 0.12.0
 
 # Feat

@@ -13,14 +13,16 @@ class ForceQuitListener {
 
   static void _addListener(AsyncCallback listener) => _listeners.add(listener);
 
-  static void _removeListener(AsyncCallback listener) => _listeners.remove(listener);
+  static void _removeListener(AsyncCallback listener) =>
+      _listeners.remove(listener);
 
   static void init() {
     _subscription = ProcessSignal.sigint.watch().listen((signal) async {
       if (_isShuttingDown) return;
       _isShuttingDown = true;
       ImpaktfullCliLogger.log('\nForce quit detected. Cleaning up...');
-      ImpaktfullCliLogger.verbose('Cleaning up ${_listeners.length} listeners...');
+      ImpaktfullCliLogger.verbose(
+          'Cleaning up ${_listeners.length} listeners...');
       await Future.wait(_listeners.map((e) => e()));
       exit(0);
     });

@@ -19,14 +19,29 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   ) async {
     final keyChainPath = await _getKeyChainPath(name);
     if (keyChainPath != null) {
-      throw ImpaktfullCliError('`$name` keychain already exists, make sure to remove it first.');
+      throw ImpaktfullCliError(
+          '`$name` keychain already exists, make sure to remove it first.');
     }
 
     final fullKeyChainName = _fullKeyChainName(name);
     ImpaktfullCliLogger.verbose('Create Apple KeyChain ($fullKeyChainName)');
-    await processRunner.runProcess(['security', 'create-keychain', '-p', password.value, fullKeyChainName]);
+    await processRunner.runProcess([
+      'security',
+      'create-keychain',
+      '-p',
+      password.value,
+      fullKeyChainName
+    ]);
     final keyChain = await _getUserKeyChains();
-    await processRunner.runProcess(['security', 'list-keychains', '-d', 'user', '-s', fullKeyChainName, ...keyChain]);
+    await processRunner.runProcess([
+      'security',
+      'list-keychains',
+      '-d',
+      'user',
+      '-s',
+      fullKeyChainName,
+      ...keyChain
+    ]);
   }
 
   Future<void> unlockKeyChain(
@@ -35,11 +50,14 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   ) async {
     final keyChainPath = await _getKeyChainPath(name);
     if (keyChainPath == null) {
-      throw ImpaktfullCliError('`$name` keychain does not exists. In order to unlock a keychain, it should be created first.');
+      throw ImpaktfullCliError(
+          '`$name` keychain does not exists. In order to unlock a keychain, it should be created first.');
     }
     final fullName = _fullKeyChainName(name);
-    await processRunner.runProcess(['security', 'set-keychain-settings', fullName]);
-    await processRunner.runProcess(['security', 'unlock-keychain', '-p', password.value, fullName]);
+    await processRunner
+        .runProcess(['security', 'set-keychain-settings', fullName]);
+    await processRunner.runProcess(
+        ['security', 'unlock-keychain', '-p', password.value, fullName]);
   }
 
   Future<void> addCertificateToKeyChain(
@@ -78,7 +96,8 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   ) async {
     final fullKeyChainName = _fullKeyChainName(name);
     ImpaktfullCliLogger.verbose('Remove Apple KeyChain ($fullKeyChainName)');
-    await processRunner.runProcess(['security', 'delete-keychain', fullKeyChainName]);
+    await processRunner
+        .runProcess(['security', 'delete-keychain', fullKeyChainName]);
   }
 
   Future<void> setDefaultKeyChain(String name) async {
@@ -89,21 +108,28 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
       path = await _getKeyChainPath(name);
     }
     if (path == null) {
-      throw ImpaktfullCliError('`$name` keychain does not exists. In order to set the default keychain, it should be created first.');
+      throw ImpaktfullCliError(
+          '`$name` keychain does not exists. In order to set the default keychain, it should be created first.');
     }
     ImpaktfullCliLogger.verbose('Set default Apple KeyChain ($path)');
-    await processRunner.runProcess(['security', 'default-keychain', '-s', path]);
+    await processRunner
+        .runProcess(['security', 'default-keychain', '-s', path]);
   }
 
   Future<String> getDefaultKeyChain() async {
-    final keychainsString = await processRunner.runProcess(['security', 'default-keychain']);
+    final keychainsString =
+        await processRunner.runProcess(['security', 'default-keychain']);
     return keychainsString.trim().replaceAll('"', '');
   }
 
   Future<List<String>> _getUserKeyChains() async {
-    final keychainsString = await processRunner.runProcess(['security', 'list-keychains', '-d', 'user']);
-    final keychainsList = keychainsString.split('\n').where((element) => element.isNotEmpty);
-    return keychainsList.map((keychain) => keychain.replaceAll('"', '').trim()).toList();
+    final keychainsString = await processRunner
+        .runProcess(['security', 'list-keychains', '-d', 'user']);
+    final keychainsList =
+        keychainsString.split('\n').where((element) => element.isNotEmpty);
+    return keychainsList
+        .map((keychain) => keychain.replaceAll('"', '').trim())
+        .toList();
   }
 
   Future<String?> _getKeyChainPath(String keyChain) async {

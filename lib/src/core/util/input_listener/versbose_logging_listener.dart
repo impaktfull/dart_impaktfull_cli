@@ -14,7 +14,8 @@ class VerboseLoggingListener {
 
       if (input.toLowerCase() == 'v' || input.toLowerCase() == 'verbose') {
         ImpaktfullCliLogger.enableVerbose(isVerboseLoggingEnabled: true);
-      } else if (input.toLowerCase() == 'nv' || input.toLowerCase() == 'no-verbose') {
+      } else if (input.toLowerCase() == 'nv' ||
+          input.toLowerCase() == 'no-verbose') {
         ImpaktfullCliLogger.enableVerbose(isVerboseLoggingEnabled: false);
       }
     });

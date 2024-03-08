@@ -26,7 +26,12 @@ class ImpaktfullCliLogger {
   ImpaktfullCliLogger._();
 
   static void init() {
-    _logFile = File(join(Directory.current.path, 'investsuite_cli.log'));
+    _logFile = File(
+      join(
+        Directory.current.path,
+        'impaktfull_cli.log',
+      ),
+    );
   }
 
   static void enableVerbose({bool isVerboseLoggingEnabled = false}) {

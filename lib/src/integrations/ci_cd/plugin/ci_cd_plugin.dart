@@ -88,7 +88,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     if (playStoreUploadConfig != null) {
       await playStorePlugin.uploadToPlayStore(
         file: file,
-        serviceAccountCredentialsFile: playStoreUploadConfig.serviceAccountCredentialsFile,
+        serviceAccountCredentialsFile:
+            playStoreUploadConfig.serviceAccountCredentialsFile,
         trackType: playStoreUploadConfig.trackType,
         releaseStatus: playStoreUploadConfig.releaseStatus,
       );
@@ -153,7 +154,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
       await testflightPlugin.uploadToTestflightWithEmailPassword(
         file: file,
         email: testflightUploadConfig.credentials?.userName,
-        appSpecificPassword: testflightUploadConfig.credentials?.appSpecificPassword,
+        appSpecificPassword:
+            testflightUploadConfig.credentials?.appSpecificPassword,
         type: testflightUploadConfig.type,
       );
     }
@@ -197,10 +199,12 @@ class CiCdPlugin extends ImpaktfullPlugin {
     Secret? globalKeyChainPassword,
   }) async {
     ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
-    final globalKeyChainPasswordSecret = globalKeyChainPassword ?? ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
+    final globalKeyChainPasswordSecret = globalKeyChainPassword ??
+        ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
 
     final defaultKeyChain = await macOsKeyChainPlugin.getDefaultKeyChain();
-    await macOsKeyChainPlugin.createKeyChain(keyChainName, globalKeyChainPasswordSecret);
+    await macOsKeyChainPlugin.createKeyChain(
+        keyChainName, globalKeyChainPasswordSecret);
 
     await ForceQuitListener.catchForceQuit(
       () async {

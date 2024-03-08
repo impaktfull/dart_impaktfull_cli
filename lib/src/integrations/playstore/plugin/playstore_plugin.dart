@@ -14,7 +14,8 @@ import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload
 import 'package:path/path.dart';
 
 class PlayStorePlugin extends ImpaktfullCliPlugin {
-  final _apkOutputDirectory = Directory(join(CliConstants.buildFolderPath, 'aab_to_apk_output'));
+  final _apkOutputDirectory =
+      Directory(join(CliConstants.buildFolderPath, 'aab_to_apk_output'));
   PlayStorePlugin({
     required super.processRunner,
   });
@@ -68,7 +69,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
             uploadOptions: UploadOptions(),
           );
 
-          ImpaktfullCliLogger.startSpinner('Create release track (${trackType.value} - ${releaseStatus.value})');
+          ImpaktfullCliLogger.startSpinner(
+              'Create release track (${trackType.value} - ${releaseStatus.value})');
           final trackRelease = Track(
             releases: [
               TrackRelease(
@@ -98,7 +100,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
       ImpaktfullCliLogger.clearSpinnerPrefix();
     } on DetailedApiRequestError catch (e) {
       if (e.message == 'Version code $versionCode has already been used.') {
-        throw ImpaktfullCliError('The version code must be higher than the previously uploaded version. (must be higher than $versionCode)');
+        throw ImpaktfullCliError(
+            'The version code must be higher than the previously uploaded version. (must be higher than $versionCode)');
       }
       rethrow;
     }
@@ -112,8 +115,10 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
   }) async {
     AutoRefreshingAuthClient? client_;
     try {
-      final serviceAccountCredentials = _getServiceAccountCredentials(serviceAccountCredentialsFile);
-      client_ = await clientViaServiceAccount(serviceAccountCredentials, scopes);
+      final serviceAccountCredentials =
+          _getServiceAccountCredentials(serviceAccountCredentialsFile);
+      client_ =
+          await clientViaServiceAccount(serviceAccountCredentials, scopes);
 
       return await handler(client_);
     } finally {
@@ -121,7 +126,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     }
   }
 
-  ServiceAccountCredentials _getServiceAccountCredentials(File? serviceAccountCredentialsFile) {
+  ServiceAccountCredentials _getServiceAccountCredentials(
+      File? serviceAccountCredentialsFile) {
     ImpaktfullCliLogger.startSpinner('Assembling google service account');
     var file = serviceAccountCredentialsFile;
     if (file == null) {
@@ -138,7 +144,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     if (file != null && file.existsSync()) {
       credentials = Secret(file.readAsStringSync());
     } else {
-      credentials = ImpaktfullCliEnvironmentVariables.getGoogleServiceAccountCredentials();
+      credentials = ImpaktfullCliEnvironmentVariables
+          .getGoogleServiceAccountCredentials();
     }
     final serviceAccountCredentialsJson = jsonDecode(credentials.value);
     return ServiceAccountCredentials.fromJson(serviceAccountCredentialsJson);
@@ -146,7 +153,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
 
   Future<String> _getPackageName(File file) async {
     final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
+    final config = await processRunner
+        .runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
     const regex = r"package: name='([^']*)'";
     final value = RegExp(regex).firstMatch(config)?.group(1);
     if (value == null) {
@@ -157,7 +165,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
 
   Future<String> _getVersionCode(File file) async {
     final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
+    final config = await processRunner
+        .runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
     const regex = r"versionCode='(\d+)'";
     final value = RegExp(regex).firstMatch(config)?.group(1);
     if (value == null) {
@@ -168,7 +177,8 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
 
   Future<String> _getVersionName(File file) async {
     final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
+    final config = await processRunner
+        .runProcess(['aapt2', 'dump', 'badging', apkFile.path]);
     const regex = r"versionName='([^']*)'";
     final value = RegExp(regex).firstMatch(config)?.group(1);
     if (value == null) {
@@ -182,20 +192,28 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     if (fileExtension == '.aab') {
       final apksFile = File('app.apks');
       final apksZipFile = File('aab_to_apks.zip');
-      final baseApkFile = File(join(_apkOutputDirectory.path, 'splits', 'base-master.apk'));
-      await processRunner.runProcess(['bundletool', 'build-apks', '--bundle=${file.path}', '--output=${apksFile.path}']);
+      final baseApkFile =
+          File(join(_apkOutputDirectory.path, 'splits', 'base-master.apk'));
+      await processRunner.runProcess([
+        'bundletool',
+        'build-apks',
+        '--bundle=${file.path}',
+        '--output=${apksFile.path}'
+      ]);
       apksFile.renameSync(apksZipFile.path);
       if (_apkOutputDirectory.existsSync()) {
         _apkOutputDirectory.deleteSync(recursive: true);
       }
       _apkOutputDirectory.createSync(recursive: true);
-      await processRunner.runProcess(['unzip', apksZipFile.path, '-d', _apkOutputDirectory.path]);
+      await processRunner.runProcess(
+          ['unzip', apksZipFile.path, '-d', _apkOutputDirectory.path]);
       apksZipFile.deleteSync(recursive: true);
       return _getApk(baseApkFile);
     } else if (fileExtension == '.apk') {
       return file;
     } else {
-      throw ImpaktfullCliError('Automatic detection of the package name is currently only supported for [.aab & .apk] files');
+      throw ImpaktfullCliError(
+          'Automatic detection of the package name is currently only supported for [.aab & .apk] files');
     }
   }
 }
