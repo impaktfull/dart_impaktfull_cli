@@ -10,7 +10,7 @@ class VerboseLoggingListener {
 
   static void startInputListener() {
     _subscription?.cancel();
-    _subscription = stdin.listen((data) {
+    _subscription = stdin.asBroadcastStream().listen((data) {
       final input = String.fromCharCodes(data).trim();
 
       if (input.toLowerCase() == 'v' || input.toLowerCase() == 'verbose') {

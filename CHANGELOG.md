@@ -1,3 +1,9 @@
+# 0.13.6
+
+## Fix
+
+- Verbose logger listener steam already listened to
+
 # 0.13.5
 
 ## Fix
