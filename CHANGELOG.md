@@ -1,3 +1,9 @@
+# 0.13.7
+
+## Fix
+
+- Verbose logger listener converted to a broadcast stream
+
 # 0.13.6
 
 ## Fix

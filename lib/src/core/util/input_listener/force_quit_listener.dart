@@ -17,8 +17,7 @@ class ForceQuitListener {
       _listeners.remove(listener);
 
   static void init() {
-    _subscription =
-        ProcessSignal.sigint.watch().asBroadcastStream().listen((signal) async {
+    _subscription = ProcessSignal.sigint.watch().listen((signal) async {
       if (_isShuttingDown) return;
       _isShuttingDown = true;
       ImpaktfullCliLogger.log('\nForce quit detected. Cleaning up...');
