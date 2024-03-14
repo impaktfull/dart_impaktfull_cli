@@ -62,7 +62,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
         ],
       ],
       log:
-          'Downloading file from 1Password ${logContext == null ? null : '($logContext)'}',
+          'Downloading file from 1Password ${logContext == null ? '' : '($logContext)'}',
       rawServiceAccount: rawServiceAccount,
     );
     return exportFile;

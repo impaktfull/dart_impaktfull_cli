@@ -1,3 +1,9 @@
+# 0.13.8
+
+## Fix
+
+- Logger context for onepassword
+
 # 0.13.7
 
 ## Fix
