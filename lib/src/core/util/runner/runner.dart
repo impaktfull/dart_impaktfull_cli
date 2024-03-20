@@ -19,6 +19,7 @@ Future<void> runImpaktfullCli(
     await run();
     stopwatch.stop();
     VerboseLoggingListener.stopListening();
+    ImpaktfullCliLogger.endSpinner();
     ImpaktfullCliLogger.log(
         '✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
   } on ImpaktfullCliExitError catch (e, trace) {

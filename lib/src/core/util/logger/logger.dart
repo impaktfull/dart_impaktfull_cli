@@ -127,7 +127,12 @@ class ImpaktfullCliLogger {
   }
 
   // Input
-  static bool askQuestion(String title) {
+  static String? askQuestion(String title) {
+    log('\n$title');
+    return stdin.readLineSync(encoding: utf8);
+  }
+
+  static bool askYesNoQuestion(String title) {
     log('\n$title (y/n)');
     bool? result;
     do {
@@ -210,6 +215,7 @@ class ImpaktfullCliLogger {
   }
 
   static void endSpinner() {
+    if (_cliSpinnerActionDescription == null) return;
     final message = 'Successfully finished: `$_cliSpinnerActionDescription`';
     if (_verbose) {
       log('✅ $message');

@@ -7,4 +7,4 @@ then
   cd ..
 fi
 
-dart format . --line-length=180
+dart format .

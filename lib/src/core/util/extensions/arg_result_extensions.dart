@@ -1,6 +1,5 @@
 import 'package:args/args.dart';
 import 'package:impaktfull_cli/impaktfull_cli.dart';
-import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_parser_extensions.dart';
 
 extension ArgResultExtensions on ArgResults? {
@@ -19,7 +18,7 @@ extension ArgResultExtensions on ArgResults? {
   }
 
   T? getOption<T>(String option) {
-    if (T is Secret) {
+    if (T == Secret) {
       final value = this?[option] as String?;
       if (value == null) {
         return null;
@@ -30,6 +29,36 @@ extension ArgResultExtensions on ArgResults? {
     final value = this?[option] as T?;
     if (value == null) return null;
     return value;
+  }
+
+  T? getOptionOrAskInput<T>(String option, String question) {
+    final value = getOption<T>(option);
+    if (value != null) return value;
+    if (T == bool) {
+      return ImpaktfullCliLogger.askYesNoQuestion(question) as T;
+    }
+    final result = ImpaktfullCliLogger.askQuestion(question);
+    if (result == null) return null;
+    if (result.isEmpty) return null;
+    if (T == Secret) {
+      return Secret(result) as T;
+    } else if (T == double) {
+      return double.tryParse(result) as T;
+    } else if (T == int) {
+      return int.tryParse(result) as T;
+    }
+    return result as T?;
+  }
+
+  T getRequiredOptionOrAskInput<T>(String option, String question) {
+    T? result;
+    String? suffix;
+    do {
+      result = getOptionOrAskInput<T>(
+          option, suffix == null ? question : '$question: $suffix');
+      suffix = '(Required)';
+    } while (result == null);
+    return result;
   }
 
   T getRequiredOption<T>(String option) {

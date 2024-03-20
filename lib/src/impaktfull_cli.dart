@@ -3,6 +3,7 @@ import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/input_listener/force_quit_listener.dart';
 import 'package:impaktfull_cli/src/core/util/input_listener/versbose_logging_listener.dart';
+import 'package:impaktfull_cli/src/integrations/android/android_command.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple_certificate/command/apple_certificate_root_command.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_parser_extensions.dart';
@@ -76,6 +77,7 @@ class ImpaktfullCli {
   void _initCommands() {
     _commands = {
       AppleCertificateRootCommand(processRunner: processRunner),
+      AndroidRootCommand(processRunner: processRunner),
     };
   }
 
