@@ -8,34 +8,34 @@ class KeyStoreCredentials {
   final String keyAlias;
   final Secret password;
 
-  final String? dNameFullName;
-  final String? dNameOrganization;
-  final String? dNameOrganizationUnit;
-  final String? dNameCity;
-  final String? dNameState;
-  final String? dNameCountry;
+  final String? fullName;
+  final String? organization;
+  final String? organizationUnit;
+  final String? city;
+  final String? state;
+  final String? country;
 
   KeyStoreCredentials({
     required this.name,
     required this.storeFile,
     required this.keyAlias,
     required this.password,
-    required this.dNameFullName,
-    required this.dNameOrganization,
-    required this.dNameOrganizationUnit,
-    required this.dNameCity,
-    required this.dNameState,
-    required this.dNameCountry,
+    required this.fullName,
+    required this.organization,
+    required this.organizationUnit,
+    required this.city,
+    required this.state,
+    required this.country,
   });
 
   String? get dName {
     final dNameItems = [
-      dNameFullName == null ? null : "cn=$dNameFullName",
-      dNameOrganization == null ? null : "o=$dNameOrganization",
-      dNameOrganizationUnit == null ? null : "ou=$dNameOrganizationUnit",
-      dNameCity == null ? null : "l=$dNameCity",
-      dNameState == null ? null : "st=$dNameState",
-      dNameCountry == null ? null : "c=$dNameCountry",
+      fullName == null ? null : "cn=$fullName",
+      organization == null ? null : "o=$organization",
+      organizationUnit == null ? null : "ou=$organizationUnit",
+      city == null ? null : "l=$city",
+      state == null ? null : "st=$state",
+      country == null ? null : "c=$country",
     ].whereType<String>();
     if (dNameItems.isEmpty) return null;
     return dNameItems.join(', ');

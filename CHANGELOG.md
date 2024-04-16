@@ -1,3 +1,9 @@
+# 0.14.1
+
+## Fix
+
+- Typo's in the `create_keychain` command
+
 # 0.14.0
 
 ## Feat

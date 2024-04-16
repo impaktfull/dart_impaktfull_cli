@@ -1,5 +1,5 @@
 import 'package:args/command_runner.dart';
-import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/remove/android_create_keystore_command.dart';
+import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/create_keystore/android_create_keystore_command.dart';
 import 'package:impaktfull_cli/src/core/command/command/root_command.dart';
 
 class AndroidRootCommand extends RootCommand {

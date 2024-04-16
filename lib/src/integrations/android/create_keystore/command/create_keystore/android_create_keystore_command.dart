@@ -1,7 +1,7 @@
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/command/command/cli_command.dart';
-import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/remove/android_create_keystore_command_config.dart';
-import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/remove/model/android_create_keystore_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/create_keystore/android_create_keystore_command_config.dart';
+import 'package:impaktfull_cli/src/integrations/android/create_keystore/command/create_keystore/model/android_create_keystore_config_data.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/integrations/android/create_keystore/plugin/android_create_keystore_plugin.dart';
 
@@ -29,12 +29,12 @@ class AndroidCreateKeystoreCommand
       ImpaktfullCliLogger.startSpinner('Creating keystore for $name');
       await androidCreateKeyStorePlugin.createKeyStore(
         name: name,
-        dNameFullName: configData.dNameFullName,
-        dNameOrganization: configData.dNameOrganization,
-        dNameOrganizationUnit: configData.dNameOrganizationUnit,
-        dNameCity: configData.dNameCity,
-        dNameState: configData.dNameState,
-        dNameCountry: configData.dNameCountry,
+        fullName: configData.fullName,
+        organization: configData.organization,
+        organizationUnit: configData.organizationUnit,
+        city: configData.city,
+        state: configData.state,
+        country: configData.country,
       );
     }
   }

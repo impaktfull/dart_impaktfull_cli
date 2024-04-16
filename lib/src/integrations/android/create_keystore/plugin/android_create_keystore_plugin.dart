@@ -15,12 +15,12 @@ class AndroidCreateKeyStorePlugin extends ImpaktfullCliPlugin {
 
   Future<KeyStoreCredentials> createKeyStore({
     required String name,
-    String? dNameFullName,
-    String? dNameOrganization,
-    String? dNameOrganizationUnit,
-    String? dNameCity,
-    String? dNameState,
-    String? dNameCountry,
+    String? fullName,
+    String? organization,
+    String? organizationUnit,
+    String? city,
+    String? state,
+    String? country,
   }) async {
     final alias = 'android';
     final keystoreFile = File(join('android', 'keystore', '$name.keystore'));
@@ -36,12 +36,12 @@ class AndroidCreateKeyStorePlugin extends ImpaktfullCliPlugin {
       storeFile: keystoreFile,
       password: Secret.random(),
       keyAlias: alias,
-      dNameFullName: dNameFullName,
-      dNameOrganization: dNameOrganization,
-      dNameOrganizationUnit: dNameOrganizationUnit,
-      dNameState: dNameState,
-      dNameCity: dNameCity,
-      dNameCountry: dNameCountry,
+      fullName: fullName,
+      organization: organization,
+      organizationUnit: organizationUnit,
+      state: state,
+      city: city,
+      country: country,
     );
     await processRunner.runProcess([
       'keytool',
