@@ -35,3 +35,13 @@ class TestCli extends ImpaktfullCli {
   Future<void> run(ImpaktfullCliRunner<TestCli> runner) => super.run(runner as ImpaktfullCliRunner<ImpaktfullCli>);
 }
 ```
+
+## Commands
+
+### android
+
+#### create_keychain
+
+```bash
+dart run impaktfull_cli android create_keychain 
+```
