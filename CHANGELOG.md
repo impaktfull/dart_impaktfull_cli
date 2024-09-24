@@ -1,3 +1,9 @@
+# 0.15.1
+
+## Fix
+
+- Issue where flavor was still used even if it was null (flutter build)
+
 # 0.15.0
 
 ## Added

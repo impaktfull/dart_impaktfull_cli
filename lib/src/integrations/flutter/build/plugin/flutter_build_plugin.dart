@@ -115,8 +115,16 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
-    final file = File(join(extension.getBuildDirectory(flavor: flavor).path,
-        'app-$flavor-release.${extension.fileExtension}'));
+    final file = File(joinAll(
+      [
+        extension.getBuildDirectory(flavor: flavor).path,
+        if (flavor == null) ...[
+          'app-release.${extension.fileExtension}',
+        ] else ...[
+          'app-$flavor-release.${extension.fileExtension}',
+        ],
+      ],
+    ));
     if (!file.existsSync()) {
       throw ImpaktfullCliError(
           'After building $flavor for Android, `${file.path}` does not exists.');

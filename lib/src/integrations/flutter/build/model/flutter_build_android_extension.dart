@@ -17,13 +17,30 @@ enum FlutterBuildAndroidExtension {
 
 extension FlutterBuildAndroidExtensions on FlutterBuildAndroidExtension {
   Directory getBuildDirectory({String? flavor}) {
+    final List<String> parts;
     switch (this) {
       case FlutterBuildAndroidExtension.apk:
-        return Directory(
-            join('build', 'app', 'outputs', 'apk', flavor, 'release'));
+        parts = [
+          'build',
+          'app',
+          'outputs',
+          'apk',
+          if (flavor != null) flavor,
+          'release',
+        ];
       case FlutterBuildAndroidExtension.aab:
-        return Directory(
-            join('build', 'app', 'outputs', 'bundle', '${flavor}Release'));
+        parts = [
+          'build',
+          'app',
+          'outputs',
+          'bundle',
+          if (flavor == null) ...[
+            'release',
+          ] else ...[
+            '${flavor}Release',
+          ]
+        ];
     }
+    return Directory(joinAll(parts));
   }
 }
