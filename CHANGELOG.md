@@ -1,3 +1,9 @@
+# 0.15.0
+
+## Added
+
+- Choose if you want to commit the version bump or not (even if it is a git repo)
+
 # 0.14.2
 
 ## Fix

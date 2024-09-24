@@ -23,6 +23,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
   Future<int> versionBump({
     String? flavor,
     String? suffix,
+    bool commitChanges = true,
   }) async {
     ImpaktfullCliLogger.setSpinnerPrefix('VersionBump');
     ImpaktfullCliLogger.startSpinner('Validating git clean');
@@ -62,7 +63,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     }
     final encoder = JsonEncoder.withIndent('  ');
     file.writeAsStringSync(encoder.convert(newConfigData));
-    if (isGitProject) {
+    if (commitChanges && isGitProject) {
       await processRunner.runProcess([
         'git',
         'add',
