@@ -42,8 +42,13 @@ class ImpaktfullCliEnvironment {
   }
 
   static Future<bool> _checkIfActiveProjectIsFvm(Directory workingDir) async {
+    final fvmrcFile = File(join(workingDir.path, '.fvmrc'));
+    if (fvmrcFile.existsSync()) {
+      return true;
+    }
+    // fvm_config.json is the old config file
     final fvmConfigFile = File(join(workingDir.path, 'fvm', 'fvm_config.json'));
-    return fvmConfigFile.exists();
+    return fvmConfigFile.existsSync();
   }
 
   static Future<List<InstalledCliTool>> _checkInstalledTools(

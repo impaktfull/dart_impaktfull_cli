@@ -1,3 +1,9 @@
+# 0.15.2
+
+## Fix
+
+- fvm new config support (if fvm_config.json is not present)
+
 # 0.15.1
 
 ## Fix
@@ -328,11 +334,11 @@
 
 ## Refactor
 
-- The plugins should be more flexible now. `ImpaktfullCli()` should be used as a starting point. 
+- The plugins should be more flexible now. `ImpaktfullCli()` should be used as a starting point.
   These methods should make it more clear how to use the plugins:
-    - runWithPlugin<T>()
-    - runWithCli()
-    - getPlugin()
+  - runWithPlugin<T>()
+  - runWithCli()
+  - getPlugin()
 
 # 0.0.4
 
@@ -359,11 +365,11 @@
 
 - Unstable initial version.
 - Support for:
-    - build flutter app
-    - upload ipa to appcenter
-    - upload apk to appcenter
-    - upload api to testflight
-    - upload apk to playstore
-    - upload aab to playstore
-    - create keychain
-    - read from 1password with service account
+  - build flutter app
+  - upload ipa to appcenter
+  - upload apk to appcenter
+  - upload api to testflight
+  - upload apk to playstore
+  - upload aab to playstore
+  - create keychain
+  - read from 1password with service account
