@@ -1,3 +1,9 @@
+# 0.15.3
+
+## Fix
+
+- License update to 2025
+
 # 0.15.2
 
 ## Fix
