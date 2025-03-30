@@ -11,8 +11,7 @@ class TestCoverageReport {
 
   int get amountOfLines => _amountOfLines ?? _lcovFile?.amountOfLines ?? 0;
 
-  int get amountOfLinesCovered =>
-      _amountOfLinesCovered ?? _lcovFile?.amountOfLinesCovered ?? 0;
+  int get amountOfLinesCovered => _amountOfLinesCovered ?? _lcovFile?.amountOfLinesCovered ?? 0;
 
   LcovFile get lcovFile => _lcovFile!;
 
@@ -38,6 +37,13 @@ class TestCoverageReport {
     final percentage = (lcovFile.percentage * 100).toStringAsFixed(2);
     final amountOfLinesCovered = lcovFile.amountOfLinesCovered;
     final amountOfLines = lcovFile.amountOfLines;
-    return '\n$name test coverage:\n=> $percentage% ($amountOfLinesCovered / $amountOfLines)\n';
+    final sb = StringBuffer();
+    sb.writeln('\n$name test coverage:');
+    if (amountOfLines == 0) {
+      sb.writeln('=> The test coverage report does not contain any lines! Did you write any tests?');
+    } else {
+      sb.writeln('=> $percentage% ($amountOfLinesCovered / $amountOfLines)');
+    }
+    return sb.toString();
   }
 }

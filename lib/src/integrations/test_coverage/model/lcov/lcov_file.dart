@@ -15,7 +15,7 @@ class LcovFile {
   final List<LcovFileSourceFile> sources;
 
   double get percentage {
-    if (amountOfLines == 0) return 100;
+    if (amountOfLines == 0) return 1;
     return amountOfLinesCovered / amountOfLines;
   }
 

@@ -1,3 +1,9 @@
+# 0.18.1
+
+## Fix
+
+- Fix 1000% instead of 100% if there are no lines in the test coverage report
+
 # 0.18.0
 
 ## Added
