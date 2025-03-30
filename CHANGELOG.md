@@ -1,4 +1,9 @@
-# 0.20.2
+
+# 0.21.0
+
+## Added
+
+- Make it posible to override the lcov file changes were made because of the `ignorePatterns`
 
 ## Fix
 

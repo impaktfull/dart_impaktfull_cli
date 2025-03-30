@@ -65,7 +65,7 @@ class LcovFile {
         final number = int.parse(parts[0]);
         final hits = int.parse(parts[1]);
         final fileLine = LcovFileSourceFileLine(
-          number: number,
+          lineNumber: number,
           hits: hits,
           line: null,
         );
@@ -88,6 +88,21 @@ class LcovFile {
     return LcovFile(
       sources: sources,
     );
+  }
+
+  @override
+  String toString() {
+    final sb = StringBuffer();
+    for (final source in sources) {
+      sb.writeln('SF:${source.path}');
+      for (final line in source.lines) {
+        sb.writeln('DA:${line.lineNumber},${line.hits}');
+      }
+      sb.writeln('LF:${source.lines.length}');
+      sb.writeln('LH:${source.lines.where((e) => e.hits > 0).length}');
+      sb.writeln('end_of_record');
+    }
+    return sb.toString();
   }
 }
 
@@ -125,12 +140,12 @@ class LcovFileSourceFile {
 }
 
 class LcovFileSourceFileLine {
-  final int number;
+  final int lineNumber;
   final int hits;
   final String? line;
 
   const LcovFileSourceFileLine({
-    required this.number,
+    required this.lineNumber,
     required this.hits,
     required this.line,
   });

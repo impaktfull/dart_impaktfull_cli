@@ -17,6 +17,7 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
     required String path,
     required TestCoverageType type,
     String outputPath = 'coverage',
+    bool overrideLcovFile = true,
     List<RegExp> ignorePatterns = const [],
   }) async {
     if (outputPath.isEmpty) {
@@ -30,6 +31,7 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
     final lcovFile = await _cleanupLcovFile(
       file: file,
       ignorePatterns: ignorePatterns,
+      overrideLcovFile: overrideLcovFile,
     );
     return TestCoverageReport.lcov(
       name: path,
@@ -40,8 +42,13 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
   Future<LcovFile> _cleanupLcovFile({
     required File file,
     required List<RegExp> ignorePatterns,
+    required bool overrideLcovFile,
   }) async {
     final lcovFile = LcovFile.fromFile(file);
-    return lcovFile.ignorePatterns(ignorePatterns);
+    final newLcovFile = lcovFile.ignorePatterns(ignorePatterns);
+    if (overrideLcovFile) {
+      await file.writeAsString(newLcovFile.toString());
+    }
+    return newLcovFile;
   }
 }

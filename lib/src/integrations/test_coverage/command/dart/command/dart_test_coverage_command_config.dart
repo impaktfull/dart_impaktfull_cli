@@ -7,7 +7,7 @@ class DartTestCoverageCommandConfig
     extends CommandConfig<DartTestCoverageConfigData> {
   static const String _optionRunTests = 'runTests';
   static const String _optionConvertToLcov = 'convertToLcov';
-
+  static const String _optionOverrideLcovFile = 'overrideLcovFile';
   const DartTestCoverageCommandConfig();
 
   @override
@@ -22,6 +22,12 @@ class DartTestCoverageCommandConfig
       help: 'Convert test coverage report to lcov format',
       defaultsTo: true,
     );
+    argParser.addFlag(
+      _optionOverrideLcovFile,
+      help:
+          'Override the lcov file changes were made because of the `ignorePatterns`',
+      defaultsTo: true,
+    );
   }
 
   @override
@@ -29,6 +35,7 @@ class DartTestCoverageCommandConfig
       DartTestCoverageConfigData(
         runTests: argResults.getFlag(_optionRunTests),
         convertToLcov: argResults.getFlag(_optionConvertToLcov),
+        overrideLcovFile: argResults.getFlag(_optionOverrideLcovFile),
         ignorePatterns: [
           RegExp(r'.*\.g\.dart$'),
           RegExp(r'.*\.navigator\.dart$'),

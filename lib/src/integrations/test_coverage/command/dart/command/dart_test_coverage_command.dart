@@ -58,6 +58,7 @@ class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
     final lcovFile = await testCoveragePlugin.testCoverage(
       path: '.',
       type: TestCoverageType.lcovInfo,
+      overrideLcovFile: configData.overrideLcovFile,
       ignorePatterns: configData.ignorePatterns,
     );
     ImpaktfullCliLogger.endSpinner();
