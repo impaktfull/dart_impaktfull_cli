@@ -25,10 +25,12 @@ class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
   @override
   Future<void> runCommand(DartTestCoverageConfigData configData) async {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
+    ImpaktfullCliLogger.startSpinner('Generating test coverage report...');
     final lcovFile = await testCoveragePlugin.testCoverage(
       path: '.',
       type: TestCoverageType.lcovInfo,
     );
+    ImpaktfullCliLogger.endSpinner();
     ImpaktfullCliLogger.log(lcovFile.printReport('Flutter'));
   }
 }

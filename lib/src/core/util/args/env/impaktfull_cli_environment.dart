@@ -61,17 +61,25 @@ class ImpaktfullCliEnvironment {
 
   static Future<InstalledCliTool> _isToolInstalled(
       ProcessRunner processRunner, CliTool cliTool) async {
-    final result =
-        await processRunner.runProcess(['which', cliTool.commandName]);
-    if (result.isEmpty) {
+    try {
+      final result =
+          await processRunner.runProcess(['which', cliTool.commandName]);
+      if (result.isEmpty) {
+        return InstalledCliTool.notInstalled(
+          cliTool: cliTool,
+        );
+      }
+      return InstalledCliTool.installed(
+        cliTool: cliTool,
+        path: result,
+      );
+    } catch (e) {
+      ImpaktfullCliLogger.log(
+          'Failed to check if ${cliTool.commandName} is installed');
       return InstalledCliTool.notInstalled(
         cliTool: cliTool,
       );
     }
-    return InstalledCliTool.installed(
-      cliTool: cliTool,
-      path: result,
-    );
   }
 
   static void requiresMacOs({required String reason}) {

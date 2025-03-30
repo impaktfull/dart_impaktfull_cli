@@ -1,3 +1,9 @@
+# 0.17.1
+
+## Fix
+
+- Error when checking if a cli tool is installed
+
 # 0.17.0
 
 ## Added
