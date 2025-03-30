@@ -6,7 +6,8 @@ import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/comma
 import 'package:impaktfull_cli/src/integrations/test_coverage/model/test_coverage_type.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/plugin/test_coverage_plugin.dart';
 
-class FlutterTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
+class FlutterTestCoverageCommand
+    extends CliCommand<DartTestCoverageConfigData> {
   FlutterTestCoverageCommand({
     required super.processRunner,
   });
@@ -15,10 +16,12 @@ class FlutterTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> 
   String get name => 'flutter';
 
   @override
-  String get description => 'Create a test coverage report for a Flutter project (after lcov.info is already generated)';
+  String get description =>
+      'Create a test coverage report for a Flutter project (after lcov.info is already generated)';
 
   @override
-  CommandConfig<DartTestCoverageConfigData> getConfig() => DartTestCoverageCommandConfig();
+  CommandConfig<DartTestCoverageConfigData> getConfig() =>
+      DartTestCoverageCommandConfig();
 
   @override
   Future<void> runCommand(DartTestCoverageConfigData configData) async {

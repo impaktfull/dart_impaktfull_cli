@@ -15,10 +15,12 @@ class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
   String get name => 'dart';
 
   @override
-  String get description => 'Create a test coverage report for a Dart project (after lcov.info is already generated)';
+  String get description =>
+      'Create a test coverage report for a Dart project (after lcov.info is already generated)';
 
   @override
-  CommandConfig<DartTestCoverageConfigData> getConfig() => DartTestCoverageCommandConfig();
+  CommandConfig<DartTestCoverageConfigData> getConfig() =>
+      DartTestCoverageCommandConfig();
 
   @override
   Future<void> runCommand(DartTestCoverageConfigData configData) async {

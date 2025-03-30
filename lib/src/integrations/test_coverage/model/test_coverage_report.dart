@@ -11,7 +11,8 @@ class TestCoverageReport {
 
   int get amountOfLines => _amountOfLines ?? _lcovFile?.amountOfLines ?? 0;
 
-  int get amountOfLinesCovered => _amountOfLinesCovered ?? _lcovFile?.amountOfLinesCovered ?? 0;
+  int get amountOfLinesCovered =>
+      _amountOfLinesCovered ?? _lcovFile?.amountOfLinesCovered ?? 0;
 
   LcovFile get lcovFile => _lcovFile!;
 
