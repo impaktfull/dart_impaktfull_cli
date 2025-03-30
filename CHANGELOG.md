@@ -1,3 +1,9 @@
+# 0.23.0
+
+## Added
+
+- Added ci/cd report status command (to slack by default)
+
 # 0.22.0
 
 ## Added

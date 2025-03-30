@@ -12,6 +12,7 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/core/util/runner/runner.dart';
 import 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
@@ -84,6 +85,7 @@ class ImpaktfullCli {
       AppleCertificateRootCommand(processRunner: processRunner),
       TestCoverageRootCommand(processRunner: processRunner),
       SlackRootCommand(processRunner: processRunner),
+      CiCdRootCommand(processRunner: processRunner),
     };
   }
 

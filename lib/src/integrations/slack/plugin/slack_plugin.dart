@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
+import 'package:impaktfull_cli/src/integrations/slack/model/slack_message_attachment.dart';
 
 class SlackPlugin extends ImpaktfullCliPlugin {
   SlackPlugin({required super.processRunner});
 
   Future<void> sendMessage({
-    required String message,
     required String channelName,
+    String? message,
+    List<SlackMessageAttachment> attachments = const [],
   }) async {
     final slackBotToken = ImpaktfullCliEnvironmentVariables.getSlackBotToken();
 
@@ -20,7 +22,12 @@ class SlackPlugin extends ImpaktfullCliPlugin {
       },
       body: jsonEncode({
         'channel': '#$channelName',
-        'text': message,
+        if (message != null) ...{
+          'text': message,
+        },
+        if (attachments.isNotEmpty) ...{
+          'attachments': attachments.map((e) => e.toJson()).toList(),
+        },
       }),
     );
 
