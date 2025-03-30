@@ -19,9 +19,13 @@ class LcovFile {
     return amountOfLinesCovered / amountOfLines;
   }
 
-  int get amountOfLines => sources.map((e) => e.lines.length).fold<int>(0, (sum, lines) => sum + lines);
+  int get amountOfLines => sources
+      .map((e) => e.lines.length)
+      .fold<int>(0, (sum, lines) => sum + lines);
 
-  int get amountOfLinesCovered => sources.map((e) => e.lines.where((e) => e.hits > 0).length).fold<int>(0, (sum, lines) => sum + lines);
+  int get amountOfLinesCovered => sources
+      .map((e) => e.lines.where((e) => e.hits > 0).length)
+      .fold<int>(0, (sum, lines) => sum + lines);
 
   const LcovFile({
     required this.sources,
@@ -104,10 +108,12 @@ class LcovFileSourceFile {
     final amountOfLines = lines.length;
     final amountOfLinesCovered = lines.where((e) => e.hits > 0).length;
     if (amountOfLines != linesFound) {
-      throw ImpaktfullCliError('Amount of lines found does not match amount of lines in `$path`');
+      throw ImpaktfullCliError(
+          'Amount of lines found does not match amount of lines in `$path`');
     }
     if (amountOfLinesCovered != linesHit) {
-      throw ImpaktfullCliError('Amount of lines hit does not match amount of lines in `$path`');
+      throw ImpaktfullCliError(
+          'Amount of lines hit does not match amount of lines in `$path`');
     }
   }
 
