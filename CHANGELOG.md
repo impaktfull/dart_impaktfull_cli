@@ -1,3 +1,9 @@
+# 0.18.0
+
+## Added
+
+- Run tests and convert to lcov.info for Flutter and Dart projects
+
 # 0.17.1
 
 ## Fix

@@ -14,7 +14,10 @@ import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 class LcovFile {
   final List<LcovFileSourceFile> sources;
 
-  double get percentage => amountOfLinesCovered / amountOfLines;
+  double get percentage {
+    if (amountOfLines == 0) return 100;
+    return amountOfLinesCovered / amountOfLines;
+  }
 
   int get amountOfLines => sources
       .map((e) => e.lines.length)

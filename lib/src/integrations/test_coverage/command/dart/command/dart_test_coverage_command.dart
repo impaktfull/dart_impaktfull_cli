@@ -25,6 +25,35 @@ class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
   @override
   Future<void> runCommand(DartTestCoverageConfigData configData) async {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
+
+    if (configData.runTests) {
+      ImpaktfullCliLogger.startSpinner('Running tests...');
+      await processRunner.runProcess([
+        if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
+          'fvm',
+        ],
+        'dart',
+        'test',
+        '--coverage=coverage',
+      ]);
+      ImpaktfullCliLogger.endSpinner();
+    }
+    if (configData.convertToLcov) {
+      ImpaktfullCliLogger.startSpinner('Converting to lcov...');
+      await processRunner.runProcess([
+        if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
+          'fvm',
+        ],
+        'dart',
+        'run',
+        'coverage:format_coverage',
+        '--lcov',
+        '--in=coverage',
+        '--out=coverage/lcov.info',
+        '--report-on=lib',
+      ]);
+    }
+
     ImpaktfullCliLogger.startSpinner('Generating test coverage report...');
     final lcovFile = await testCoveragePlugin.testCoverage(
       path: '.',

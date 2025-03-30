@@ -18,8 +18,6 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
     required TestCoverageType type,
     String outputPath = 'coverage',
     List<String> ignorePatterns = const [],
-    bool useFvm = false,
-    bool verbose = false,
   }) async {
     if (outputPath.isEmpty) {
       throw ImpaktfullCliError('Output path cannot be empty');
