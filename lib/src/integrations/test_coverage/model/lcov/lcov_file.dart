@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 
 /// LcovFile represents a parsed LCOV file format.
@@ -19,13 +20,9 @@ class LcovFile {
     return amountOfLinesCovered / amountOfLines;
   }
 
-  int get amountOfLines => sources
-      .map((e) => e.lines.length)
-      .fold<int>(0, (sum, lines) => sum + lines);
+  int get amountOfLines => sources.map((e) => e.lines.length).fold<int>(0, (sum, lines) => sum + lines);
 
-  int get amountOfLinesCovered => sources
-      .map((e) => e.lines.where((e) => e.hits > 0).length)
-      .fold<int>(0, (sum, lines) => sum + lines);
+  int get amountOfLinesCovered => sources.map((e) => e.lines.where((e) => e.hits > 0).length).fold<int>(0, (sum, lines) => sum + lines);
 
   const LcovFile({
     required this.sources,
@@ -39,7 +36,8 @@ class LcovFile {
   static LcovFile fromString(String content) {
     final lines = content.split('\n');
     final sources = <LcovFileSourceFile>[];
-    String? currentSourceFilePath;
+    File? currentSourceFile;
+    List<String> currentSourceFileContentLines = [];
     List<LcovFileSourceFileLine> currentSourceFileLines = [];
     var linesFound = 0;
     var linesHit = 0;
@@ -47,18 +45,19 @@ class LcovFile {
     for (final line in lines) {
       if (line == 'end_of_record') {
         final sourceFile = LcovFileSourceFile(
-          path: currentSourceFilePath!,
+          path: currentSourceFile!.path,
           lines: currentSourceFileLines,
         );
         sourceFile._validateLines(linesFound, linesHit);
         sources.add(sourceFile);
         linesFound = 0;
         linesHit = 0;
-        currentSourceFilePath = null;
+        currentSourceFile = null;
         currentSourceFileLines = [];
       } else if (line.startsWith('SF:')) {
         final path = line.replaceFirst('SF:', '');
-        currentSourceFilePath = path;
+        currentSourceFile = File(path);
+        currentSourceFileContentLines = currentSourceFile.readAsLinesSync();
       } else if (line.startsWith('DA:')) {
         final content = line.replaceFirst('DA:', '');
         final parts = content.split(',');
@@ -67,7 +66,7 @@ class LcovFile {
         final fileLine = LcovFileSourceFileLine(
           lineNumber: number,
           hits: hits,
-          line: null,
+          lineContent: _getLine(currentSourceFileContentLines, number),
         );
         currentSourceFileLines.add(fileLine);
       } else if (line.startsWith('LF:')) {
@@ -104,6 +103,33 @@ class LcovFile {
     }
     return sb.toString();
   }
+
+  LcovFile removePrivateConstConstructors() {
+    // Updated regex to match private const constructors like "const SessionLogger._();"
+    // The previous regex was too strict with whitespace and didn't account for possible variations
+    final regex = RegExp(r'const\s+\w+\._\(\);');
+    final sources = this.sources.map((e) {
+      final newLines = <LcovFileSourceFileLine>[];
+      for (final line in e.lines) {
+        final lineContent = line.lineContent?.trim();
+        if (lineContent == null || !regex.hasMatch(lineContent)) {
+          newLines.add(line);
+        }
+      }
+      return LcovFileSourceFile(
+        path: e.path,
+        lines: newLines,
+      );
+    }).toList();
+    return LcovFile(
+      sources: sources,
+    );
+  }
+
+  static String? _getLine(List<String> currentSourceFileContentLines, int number) {
+    if (currentSourceFileContentLines.isEmpty) return null;
+    return currentSourceFileContentLines[number - 1];
+  }
 }
 
 class LcovFileSourceFile {
@@ -123,12 +149,10 @@ class LcovFileSourceFile {
     final amountOfLines = lines.length;
     final amountOfLinesCovered = lines.where((e) => e.hits > 0).length;
     if (amountOfLines != linesFound) {
-      throw ImpaktfullCliError(
-          'Amount of lines found does not match amount of lines in `$path`');
+      throw ImpaktfullCliError('Amount of lines found does not match amount of lines in `$path`');
     }
     if (amountOfLinesCovered != linesHit) {
-      throw ImpaktfullCliError(
-          'Amount of lines hit does not match amount of lines in `$path`');
+      throw ImpaktfullCliError('Amount of lines hit does not match amount of lines in `$path`');
     }
   }
 
@@ -142,11 +166,11 @@ class LcovFileSourceFile {
 class LcovFileSourceFileLine {
   final int lineNumber;
   final int hits;
-  final String? line;
+  final String? lineContent;
 
   const LcovFileSourceFileLine({
     required this.lineNumber,
     required this.hits,
-    required this.line,
+    required this.lineContent,
   });
 }

@@ -45,7 +45,8 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
     required bool overrideLcovFile,
   }) async {
     final lcovFile = LcovFile.fromFile(file);
-    final newLcovFile = lcovFile.ignorePatterns(ignorePatterns);
+    var newLcovFile = lcovFile.ignorePatterns(ignorePatterns);
+    newLcovFile = newLcovFile.removePrivateConstConstructors();
     if (overrideLcovFile) {
       await file.writeAsString(newLcovFile.toString());
     }
