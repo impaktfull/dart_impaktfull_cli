@@ -1,3 +1,9 @@
+# 0.16.0
+
+## Added
+
+- Test coverage report support for Flutter and Dart (based on lcov.info files)
+
 # 0.15.3
 
 ## Fix

@@ -16,6 +16,7 @@ import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
 typedef ImpaktfullCliRunner<T extends ImpaktfullCli> = Future<void> Function(
@@ -76,8 +77,9 @@ class ImpaktfullCli {
 
   void _initCommands() {
     _commands = {
-      AppleCertificateRootCommand(processRunner: processRunner),
       AndroidRootCommand(processRunner: processRunner),
+      AppleCertificateRootCommand(processRunner: processRunner),
+      TestCoverageRootCommand(processRunner: processRunner),
     };
   }
 
