@@ -1,9 +1,14 @@
+# 0.21.1
+
+## Fix
+
+- Fix ignored files in test coverage report
 
 # 0.21.0
 
 ## Added
 
-- Make it posible to override the lcov file changes were made because of the `ignorePatterns`
+- Make it posible to override the lcov file changes were made because of the `ignorePatterns` (--overrideLcovFile or --no-overrideLcovFile)
 
 ## Fix
 
@@ -19,8 +24,8 @@
 
 ## Added
 
-- Make it posible to enable/disable running tests before generating test coverage report (--runTests --no-runTests)
-- Make it posible to enable/disable converting to lcov format (--convertToLcov --no-convertToLcov)
+- Make it posible to enable/disable running tests before generating test coverage report (--runTests or --no-runTests)
+- Make it posible to enable/disable converting to lcov format (--convertToLcov or --no-convertToLcov)
 
 # 0.19.0
 

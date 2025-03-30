@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_result_extensions.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/command/flutter/command/model/flutter_test_coverage_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/util/test_coverage_ignore_util.dart';
 
 class FlutterTestCoverageCommandConfig
     extends CommandConfig<FlutterTestCoverageConfigData> {
@@ -29,10 +30,6 @@ class FlutterTestCoverageCommandConfig
       FlutterTestCoverageConfigData(
         runTests: argResults.getFlag(_optionRunTests),
         overrideLcovFile: argResults.getFlag(_optionOverrideLcovFile),
-        ignorePatterns: [
-          RegExp(r'.*\.g\.dart$'),
-          RegExp(r'.*\.navigator\.dart$'),
-          RegExp(r'.*/injectable\.config\.dart$'),
-        ],
+        ignorePatterns: TestCoverageIgnoreUtil.defaultIgnorePatterns,
       );
 }

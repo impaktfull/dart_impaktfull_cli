@@ -133,8 +133,8 @@ class LcovFileSourceFile {
   }
 
   bool isIgnored(List<RegExp> patterns) => patterns.any((pattern) {
-        final shouldIgnorePath = pattern.hasMatch(path);
-        if (shouldIgnorePath) return true;
+        final matchesPattern = pattern.hasMatch(path);
+        if (matchesPattern) return true;
         return false;
       });
 }

@@ -1,4 +1,5 @@
 import 'package:impaktfull_cli/src/integrations/test_coverage/model/lcov/lcov_file.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/util/test_coverage_ignore_util.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -48,16 +49,33 @@ DA:14,0
 LF:1
 LH:0
 end_of_record
-      ''');
-    expect(lcovFile.sources.length, 6);
-    expect(lcovFile.amountOfLines, 6);
-    expect(lcovFile.amountOfLinesCovered, 3);
+SF:/Users/impaktfull/work/server/lib/src/generated/protocol.dart
+DA:14,0
+LF:1
+LH:0
+end_of_record
+SF:/Users/impaktfull/work/server/lib/src/generated/protocol.dart
+DA:14,0
+LF:1
+LH:0
+end_of_record
+SF:/Users/impaktfull/work/server/lib/src/generated/serverpod/model/api/create_user_request.dart
+DA:14,1
+LF:1
+LH:1
+end_of_record
+SF:/Users/impaktfull/work/server/lib/src/generated/serverpod/root_api_request.dart
+DA:14,1
+LF:1
+LH:1
+end_of_record''');
+    expect(lcovFile.sources.length, 10);
+    expect(lcovFile.amountOfLines, 10);
+    expect(lcovFile.amountOfLinesCovered, 5);
     expect(lcovFile.percentage, 0.5);
-    final ignored = lcovFile.ignorePatterns([
-      RegExp(r'.*\.g\.dart$'),
-      RegExp(r'.*\.navigator\.dart$'),
-      RegExp(r'.*/injectable\.config\.dart$'),
-    ]);
+    final ignored = lcovFile.ignorePatterns(
+      TestCoverageIgnoreUtil.defaultIgnorePatterns,
+    );
     expect(ignored.sources.length, 3);
     expect(ignored.amountOfLines, 3);
     expect(ignored.amountOfLinesCovered, 3);
