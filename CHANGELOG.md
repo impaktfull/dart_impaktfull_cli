@@ -1,3 +1,9 @@
+# 0.20.1
+
+## Fix
+
+- Fix ignored files in test coverage report
+
 # 0.20.0
 
 ## Added
