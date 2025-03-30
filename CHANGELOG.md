@@ -1,3 +1,9 @@
+# 0.20.2
+
+## Fix
+
+- Cleanup tests
+
 # 0.20.1
 
 ## Fix

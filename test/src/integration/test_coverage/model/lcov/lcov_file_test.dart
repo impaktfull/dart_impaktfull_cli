@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   test('Lcov parser', () {
     final lcovFile = LcovFile.fromString('''
-SF:/Users/vanlooverenkoen/work/sporta/sporta_sportamigo_flutter_serverpod/sporta_sportamigo_server/lib/src/di/injectable.dart
+SF:/Users/impaktfull/work/server/lib/src/di/injectable.dart
 DA:14,1
 LF:1
 LH:1
@@ -18,32 +18,32 @@ end_of_record
 
   test('Lcov parser with ignore', () {
     final lcovFile = LcovFile.fromString('''
-SF:/Users/vanlooverenkoen/work/server/lib/src/di/injectable.dart
+SF:/Users/impaktfull/work/server/lib/src/di/injectable.dart
 DA:14,1
 LF:1
 LH:1
 end_of_record
-SF:/Users/vanlooverenkoen/work/server/lib/src/di/injectable.config.dart
+SF:/Users/impaktfull/work/server/lib/src/di/injectable.config.dart
 DA:14,0
 LF:1
 LH:0
 end_of_record
-SF:/Users/vanlooverenkoen/work/server/lib/src/model/person.dart
+SF:/Users/impaktfull/work/server/lib/src/model/person.dart
 DA:14,1
 LF:1
 LH:1
 end_of_record
-SF:/Users/vanlooverenkoen/work/server/lib/src/model/person.g.dart
+SF:/Users/impaktfull/work/server/lib/src/model/person.g.dart
 DA:14,0
 LF:1
 LH:0
 end_of_record
-SF:/Users/vanlooverenkoen/work/server/lib/src/navigator/main_navigator.dart
+SF:/Users/impaktfull/work/server/lib/src/navigator/main_navigator.dart
 DA:14,1
 LF:1
 LH:1
 end_of_record
-SF:/Users/vanlooverenkoen/work/server/lib/src/navigator/main_navigator.navigator.dart
+SF:/Users/impaktfull/work/server/lib/src/navigator/main_navigator.navigator.dart
 DA:14,0
 LF:1
 LH:0
