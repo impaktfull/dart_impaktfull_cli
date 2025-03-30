@@ -40,14 +40,7 @@ extension ArgResultExtensions on ArgResults? {
     final result = ImpaktfullCliLogger.askQuestion(question);
     if (result == null) return null;
     if (result.isEmpty) return null;
-    if (T == Secret) {
-      return Secret(result) as T;
-    } else if (T == double) {
-      return double.tryParse(result) as T;
-    } else if (T == int) {
-      return int.tryParse(result) as T;
-    }
-    return result as T?;
+    return _parseResult(result);
   }
 
   T getRequiredOptionOrAskInput<T>(String option, String question) {
@@ -65,5 +58,39 @@ extension ArgResultExtensions on ArgResults? {
     final value = getOption<T>(option);
     if (value == null) throw ArgumentError('$option not found in arguments');
     return value;
+  }
+
+  T getRequiredOptionOrEnvVariable<T>(String option, String envVariable) {
+    final value = getOption<T>(option);
+    if (value == null) {
+      final secret =
+          ImpaktfullCliEnvironmentVariables.getOptionalEnvVariableSecret(
+              envVariable);
+      if (secret == null) {
+        throw ArgumentError(
+            '$option not found in arguments or env variable `$envVariable`');
+      }
+      final result = _parseResult<T>(secret.value);
+      if (result == null) {
+        throw ArgumentError(
+            '$option not found in arguments or env variable `$envVariable`');
+      }
+      return result;
+    }
+    return value;
+  }
+
+  T? _parseResult<T>(String result) {
+    if (T == Secret) {
+      if (result.isEmpty) return null;
+      return Secret(result) as T;
+    } else if (T == double) {
+      return double.tryParse(result) as T;
+    } else if (T == int) {
+      return int.tryParse(result) as T;
+    } else if (T is String) {
+      if (result.isEmpty) return null;
+    }
+    return result as T?;
   }
 }

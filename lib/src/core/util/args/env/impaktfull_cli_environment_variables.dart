@@ -12,6 +12,8 @@ class ImpaktfullCliEnvironmentVariables {
   static const _envKeyGoogleServiceAccountJsonRaw =
       'GOOGLE_SERVICE_ACCOUNT_JSON_RAW';
   static const envKeyOnePasswordAccountToken = 'OP_SERVICE_ACCOUNT_TOKEN';
+  static const _envKeySlackBotToken = 'SLACK_BOT_TOKEN';
+  static const envKeySlackSendMessageChannel = 'SLACK_SEND_MESSAGE_CHANNEL';
 
   static const _initEnvKyes = [
     _envKeyCiKeyChainPassword,
@@ -37,10 +39,12 @@ class ImpaktfullCliEnvironmentVariables {
     return null;
   }
 
-  static String _getNonOptionalEnvVariable(String key) {
+  static String _getRequiredEnvVariable(String key) {
     final value = _getEnvVariable(key);
     if (value == null) {
       throw ImpaktfullCliError('$key env variable is not set');
+    } else if (value.isEmpty) {
+      throw ImpaktfullCliError('$key env variable is empty');
     }
     return value;
   }
@@ -51,7 +55,7 @@ class ImpaktfullCliEnvironmentVariables {
     return Secret(value);
   }
 
-  static Secret _getNonOptionalEnvVariableSecret(String key) {
+  static Secret _getRequiredEnvVariableSecret(String key) {
     final value = _getEnvVariableSecret(key);
     if (value == null) {
       throw ImpaktfullCliError('$key env variable is not set.');
@@ -66,7 +70,7 @@ class ImpaktfullCliEnvironmentVariables {
       _getEnvVariableSecret(_envKeyAppCenterToken);
 
   static String getAppCenterOwnerName() =>
-      _getNonOptionalEnvVariable(_envKeyAppCenterOwnerName);
+      _getRequiredEnvVariable(_envKeyAppCenterOwnerName);
 
   static Secret getUnlockKeyChainPassword() {
     final secret = _getUnlockKeyChainPassword();
@@ -86,12 +90,26 @@ class ImpaktfullCliEnvironmentVariables {
     return secret;
   }
 
-  static String getAppleEmail() =>
-      _getNonOptionalEnvVariable(_envKeyAppleEmail);
+  static String getAppleEmail() => _getRequiredEnvVariable(_envKeyAppleEmail);
 
   static Secret getAppleAppSpecificPassword() =>
-      _getNonOptionalEnvVariableSecret(_envKeyAppleAppSpecificPassword);
+      _getRequiredEnvVariableSecret(_envKeyAppleAppSpecificPassword);
 
   static Secret getGoogleServiceAccountCredentials() =>
-      _getNonOptionalEnvVariableSecret(_envKeyGoogleServiceAccountJsonRaw);
+      _getRequiredEnvVariableSecret(_envKeyGoogleServiceAccountJsonRaw);
+
+  static Secret getSlackBotToken() =>
+      _getRequiredEnvVariableSecret(_envKeySlackBotToken);
+
+  static String getSlackSendMessageChannel() =>
+      _getRequiredEnvVariable(envKeySlackSendMessageChannel);
+
+  static String getEnvVariable(String envVariable) =>
+      _getRequiredEnvVariable(envVariable);
+
+  static Secret getEnvVariableSecret(String envVariable) =>
+      _getRequiredEnvVariableSecret(envVariable);
+
+  static Secret? getOptionalEnvVariableSecret(String envVariable) =>
+      _getEnvVariableSecret(envVariable);
 }

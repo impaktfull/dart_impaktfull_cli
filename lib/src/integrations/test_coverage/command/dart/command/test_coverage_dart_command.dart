@@ -1,13 +1,13 @@
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
-import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/dart_test_coverage_command_config.dart';
-import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/model/dart_test_coverage_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/test_coverage_dart_command_config.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/model/test_coverage_dart_config_data.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/model/test_coverage_type.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/plugin/test_coverage_plugin.dart';
 
-class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
-  DartTestCoverageCommand({
+class TestCoverageDartCommand extends CliCommand<TestCoverageDartConfigData> {
+  TestCoverageDartCommand({
     required super.processRunner,
   });
 
@@ -19,11 +19,11 @@ class DartTestCoverageCommand extends CliCommand<DartTestCoverageConfigData> {
       'Create a test coverage report for a Dart project (after lcov.info is already generated)';
 
   @override
-  CommandConfig<DartTestCoverageConfigData> getConfig() =>
-      DartTestCoverageCommandConfig();
+  CommandConfig<TestCoverageDartConfigData> getConfig() =>
+      TestCoverageDartCommandConfig();
 
   @override
-  Future<void> runCommand(DartTestCoverageConfigData configData) async {
+  Future<void> runCommand(TestCoverageDartConfigData configData) async {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
 
     if (configData.runTests) {

@@ -1,3 +1,9 @@
+# 0.22.0
+
+## Added
+
+- Added slack support to send messages to a specific slack channel
+
 # 0.21.1
 
 ## Fix

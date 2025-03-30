@@ -1,15 +1,15 @@
 import 'package:args/args.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_result_extensions.dart';
-import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/model/dart_test_coverage_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/model/test_coverage_dart_config_data.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/util/test_coverage_ignore_util.dart';
 
-class DartTestCoverageCommandConfig
-    extends CommandConfig<DartTestCoverageConfigData> {
+class TestCoverageDartCommandConfig
+    extends CommandConfig<TestCoverageDartConfigData> {
   static const String _optionRunTests = 'runTests';
   static const String _optionConvertToLcov = 'convertToLcov';
   static const String _optionOverrideLcovFile = 'overrideLcovFile';
-  const DartTestCoverageCommandConfig();
+  const TestCoverageDartCommandConfig();
 
   @override
   void addConfig(ArgParser argParser) {
@@ -32,8 +32,8 @@ class DartTestCoverageCommandConfig
   }
 
   @override
-  DartTestCoverageConfigData parseResult(ArgResults? argResults) =>
-      DartTestCoverageConfigData(
+  TestCoverageDartConfigData parseResult(ArgResults? argResults) =>
+      TestCoverageDartConfigData(
         runTests: argResults.getFlag(_optionRunTests),
         convertToLcov: argResults.getFlag(_optionConvertToLcov),
         overrideLcovFile: argResults.getFlag(_optionOverrideLcovFile),

@@ -16,6 +16,9 @@ import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/slack/plugin/slack_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/plugin/test_coverage_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
@@ -80,6 +83,7 @@ class ImpaktfullCli {
       AndroidRootCommand(processRunner: processRunner),
       AppleCertificateRootCommand(processRunner: processRunner),
       TestCoverageRootCommand(processRunner: processRunner),
+      SlackRootCommand(processRunner: processRunner),
     };
   }
 
@@ -106,6 +110,8 @@ class ImpaktfullCli {
         testflightPlugin: testflightPlugin,
         playStorePlugin: playStorePlugin,
       ),
+      TestCoveragePlugin(processRunner: processRunner),
+      SlackPlugin(processRunner: processRunner),
     };
   }
 
