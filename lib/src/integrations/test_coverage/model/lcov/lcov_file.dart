@@ -117,8 +117,11 @@ class LcovFileSourceFile {
     }
   }
 
-  bool isIgnored(List<RegExp> patterns) =>
-      patterns.any((pattern) => pattern.hasMatch(path));
+  bool isIgnored(List<RegExp> patterns) => patterns.any((pattern) {
+        final shouldIgnorePath = pattern.hasMatch(path);
+        if (shouldIgnorePath) return true;
+        return false;
+      });
 }
 
 class LcovFileSourceFileLine {

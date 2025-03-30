@@ -1,3 +1,13 @@
+# 0.19.0
+
+## Added
+
+- Add support for ignore patterns in test coverage report
+  Default:
+  - `.*.g.dart`
+  - `.*.navigator.dart`
+  - `.*.injectable.config.dart`
+
 # 0.18.1
 
 ## Fix

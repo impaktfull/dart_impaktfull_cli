@@ -17,7 +17,7 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
     required String path,
     required TestCoverageType type,
     String outputPath = 'coverage',
-    List<String> ignorePatterns = const [],
+    List<RegExp> ignorePatterns = const [],
   }) async {
     if (outputPath.isEmpty) {
       throw ImpaktfullCliError('Output path cannot be empty');
@@ -39,9 +39,9 @@ class TestCoveragePlugin extends ImpaktfullCliPlugin {
 
   Future<LcovFile> _cleanupLcovFile({
     required File file,
-    required List<String> ignorePatterns,
+    required List<RegExp> ignorePatterns,
   }) async {
     final lcovFile = LcovFile.fromFile(file);
-    return lcovFile;
+    return lcovFile.ignorePatterns(ignorePatterns);
   }
 }
