@@ -1,3 +1,9 @@
+# 0.23.1
+
+## Fix
+
+- Fix private const constructors in lcov file
+
 # 0.23.0
 
 ## Added
