@@ -63,7 +63,11 @@ class ImpaktfullCliEnvironment {
       ProcessRunner processRunner, CliTool cliTool) async {
     final result =
         await processRunner.runProcess(['which', cliTool.commandName]);
-    if (result.isEmpty) return InstalledCliTool.notInstalled(cliTool: cliTool);
+    if (result.isEmpty) {
+      return InstalledCliTool.notInstalled(
+        cliTool: cliTool,
+      );
+    }
     return InstalledCliTool.installed(
       cliTool: cliTool,
       path: result,

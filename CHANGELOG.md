@@ -1,3 +1,9 @@
+# 0.17.0
+
+## Added
+
+- Linux support
+
 # 0.16.0
 
 ## Added
