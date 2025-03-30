@@ -1,3 +1,9 @@
+# 0.24.0
+
+## Added
+
+- Added open source report new release command
+
 # 0.23.1
 
 ## Fix
