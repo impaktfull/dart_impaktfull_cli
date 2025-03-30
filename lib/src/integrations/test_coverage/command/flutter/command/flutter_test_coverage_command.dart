@@ -39,17 +39,11 @@ class FlutterTestCoverageCommand
       ImpaktfullCliLogger.endSpinner();
     }
 
-    final ignorePatterns = [
-      RegExp(r'.*\.g\.dart$'),
-      RegExp(r'.*\.navigator\.dart$'),
-      RegExp(r'.*/injectable\.config\.dart$'),
-    ];
-
     ImpaktfullCliLogger.startSpinner('Generating test coverage report...');
     final lcovFile = await testCoveragePlugin.testCoverage(
       path: '.',
       type: TestCoverageType.lcovInfo,
-      ignorePatterns: ignorePatterns,
+      ignorePatterns: configData.ignorePatterns,
     );
     ImpaktfullCliLogger.endSpinner();
     ImpaktfullCliLogger.log(lcovFile.printReport('Flutter'));

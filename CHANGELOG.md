@@ -1,3 +1,10 @@
+# 0.20.0
+
+## Added
+
+- Make it posible to enable/disable running tests before generating test coverage report (--runTests --no-runTests)
+- Make it posible to enable/disable converting to lcov format (--convertToLcov --no-convertToLcov)
+
 # 0.19.0
 
 ## Added
