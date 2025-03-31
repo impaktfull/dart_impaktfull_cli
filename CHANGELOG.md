@@ -1,3 +1,9 @@
+# 0.25.0
+
+## Added
+
+- Added dependabot support
+
 # 0.24.0
 
 ## Added
