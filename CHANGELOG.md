@@ -1,8 +1,14 @@
-# 0.24.1
+# 0.25.1
 
 ## Fix
 
 - Better detection of fvm projects
+
+# 0.25.0
+
+## Added
+
+- Added dependabot support
 
 # 0.24.0
 
