@@ -13,7 +13,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
           ref: ${{ github.ref }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
