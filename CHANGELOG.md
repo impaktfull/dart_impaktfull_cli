@@ -1,3 +1,9 @@
+# 0.24.1
+
+## Fix
+
+- Better detection of fvm projects
+
 # 0.24.0
 
 ## Added
