@@ -33,7 +33,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   @override
   Future<void> installGithubActionsRunner() async {
     ImpaktfullCliLogger.log("Start github actions runner config");
-    ImpaktfullCliLogger.log("https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
+    ImpaktfullCliLogger.log(
+        "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
     ImpaktfullCliLogger.log("");
     ImpaktfullCliLogger.log("Configure runner as service");
     ImpaktfullCliLogger.log(

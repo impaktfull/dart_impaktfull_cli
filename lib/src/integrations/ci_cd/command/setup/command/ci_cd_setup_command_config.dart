@@ -9,5 +9,6 @@ class CiCdSetupCommandConfig extends CommandConfig<CiCdSetupConfigData> {
   void addConfig(ArgParser argParser) {}
 
   @override
-  CiCdSetupConfigData parseResult(ArgResults? argResults) => CiCdSetupConfigData();
+  CiCdSetupConfigData parseResult(ArgResults? argResults) =>
+      CiCdSetupConfigData();
 }
