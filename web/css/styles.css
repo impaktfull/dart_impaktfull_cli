@@ -41,11 +41,11 @@ body {
     gap: 1em;
 }
 
-.button_wrapper a {
+.button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 1em;
     background-color: #7d64f2;
     color: white;
     text-decoration: none;
