@@ -1,3 +1,9 @@
+# 0.24.4
+
+## Fix
+
+- Reload zsh configuration after install
+
 # 0.24.3
 
 ## Updated
