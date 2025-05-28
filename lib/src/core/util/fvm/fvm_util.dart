@@ -6,7 +6,7 @@ class FvmUtil {
   const FvmUtil._();
   static Future<bool> isFvmProject(Directory workingDir) async {
     final isGitRoot = _isGitRootDirectory(workingDir);
-    if (isGitRoot) {
+    if (!isGitRoot) {
       return false;
     }
 

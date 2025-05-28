@@ -1,3 +1,10 @@
+# 0.24.2
+
+## Fix
+
+- Github pages build with macos-latest
+- Fix fvm bug
+
 # 0.24.1
 
 ## Fix
