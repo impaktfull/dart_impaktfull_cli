@@ -10,14 +10,16 @@ INSTALL_DIR="$HOME/.impaktfull/impaktfull_cli"
 echo "Downloading impaktfull_cli"
 mkdir -p $INSTALL_DIR
 curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o $INSTALL_DIR/impaktfull_cli
-
-echo "Making impaktfull_cli executable"
 chmod +x $INSTALL_DIR
 
-echo "Adding impaktfull_cli to PATH"
-EXPORT_VALUE="export PATH=\"$INSTALL_DIR:\$PATH\""
+EXPORT_VALUE='export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"'
 if ! grep -q "$EXPORT_VALUE" ~/.zshrc; then
+    echo "Adding impaktfull_cli to PATH"
+    echo "" >> ~/.zshrc
+    echo "# Add impaktfull tools to PATH" >> ~/.zshrc
     echo "$EXPORT_VALUE" >> ~/.zshrc
 fi
 
-echo "Done"
+echo "Download impaktfull_cli completed!"
+echo ""
+echo "Test by running 'impaktfull_cli --help'"
