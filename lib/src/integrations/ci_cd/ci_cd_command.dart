@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:impaktfull_cli/src/core/command/command/root_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/command/report_status/command/ci_cd_report_status_command.dart';
+import 'package:impaktfull_cli/src/integrations/ci_cd/command/setup/command/ci_cd_setup_command.dart';
 
 class CiCdRootCommand extends RootCommand {
   @override
@@ -17,6 +18,7 @@ class CiCdRootCommand extends RootCommand {
   List<Command<dynamic>> getSubCommands() {
     return [
       CiCdReportStatusCommand(processRunner: processRunner),
+      CiCdSetupCommand(processRunner: processRunner),
     ];
   }
 }

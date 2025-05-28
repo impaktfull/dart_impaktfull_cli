@@ -1,0 +1,21 @@
+name: Automated tests
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    name: Runs all tests on main
+    runs-on: macos-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - run: dart pub get
+      - run: dart format --set-exit-if-changed .
+      - run: dart analyze
+      - run: dart test

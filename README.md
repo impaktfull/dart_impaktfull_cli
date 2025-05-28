@@ -7,6 +7,9 @@
 ## Usage
 
 [![pub package](https://img.shields.io/pub/v/impaktfull_cli.svg)](https://pub.dartlang.org/packages/impaktfull_cli)
+[![test](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)
+[![publish to github pages](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/publish_to_githubpages.yaml/badge.svg)](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/publish_to_githubpages.yaml/badge.svg)
+[![live_demo](https://img.shields.io/badge/Live%20Demo-Available-7D64F2)](https://cli.impaktfull.com)
 
 ### ENV Variables:
 
@@ -43,5 +46,5 @@ class TestCli extends ImpaktfullCli {
 #### create_keychain
 
 ```bash
-dart run impaktfull_cli android create_keychain 
+dart run impaktfull_cli android create_keychain
 ```
