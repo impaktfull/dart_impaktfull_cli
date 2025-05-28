@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
+import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 
 /// LcovFile represents a parsed LCOV file format.
 ///
@@ -61,7 +61,13 @@ class LcovFile {
       } else if (line.startsWith('SF:')) {
         final path = line.replaceFirst('SF:', '');
         currentSourceFile = File(path);
-        currentSourceFileContentLines = currentSourceFile.readAsLinesSync();
+        if (currentSourceFile.existsSync()) {
+          currentSourceFileContentLines = currentSourceFile.readAsLinesSync();
+        } else {
+          currentSourceFileContentLines = [];
+          ImpaktfullCliLogger.log(
+              "File ${currentSourceFile.path} does not exist, skipping content fetch");
+        }
       } else if (line.startsWith('DA:')) {
         final content = line.replaceFirst('DA:', '');
         final parts = content.split(',');
