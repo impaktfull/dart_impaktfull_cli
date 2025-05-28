@@ -81,7 +81,7 @@ img {
   gap: 2em;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5em;
+  border-radius: 12px;
   font-family: 'Geologica', sans-serif;
 }
 
