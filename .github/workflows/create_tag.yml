@@ -11,9 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.IMPAKTFULL_DEPLOY_KEY }}
           ref: ${{ github.ref }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -22,5 +21,6 @@ jobs:
       - name: Automated version bump
         uses: impaktfull/gh_action_dart_conventional_release@main
         with:
-          tag-prefix: 'v'
+          tag-prefix: "v"
           use-dart: true
+          deploy-key: ${{ secrets.IMPAKTFULL_DEPLOY_KEY }}
