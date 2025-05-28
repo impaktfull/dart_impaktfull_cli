@@ -1,7 +1,8 @@
 #!/bin/bash
 
 echo "Downloading impaktfull_cli"
-curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o ~/.impaktfull/impaktfull_cli
+mkdir -p ~/.impaktfull/impaktfull_cli
+curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o ~/.impaktfull/impaktfull_cli/impaktfull_cli
 
 echo "Making impaktfull_cli executable"
 chmod +x ~/.impaktfull/impaktfull_cli/impaktfull_cli
