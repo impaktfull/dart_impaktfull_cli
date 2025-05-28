@@ -48,3 +48,11 @@ class TestCli extends ImpaktfullCli {
 ```bash
 dart run impaktfull_cli android create_keychain
 ```
+
+### ci_cd
+
+#### report_status
+
+```bash
+dart run impaktfull_cli ci_cd report_status
+```

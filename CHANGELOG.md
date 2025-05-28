@@ -1,3 +1,13 @@
+# 0.25.2 - 0.25.3
+
+## Fix
+
+- Github actions
+
+## Updated
+
+- Updated readme
+
 # 0.25.1
 
 ## Fix
