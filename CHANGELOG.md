@@ -1,3 +1,9 @@
+# 0.24.5
+
+## Fix
+
+- Fix impaktfull_cli permissions after installation
+
 # 0.24.4
 
 ## Fix
