@@ -1,3 +1,9 @@
+# 0.24.3
+
+## Updated
+
+- Improve web install script
+
 # 0.24.2
 
 ## Fix
