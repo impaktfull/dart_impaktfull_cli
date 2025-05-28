@@ -26,7 +26,8 @@ class CiCdSetupCommand extends CliCommand<CiCdSetupConfigData> {
     final sudoPassword = CliInputReader.readSecret('Enter sudo password');
 
     if (Platform.isMacOS) {
-      await CiCdSetupMacUtil(processRunner: processRunner).install(sudoPassword);
+      await CiCdSetupMacUtil(processRunner: processRunner)
+          .install(sudoPassword);
     } else {
       throw Exception('Unsupported platform: ${Platform.operatingSystem}');
     }
