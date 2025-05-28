@@ -6,12 +6,13 @@ if [ ! -f ~/.zshrc ]; then
 fi
 
 INSTALL_DIR="$HOME/.impaktfull/impaktfull_cli"
+CLI_PATH="$INSTALL_DIR/impaktfull_cli"
 
 echo "Downloading impaktfull_cli"
 mkdir -p $INSTALL_DIR
-curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o $INSTALL_DIR/impaktfull_cli
-chmod +x $INSTALL_DIR
+curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o $CLI_PATH
 echo "Download impaktfull_cli completed!"
+chmod +x $CLI_PATH
 
 EXPORT_VALUE='export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"'
 if ! grep -q "$EXPORT_VALUE" ~/.zshrc; then
