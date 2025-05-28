@@ -54,6 +54,10 @@ body {
     font-weight: bold;
 }
 
+.button:hover {
+    background-color: #6a54cd;
+}
+
 i {
     font-size: 2em;
 }
@@ -90,7 +94,7 @@ img {
   border: none;
   cursor: pointer;
   color: white;
-  padding: 1em;
+  padding: 1em 1em 0.9em 1em;
   border-radius: 0.5em;
 }
 
