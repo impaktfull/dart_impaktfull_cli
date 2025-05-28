@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Koen Van Looveren</title>
+    <title>impaktfull_cli</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -13,9 +13,23 @@
         <h2>The CLI to manage your development workflow</h2>
         <div class="button_wrapper">
             <a class="button" href="https://pub.dev/packages/impaktfull_cli" target="_blank">pub.dev</a>
-            <a class="button logo" href="https://cli.impaktfull.com/download/impaktfull_cli"><i class="ph ph-cloud-arrow-down"></i> Download</a>
+            <a class="button logo" download href="/download/impaktfull_cli"><i class="ph ph-cloud-arrow-down"></i> Download</a>
         </div>
     </div>
+    <div class="code_wrapper">
+        <p id="install_script"class="code_block">
+            curl -fsSL https://cli.impaktfull.com/install.sh | bash
+        </p>
+        <button class="copy_btn" onclick="copyCode()">
+            <i class="ph ph-copy-simple"></i>
+        </button>
+    </div>
 </div>
+<script>
+    async function copyCode() {
+      const code = document.getElementById('install_script').innerText;
+      await navigator.clipboard.writeText(code);
+    }
+</script>
 </body>
 </html>

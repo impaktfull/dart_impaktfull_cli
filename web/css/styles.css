@@ -11,9 +11,10 @@ body {
 
 .wrapper {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 2em;
     height: 100%;
 }
 
@@ -66,4 +67,37 @@ img {
     height: 100%;
     border-radius: 16px;
     box-shadow: 16px 16px 0px #7d64f2;
+}
+
+.code_wrapper {
+  background: #2e2e2e;
+  padding: 0.5em;
+  overflow: auto;
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5em;
+  font-family: 'Geologica', sans-serif;
+}
+
+.code_block {
+    padding-left: 1em;
+}
+
+.copy_btn {
+  background: #2e2e2e;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.copy_btn:hover {
+  background: #161616;
+}
+
+i.ph {
+  font-size: 2em;
 }
