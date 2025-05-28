@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   test:
     name: Runs all tests on main
