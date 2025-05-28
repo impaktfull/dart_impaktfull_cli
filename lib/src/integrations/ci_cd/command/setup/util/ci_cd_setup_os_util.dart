@@ -8,10 +8,17 @@ abstract class CiCdSetupOsUtil {
   });
 
   Future<void> install(Secret sudoPassword) async {
+    ImpaktfullCliLogger.log("Installing dependencies");
     await installOsDependencies(sudoPassword);
+    ImpaktfullCliLogger.log("Installing chrome");
     await installChrome();
+    ImpaktfullCliLogger.log("Installing fvm");
     await installFvm();
+    ImpaktfullCliLogger.log("Installing flutter version");
     await installFlutterVersion("stable");
+    ImpaktfullCliLogger.log("Setting flutter version as global");
+    await setFlutterVersionAsGlobal("stable");
+    ImpaktfullCliLogger.log("Installing github actions runner");
     await installGithubActionsRunner();
   }
 
@@ -28,14 +35,15 @@ abstract class CiCdSetupOsUtil {
     await processRunner.runProcess([
       'fvm',
       'install',
-      'stable',
+      version,
       '--setup',
     ]);
+  }
 
-    // Set stable as default fvm version
+  Future<void> setFlutterVersionAsGlobal(String version) async {
     await processRunner.runProcess([
       'fvm',
-      'use',
+      'global',
       version,
     ]);
   }
