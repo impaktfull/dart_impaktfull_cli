@@ -8,6 +8,6 @@ echo "Making impaktfull_cli executable"
 chmod +x ~/.impaktfull/impaktfull_cli/impaktfull_cli
 
 echo "Adding impaktfull_cli to PATH"
-echo 'export PATH="$HOME/.impaktfull/impaktfull_cli/impaktfull_cli:$PATH"' >> ~/.zshrc
+echo 'export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"' >> ~/.zshrc
 
 echo "Done"
