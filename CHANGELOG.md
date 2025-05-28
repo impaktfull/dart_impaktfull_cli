@@ -1,3 +1,9 @@
+# 0.24.1
+
+## Fix
+
+- Changelog
+
 # 0.24.0
 
 ## Added
@@ -10,7 +16,7 @@
 - Better detection of fvm projects
 - Github actions
 
-# 0.23.1
+# 0.23.1 - 0.23.2
 
 ## Fix
 
