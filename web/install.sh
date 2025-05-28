@@ -20,7 +20,7 @@ if ! grep -q "$EXPORT_VALUE" ~/.zshrc; then
     echo "# Add impaktfull tools to PATH" >> ~/.zshrc
     echo "$EXPORT_VALUE" >> ~/.zshrc
     echo "Reloading zsh configuration..."
-    source ~/.zshrc
+    exec zsh
 fi
 
 echo ""
