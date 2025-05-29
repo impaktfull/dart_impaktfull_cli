@@ -30,13 +30,14 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   Future<void> installHomebrew() async {
-    ImpaktfullCliLogger.startSpinner("Installing homebrew");
+    ImpaktfullCliLogger.startSpinner("Adding homebrew to PATH");
     await zshrcUtil.addToPath(
       comment: r'Add homebrew to PATH',
       pathsToAdd: [
         r"/opt/homebrew/bin",
       ],
     );
+    ImpaktfullCliLogger.startSpinner("Installing homebrew");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.brew)) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
           "Homebrew is already installed");
@@ -50,7 +51,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ],
       runInShell: true,
     );
-    ImpaktfullCliLogger.startSpinner("Adding homebrew to .zshrc");
   }
 
   Future<void> installCocoapods() async {
@@ -120,7 +120,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   @override
   Future<void> installFvm() async {
-    ImpaktfullCliLogger.startSpinner("Installing fvm");
+    ImpaktfullCliLogger.startSpinner("Adding fvm & flutter paths to PATH");
     await zshrcUtil.addToPath(
       comment: "Add fvm paths to PATH variable",
       pathsToAdd: [
@@ -132,6 +132,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
         r"$HOME/fvm/default/bin/dart/bin/pub",
       ],
     );
+    ImpaktfullCliLogger.startSpinner("Installing fvm");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.fvm)) {
       ImpaktfullCliLogger.endSpinnerWithMessage("FVM is already installed");
       return;
