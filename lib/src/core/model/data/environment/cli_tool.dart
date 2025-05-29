@@ -13,8 +13,7 @@ enum CliTool {
     name: 'Flutter Version Manager (fvm)',
     commandName: 'fvm',
     installationInstructions: {
-      OperatingSystem.macOS:
-          'https://fvm.app/docs/getting_started/installation/',
+      OperatingSystem.macOS: 'https://fvm.app/docs/getting_started/installation/',
     },
   ),
   onePasswordCli(
@@ -59,6 +58,14 @@ enum CliTool {
     commandName: 'security',
     supportedOperatingSystems: [
       OperatingSystem.macOS,
+    ],
+  ),
+  brew(
+    name: 'brew',
+    commandName: 'brew',
+    supportedOperatingSystems: [
+      OperatingSystem.macOS,
+      OperatingSystem.linux,
     ],
   );
 
