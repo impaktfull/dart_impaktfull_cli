@@ -249,17 +249,18 @@ class ImpaktfullCliLogger {
     bool isWarning = false,
   }) {
     if (_cliSpinnerActionDescription == null) return;
+    final fullMessageSuccess = 'Successfully finished: `$message`';
     if (_verbose) {
       if (_verbose) {
         log('⚠️ $message');
       } else {
-        log('✅ $message');
+        log('✅ $fullMessageSuccess');
       }
     } else {
       if (isWarning) {
         _cliSpinner?.warn(message);
       } else {
-        _cliSpinner?.success(message);
+        _cliSpinner?.success(fullMessageSuccess);
       }
     }
     _cliSpinner?.stop();

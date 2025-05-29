@@ -19,6 +19,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await processRunner.requestSudo();
     await validateZshrc();
     await installHomebrew();
+    await installCocoapods();
     await installOhMyZsh();
     await installAutosuggestions();
   }
@@ -50,6 +51,20 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
         r"/opt/homebrew/bin",
       ],
     );
+  }
+
+  Future<void> installCocoapods() async {
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.cocoaPods)) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Cocoapods is already installed");
+      return;
+    }
+    ImpaktfullCliLogger.startSpinner("Installing cocoapods");
+    await processRunner.runProcess([
+      'brew',
+      'install',
+      'cocoapods',
+    ]);
   }
 
   Future<void> installOhMyZsh() async {
@@ -214,7 +229,7 @@ Host github.com
     ImpaktfullCliLogger.startSpinner("Export ssh public key");
     final sshPublicKeyContent = sshPublicKeyFile.readAsStringSync();
     ImpaktfullCliLogger.log("\nPublic ssh key:");
-    ImpaktfullCliLogger.log(sshPublicKeyContent);
+    ImpaktfullCliLogger.log(sshPublicKeyContent.trim());
     ImpaktfullCliLogger.log("\n");
     ImpaktfullCliLogger.log("Add the public ssh key to your github account");
     ImpaktfullCliLogger.log("https://github.com/settings/ssh/new");
