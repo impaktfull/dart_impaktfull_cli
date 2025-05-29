@@ -71,9 +71,8 @@ class CiCdSetupMacZshrcUtil {
   }
 
   File _getImpaktfullZshrcFile() {
-    final fileName = '.zshrc-impaktfull-cli';
     final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
-    return File(join(home, fileName));
+    return File(join(home, '.impaktfull', 'impaktfull_cli', '.zshrc'));
   }
 
   Future<void> _reloadZshrc() async {
@@ -87,8 +86,7 @@ class CiCdSetupMacZshrcUtil {
   Future<void> validateZshrc() async {
     final zshrcFile = _getZshrcFile();
     if (!zshrcFile.existsSync()) {
-      throw ImpaktfullCliError(
-          "Zshrc not found, install zsh first and try again");
+      throw ImpaktfullCliError("Zshrc not found, install zsh first and try again");
     }
   }
 }
