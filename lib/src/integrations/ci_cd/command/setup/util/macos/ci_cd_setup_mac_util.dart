@@ -60,6 +60,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ],
       runInShell: true,
     );
+    await zshrcUtil.addImpaktfullZshrcToZshrc();
   }
 
   Future<void> installAutosuggestions() async {

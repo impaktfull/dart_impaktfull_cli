@@ -32,7 +32,7 @@ class CiCdSetupMacZshrcUtil {
       linesToAdd.add(zshrcLine);
     }
     if (linesToAdd.isEmpty) {
-      await _addImpaktfullZshrcToZshrc();
+      await addImpaktfullZshrcToZshrc();
       return;
     }
     final newContent = [
@@ -43,10 +43,10 @@ class CiCdSetupMacZshrcUtil {
       "$newContent\n",
       mode: FileMode.append,
     );
-    await _addImpaktfullZshrcToZshrc();
+    await addImpaktfullZshrcToZshrc();
   }
 
-  Future<void> _addImpaktfullZshrcToZshrc() async {
+  Future<void> addImpaktfullZshrcToZshrc() async {
     final zshrcFile = _getZshrcFile();
     final impaktfullZshrcFile = _getImpaktfullZshrcFile();
     if (!impaktfullZshrcFile.existsSync()) {
