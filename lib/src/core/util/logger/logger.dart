@@ -147,6 +147,11 @@ class ImpaktfullCliLogger {
     return result;
   }
 
+  static void waitForEnter(String message) {
+    log(message);
+    stdin.readLineSync(encoding: utf8);
+  }
+
   // Spinner
   static void setSpinnerPrefix(String prefix) {
     _spinnerPrefix = prefix;

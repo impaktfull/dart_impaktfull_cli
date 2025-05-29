@@ -8,21 +8,29 @@ abstract class CiCdSetupOsUtil {
   });
 
   Future<void> install() async {
+    final name = ImpaktfullCliLogger.askQuestion("Name your CI/CD device");
+    validateName(name);
     ImpaktfullCliLogger.startSpinner("Installing dependencies");
     await installOsDependencies();
-    ImpaktfullCliLogger.startSpinner("Installing chrome");
     await installChrome();
-    ImpaktfullCliLogger.startSpinner("Installing fvm");
     await installFvm();
     final flutterVersion = "stable";
-    ImpaktfullCliLogger.startSpinner(
-        "Installing flutter version `$flutterVersion`");
     await installFlutterVersion(flutterVersion);
-    ImpaktfullCliLogger.startSpinner(
-        "Setting flutter version `$flutterVersion` as global");
     await setFlutterVersionAsGlobal(flutterVersion);
+    await configureSSHKey(name!);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     await installGithubActionsRunner();
+  }
+
+  void validateName(String? name) {
+    if (name == null) {
+      throw ImpaktfullCliError("Name is required");
+    }
+    final validMacUsernameRegex = RegExp(r'^[a-z][a-z0-9_]*$');
+    if (!validMacUsernameRegex.hasMatch(name)) {
+      throw ImpaktfullCliError(
+          "Name must start with a lowercase letter and can only contain lowercase letters, numbers and underscores");
+    }
   }
 
   Future<void> installOsDependencies();
@@ -34,6 +42,7 @@ abstract class CiCdSetupOsUtil {
   Future<void> installGithubActionsRunner();
 
   Future<void> installFlutterVersion(String version) async {
+    ImpaktfullCliLogger.startSpinner("Installing flutter version `$version`");
     // Install stable version of flutter + make sure it ready to use
     await processRunner.runProcess([
       'fvm',
@@ -44,10 +53,14 @@ abstract class CiCdSetupOsUtil {
   }
 
   Future<void> setFlutterVersionAsGlobal(String version) async {
+    ImpaktfullCliLogger.startSpinner(
+        "Setting flutter version `$version` as global");
     await processRunner.runProcess([
       'fvm',
       'global',
       version,
     ]);
   }
+
+  Future<void> configureSSHKey(String userName);
 }

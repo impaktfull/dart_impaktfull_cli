@@ -128,6 +128,10 @@ class ImpaktfullCli {
   }
 
   Future<void> runCli() async {
+    if (arguments.contains('--version')) {
+      ImpaktfullCliLogger.log('impaktfull_cli stable');
+      return;
+    }
     init();
     await runImpaktfullCli(() async {
       final runner = CommandRunner(
