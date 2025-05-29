@@ -4,7 +4,11 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/force_quit_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
+import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
+
+final _pathsToAdd = <String>[];
+String? _path;
 
 abstract class ProcessRunner {
   const ProcessRunner();
@@ -17,6 +21,17 @@ abstract class ProcessRunner {
   });
 
   Future<void> requestSudo();
+
+  static void updatePath({required List<String> pathsToAdd}) {
+    _pathsToAdd.addAll(pathsToAdd);
+    final pathEnvVariable =
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
+    final sb = StringBuffer(pathEnvVariable);
+    for (final path in _pathsToAdd) {
+      sb.write('$pathEnvVariable:$path');
+    }
+    _path = sb.toString();
+  }
 }
 
 class CliProcessRunner extends ProcessRunner {
@@ -36,7 +51,10 @@ class CliProcessRunner extends ProcessRunner {
     final result = await Process.start(
       args.first,
       args.length > 1 ? args.sublist(1) : [],
-      environment: environment,
+      environment: {
+        ...?environment,
+        if (_path != null) 'PATH': _path!,
+      },
       runInShell: runInShell,
       mode: mode,
     );

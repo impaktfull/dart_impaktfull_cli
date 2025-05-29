@@ -7,18 +7,35 @@ class CiCdSetupMacZshrcUtil {
   static const String impaktfullZshrcFile = "";
   static const String zshrcFile = "";
 
-  final ProcessRunner processRunner;
+  CiCdSetupMacZshrcUtil();
 
-  CiCdSetupMacZshrcUtil({
-    required this.processRunner,
-  });
+  Future<void> addToPath({
+    required String comment,
+    required List<String> pathsToAdd,
+  }) {
+    final exports = pathsToAdd.map((e) => "export \$PATH=\$PATH:$e");
+    final newLines = [
+      ...exports,
+      if (exports.isNotEmpty) "\n",
+    ].join('\n');
+    ProcessRunner.updatePath(
+      pathsToAdd: pathsToAdd,
+    );
+    return addToZshrc(
+      comment: comment,
+      content: newLines,
+    );
+  }
 
-  Future<void> addToZshrc(String comments, String content) async {
+  Future<void> addToZshrc({
+    required String comment,
+    required String content,
+  }) async {
     final zshrcFile = _getImpaktfullZshrcFile();
     if (!zshrcFile.existsSync()) {
       zshrcFile.createSync(recursive: true);
     }
-    final commentLine = "#$comments";
+    final commentLine = "#$comment";
     final newLines = content.split('\n').map((e) => e.trim());
     final linesToKeep = <String>[];
     final zshrcLines = zshrcFile.readAsLinesSync();
@@ -67,7 +84,6 @@ class CiCdSetupMacZshrcUtil {
       "$newContent\n",
       mode: FileMode.append,
     );
-    await _reloadZshrc();
   }
 
   File _getZshrcFile() {
@@ -79,16 +95,6 @@ class CiCdSetupMacZshrcUtil {
   File _getImpaktfullZshrcFile() {
     final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
     return File(join(home, '.impaktfull', 'impaktfull_cli', '.zshrc'));
-  }
-
-  Future<void> _reloadZshrc() async {
-    final zshrcFile = _getZshrcFile();
-    await processRunner.runProcess(
-      [
-        'source ${zshrcFile.path}',
-      ],
-      runInShell: true,
-    );
   }
 
   Future<void> validateZshrc() async {

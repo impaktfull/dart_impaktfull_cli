@@ -26,7 +26,7 @@ class CiCdSetupCommand extends CliCommand<CiCdSetupConfigData> {
     if (Platform.isMacOS) {
       final macUtil = CiCdSetupMacUtil(
         processRunner: processRunner,
-        zshrcUtil: CiCdSetupMacZshrcUtil(processRunner: processRunner),
+        zshrcUtil: CiCdSetupMacZshrcUtil(),
       );
       await macUtil.install();
     } else {

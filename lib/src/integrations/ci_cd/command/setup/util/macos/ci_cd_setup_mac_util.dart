@@ -44,9 +44,11 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       runInShell: true,
     );
     ImpaktfullCliLogger.startSpinner("Adding homebrew to .zshrc");
-    await zshrcUtil.addToZshrc(
-      r'Add homebrew to PATH',
-      r'export PATH="/opt/homebrew/bin:$PATH"',
+    await zshrcUtil.addToPath(
+      comment: r'Add homebrew to PATH',
+      pathsToAdd: [
+        r"/opt/homebrew/bin",
+      ],
     );
   }
 
@@ -81,8 +83,9 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ],
     );
     await zshrcUtil.addToZshrc(
-      r'Add zsh-autosuggestions',
-      r'source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh',
+      comment: r'Add zsh-autosuggestions',
+      content:
+          r'source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh',
     );
   }
 
@@ -117,17 +120,16 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       'install',
       'fvm',
     ]);
-    final content = r"""
-export PATH=$PATH:$HOME/.pub-cache/bin
-export PATH=$PATH:$HOME/.pub-cache
-export PATH=$PATH:$HOME/fvm/default/bin
-export PATH=$PATH:$HOME/fvm/default/bin/dart/bin
-export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/dart2js
-export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
-""";
-    await zshrcUtil.addToZshrc(
-      "Add fvm paths to PATH variable",
-      content,
+    await zshrcUtil.addToPath(
+      comment: "Add fvm paths to PATH variable",
+      pathsToAdd: [
+        r"$HOME/.pub-cache/bin",
+        r"$HOME/.pub-cache",
+        r"$HOME/fvm/default/bin",
+        r"$HOME/fvm/default/bin/dart/bin",
+        r"$HOME/fvm/default/bin/dart/bin/dart2js",
+        r"$HOME/fvm/default/bin/dart/bin/pub",
+      ],
     );
   }
 
