@@ -31,7 +31,9 @@ class CliToolsUtil {
           .wait;
 
   static Future<InstalledCliTool> _isToolInstalled(
-      ProcessRunner processRunner, CliTool cliTool) async {
+    ProcessRunner processRunner,
+    CliTool cliTool,
+  ) async {
     try {
       final result =
           await processRunner.runProcess(['which', cliTool.commandName]);
@@ -45,7 +47,7 @@ class CliToolsUtil {
         path: result,
       );
     } catch (e) {
-      ImpaktfullCliLogger.log(
+      ImpaktfullCliLogger.verbose(
           'Failed to check if ${cliTool.commandName} is installed');
       return InstalledCliTool.notInstalled(
         cliTool: cliTool,
