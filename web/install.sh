@@ -15,11 +15,11 @@ echo "Download impaktfull_cli completed!"
 chmod +x $CLI_PATH
 
 EXPORT_VALUE='export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"'
-if ! grep -q "$EXPORT_VALUE" ~/.zshrc; then
+if ! grep -q "$EXPORT_VALUE" ~/.zshrc-impaktfull-cli; then
     echo "Adding impaktfull_cli to PATH"
-    echo "" >> ~/.zshrc
-    echo "# Add impaktfull tools to PATH" >> ~/.zshrc
-    echo "$EXPORT_VALUE" >> ~/.zshrc
+    echo "# Add impaktfull tools to PATH" >> ~/.zshrc-impaktfull-cli
+    echo "$EXPORT_VALUE" >> ~/.zshrc-impaktfull-cli
+    echo "source ~/.zshrc-impaktfull-cli" >> ~/.zshrc
     source ~/.zshrc
 fi
 
