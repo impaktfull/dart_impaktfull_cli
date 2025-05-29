@@ -110,8 +110,9 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> _reloadZshrc() async {
     await processRunner.runProcess([
-      'source',
-      '~/.zshrc',
+      'bash',
+      '-c',
+      'source ~/.zshrc',
     ]);
   }
 }
