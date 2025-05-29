@@ -38,7 +38,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       [
         '/bin/bash',
         '-c',
-        '/bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        r'/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
       ],
       runInShell: true,
     );
@@ -55,7 +55,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       [
         '/bin/bash',
         '-c',
-        '/bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        r'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"',
       ],
       runInShell: true,
     );
