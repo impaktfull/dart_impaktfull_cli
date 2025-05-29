@@ -13,7 +13,7 @@ class CiCdSetupMacZshrcUtil {
     required String comment,
     required List<String> pathsToAdd,
   }) {
-    final exports = pathsToAdd.map((e) => "export \$PATH=\$PATH:$e");
+    final exports = pathsToAdd.map((e) => 'export PATH="$e:\$PATH"');
     final newLines = [
       ...exports,
       if (exports.isNotEmpty) "\n",
