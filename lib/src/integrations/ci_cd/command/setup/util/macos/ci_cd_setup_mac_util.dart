@@ -52,6 +52,14 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> installOhMyZsh() async {
     ImpaktfullCliLogger.startSpinner("Installing oh-my-zsh");
+    final dir = Directory(join(
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
+        '.oh-my-zsh'));
+    if (dir.existsSync()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Oh-my-zsh is already installed");
+      return;
+    }
     await processRunner.runProcess(
       [
         '/bin/bash',

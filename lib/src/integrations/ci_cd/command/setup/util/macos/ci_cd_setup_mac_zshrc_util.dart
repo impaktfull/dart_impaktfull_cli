@@ -53,7 +53,8 @@ class CiCdSetupMacZshrcUtil {
       return;
     }
     final zshrcContent = zshrcFile.readAsStringSync();
-    final sourceImpaktfullZshrc = r'source $HOME/.zshrc-impaktfull-cli';
+    final sourceImpaktfullZshrc =
+        r'source $HOME/.impaktfull/impaktfull_cli/.zshrc';
     if (zshrcContent.contains(sourceImpaktfullZshrc)) {
       return;
     }
