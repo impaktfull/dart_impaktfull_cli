@@ -21,6 +21,7 @@ abstract class CiCdSetupOsUtil {
     await configureSSHKey(name!);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     await installGithubActionsRunner();
+    await validation();
   }
 
   void validateName(String? name) {
@@ -66,4 +67,6 @@ abstract class CiCdSetupOsUtil {
   Future<void> installAdditionalTools();
 
   Future<void> configureSSHKey(String userName);
+
+  Future<void> validation();
 }

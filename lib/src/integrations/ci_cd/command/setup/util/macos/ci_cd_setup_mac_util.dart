@@ -251,4 +251,22 @@ Host github.com
         "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac");
     ImpaktfullCliLogger.log("\n");
   }
+
+  @override
+  Future<void> validation() async {
+    ImpaktfullCliLogger.startSpinner("Verifying Flutter");
+    final result = await processRunner.runProcess(['flutter', 'doctor', '-v']);
+    ImpaktfullCliLogger.endSpinnerWithMessage('Verifying Flutter: $result');
+
+    ImpaktfullCliLogger.startSpinner("Verifying Cocoapods");
+    final cocoapodsVersion =
+        await processRunner.runProcess(['pod', '--version']);
+    ImpaktfullCliLogger.endSpinnerWithMessage(
+        "Verifying Cocoapods: $cocoapodsVersion");
+
+    ImpaktfullCliLogger.startSpinner("Verifying Cocoapods");
+    final raycastVersion = await processRunner.runProcess(['pod', '--version']);
+    ImpaktfullCliLogger.endSpinnerWithMessage(
+        "Verifying Cocoapods: $raycastVersion");
+  }
 }
