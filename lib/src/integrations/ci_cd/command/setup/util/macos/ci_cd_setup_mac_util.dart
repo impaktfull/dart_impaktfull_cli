@@ -155,12 +155,12 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   Future<void> installRaycast() async {
+    ImpaktfullCliLogger.startSpinner("Installing raycast");
     final path = Directory(join('/Applications', 'Raycast.app'));
     if (path.existsSync()) {
       ImpaktfullCliLogger.endSpinnerWithMessage("Raycast is already installed");
       return;
     }
-    ImpaktfullCliLogger.startSpinner("Installing raycast");
     await processRunner.runProcess([
       'brew',
       'install',
