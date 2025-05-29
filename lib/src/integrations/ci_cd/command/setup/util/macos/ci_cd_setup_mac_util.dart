@@ -39,7 +39,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     );
     ImpaktfullCliLogger.startSpinner("Installing homebrew");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.brew)) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Homebrew is already installed");
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Homebrew is already installed");
       return;
     }
     await processRunner.runProcess(
@@ -54,7 +55,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> installCocoapods() async {
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.cocoaPods)) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Cocoapods is already installed");
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Cocoapods is already installed");
       return;
     }
     ImpaktfullCliLogger.startSpinner("Installing cocoapods");
@@ -67,9 +69,12 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> installOhMyZsh() async {
     ImpaktfullCliLogger.startSpinner("Installing oh-my-zsh");
-    final dir = Directory(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.oh-my-zsh'));
+    final dir = Directory(join(
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
+        '.oh-my-zsh'));
     if (dir.existsSync()) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Oh-my-zsh is already installed");
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Oh-my-zsh is already installed");
       return;
     }
     await processRunner.runProcess(
@@ -94,7 +99,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     );
     await zshrcUtil.addToZshrc(
       comment: r'Add zsh-autosuggestions',
-      content: r'source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh',
+      content:
+          r'source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh',
     );
   }
 
@@ -162,15 +168,25 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       '--cask',
       'raycast',
     ]);
-    ImpaktfullCliLogger.log("Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
+    ImpaktfullCliLogger.log(
+        "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
   }
 
   @override
   Future<void> configureSSHKey(String userName) async {
     ImpaktfullCliLogger.startSpinner("Creating new `ed25519` ssh key");
-    final sshConfigFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'config'));
-    final sshPrivateKeyFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'id_ed25519'));
-    final sshPublicKeyFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'id_ed25519.pub'));
+    final sshConfigFile = File(join(
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
+        '.ssh',
+        'config'));
+    final sshPrivateKeyFile = File(join(
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
+        '.ssh',
+        'id_ed25519'));
+    final sshPublicKeyFile = File(join(
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
+        '.ssh',
+        'id_ed25519.pub'));
 
     if (sshPrivateKeyFile.existsSync()) {
       await printSshPublicKey(sshPublicKeyFile);
@@ -221,7 +237,8 @@ Host github.com
     ImpaktfullCliLogger.log("https://github.com/settings/ssh/new");
     ImpaktfullCliLogger.log("\n");
     ImpaktfullCliLogger.stopSpinner();
-    ImpaktfullCliLogger.waitForEnter("Configure github to use the ssh key. Press enter to continue:");
+    ImpaktfullCliLogger.waitForEnter(
+        "Configure github to use the ssh key. Press enter to continue:");
   }
 
   @override
@@ -229,7 +246,8 @@ Host github.com
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     ImpaktfullCliLogger.log("\n\n");
     ImpaktfullCliLogger.log("Start github actions runner config");
-    ImpaktfullCliLogger.log("https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
+    ImpaktfullCliLogger.log(
+        "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
     ImpaktfullCliLogger.log("\nConfigure runner as service");
     ImpaktfullCliLogger.log(
         "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac");
@@ -243,8 +261,10 @@ Host github.com
     ImpaktfullCliLogger.endSpinnerWithMessage('Verifying Flutter: $result');
 
     ImpaktfullCliLogger.startSpinner("Verifying Cocoapods");
-    final cocoapodsVersion = await processRunner.runProcess(['pod', '--version']);
-    ImpaktfullCliLogger.endSpinnerWithMessage("Verifying Cocoapods: $cocoapodsVersion");
+    final cocoapodsVersion =
+        await processRunner.runProcess(['pod', '--version']);
+    ImpaktfullCliLogger.endSpinnerWithMessage(
+        "Verifying Cocoapods: $cocoapodsVersion");
   }
 
   Future<void> selectXcode() async {
@@ -259,7 +279,8 @@ Host github.com
       ImpaktfullCliLogger.waitForEnter(message);
     }
     await processRunner.runProcess(['xcode-select', path.path]);
-    final xcode = await processRunner.runProcess(['xcode-select', '--print-path']);
+    final xcode =
+        await processRunner.runProcess(['xcode-select', '--print-path']);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
     ImpaktfullCliLogger.log("Xcode path: $path");
   }
