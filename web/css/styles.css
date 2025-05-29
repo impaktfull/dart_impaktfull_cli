@@ -58,6 +58,10 @@ body {
     background-color: #6a54cd;
 }
 
+.button:active {
+    background-color: #5a44b3;
+}
+
 i {
     font-size: 2em;
 }
@@ -100,4 +104,8 @@ img {
 
 .copy_btn:hover {
   background: #161616;
+}
+
+.copy_btn:active {
+  background: #101010;
 }
