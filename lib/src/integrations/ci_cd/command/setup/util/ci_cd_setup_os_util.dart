@@ -8,7 +8,8 @@ abstract class CiCdSetupOsUtil {
   });
 
   Future<void> install() async {
-    final name = ImpaktfullCliLogger.askQuestion("Name your CI/CD device");
+    final name = ImpaktfullCliLogger.askQuestion(
+        "Enter the username for your CI/CD device:");
     validateName(name);
     await installOsDependencies();
     await installChrome();
@@ -26,10 +27,10 @@ abstract class CiCdSetupOsUtil {
     if (name == null) {
       throw ImpaktfullCliError("Name is required");
     }
-    final validMacUsernameRegex = RegExp(r'^[a-z][a-z0-9_]*$');
+    final validMacUsernameRegex = RegExp(r'^[a-z][a-z0-9_-]*$');
     if (!validMacUsernameRegex.hasMatch(name)) {
       throw ImpaktfullCliError(
-          "Name must start with a lowercase letter and can only contain lowercase letters, numbers and underscores");
+          "Name must start with a lowercase letter and can only contain lowercase letters, numbers, underscores and hyphens");
     }
   }
 

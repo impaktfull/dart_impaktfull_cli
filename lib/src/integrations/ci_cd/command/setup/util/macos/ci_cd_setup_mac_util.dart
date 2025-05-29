@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:impaktfull_cli/impaktfull_cli.dart';
+import 'package:impaktfull_cli/src/core/util/case/case_util.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/command/setup/util/ci_cd_setup_os_util.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/command/setup/util/macos/ci_cd_setup_mac_zshrc_util.dart';
 import 'package:path/path.dart';
@@ -149,7 +150,7 @@ export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
       '-t',
       'ed25519',
       '-C',
-      '$userName@impaktfull.com',
+      '${CaseUtil.kebabCaseToSnakeCase(userName)}@impaktfull.com',
       '-N',
       '',
       '-f',
