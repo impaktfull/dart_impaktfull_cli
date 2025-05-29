@@ -49,7 +49,7 @@ class ImpaktfullCliEnvironment {
   }
 
   static bool isInstalled(CliTool cliTool) =>
-      CliToolsUtil.isInstalled(cliTool, _instance.installedCliTools);
+      CliToolsUtil.isInstalled(cliTool, _instance.allCliTools);
 
   static void requiresInstalledTools(List<CliTool> requiredTools) {
     final requiredToolsFound = <CliTool>[];
