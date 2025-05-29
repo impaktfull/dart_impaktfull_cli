@@ -18,9 +18,11 @@ class ImpaktfullCliEnvironment {
 
   static ImpaktfullCliEnvironment get instance => _instance;
 
-  List<InstalledCliTool> get installedCliTools => CliToolsUtil.getInstalledCliTools(allCliTools);
+  List<InstalledCliTool> get installedCliTools =>
+      CliToolsUtil.getInstalledCliTools(allCliTools);
 
-  List<InstalledCliTool> get notInstalledCliTools => CliToolsUtil.getNotInstalledCliTools(allCliTools);
+  List<InstalledCliTool> get notInstalledCliTools =>
+      CliToolsUtil.getNotInstalledCliTools(allCliTools);
 
   const ImpaktfullCliEnvironment._({
     required this.workingDirectory,
@@ -46,7 +48,8 @@ class ImpaktfullCliEnvironment {
     }
   }
 
-  static bool isInstalled(CliTool cliTool) => CliToolsUtil.isInstalled(cliTool, _instance.installedCliTools);
+  static bool isInstalled(CliTool cliTool) =>
+      CliToolsUtil.isInstalled(cliTool, _instance.installedCliTools);
 
   static void requiresInstalledTools(List<CliTool> requiredTools) {
     final requiredToolsFound = <CliTool>[];
@@ -57,17 +60,22 @@ class ImpaktfullCliEnvironment {
       }
     }
     if (requiredToolsFound.length != requiredTools.length) {
-      final missingTools = requiredTools.where((element) => !requiredToolsFound.contains(element));
-      throw ImpaktfullCliError('${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
+      final missingTools = requiredTools
+          .where((element) => !requiredToolsFound.contains(element));
+      throw ImpaktfullCliError(
+          '${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
     }
   }
 
   static void _printCurrentState() {
     ImpaktfullCliLogger.verboseSeperator();
-    ImpaktfullCliLogger.verbose('Operating system: ${OperatingSystem.current.name}');
-    ImpaktfullCliLogger.verbose('Working Dir: `${_instance.workingDirectory.path}`');
+    ImpaktfullCliLogger.verbose(
+        'Operating system: ${OperatingSystem.current.name}');
+    ImpaktfullCliLogger.verbose(
+        'Working Dir: `${_instance.workingDirectory.path}`');
     ImpaktfullCliLogger.verbose('Is fvm project: `${_instance.isFvmProject}`');
-    ImpaktfullCliLogger.verbose(CliToolsUtil.getCliToolsLog(_instance.allCliTools));
+    ImpaktfullCliLogger.verbose(
+        CliToolsUtil.getCliToolsLog(_instance.allCliTools));
     ImpaktfullCliLogger.verboseSeperator();
   }
 }
