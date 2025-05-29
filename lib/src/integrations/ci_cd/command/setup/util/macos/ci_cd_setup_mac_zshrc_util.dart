@@ -77,10 +77,14 @@ class CiCdSetupMacZshrcUtil {
 
   Future<void> _reloadZshrc() async {
     final zshrcFile = _getZshrcFile();
-    await processRunner.runProcess([
-      'source',
-      zshrcFile.path,
-    ]);
+    await processRunner.runProcess(
+      [
+        '/bin/zsh',
+        '-c',
+        'source ${zshrcFile.path}',
+      ],
+      runInShell: true,
+    );
   }
 
   Future<void> validateZshrc() async {
