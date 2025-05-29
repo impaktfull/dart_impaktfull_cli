@@ -60,6 +60,14 @@ enum CliTool {
     supportedOperatingSystems: [
       OperatingSystem.macOS,
     ],
+  ),
+  brew(
+    name: 'brew',
+    commandName: 'brew',
+    supportedOperatingSystems: [
+      OperatingSystem.macOS,
+      OperatingSystem.linux,
+    ],
   );
 
   final String name;

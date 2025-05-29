@@ -227,6 +227,28 @@ class ImpaktfullCliLogger {
     _cliSpinner = null;
   }
 
+  static void stopSpinner() {
+    if (_cliSpinnerActionDescription == null) return;
+    _cliSpinner?.stop();
+  }
+
+  static void continueSpinner() {
+    if (_cliSpinnerActionDescription == null) return;
+    _cliSpinner?.start();
+  }
+
+  static void endSpinnerWithMessage(String message) {
+    if (_cliSpinnerActionDescription == null) return;
+    if (_verbose) {
+      log('⚠️ $message');
+    } else {
+      _cliSpinner?.warn(message);
+    }
+    _cliSpinner?.stop();
+    _cliSpinnerActionDescription = null;
+    _cliSpinner = null;
+  }
+
   static void saveSecret(String value) {
     if (value.isEmpty) return;
     _secrets.add(value);

@@ -12,7 +12,11 @@ abstract class ProcessRunner {
   Future<String> runProcess(
     List<String> args, {
     Map<String, String>? environment,
+    bool runInShell = false,
+    ProcessStartMode mode = ProcessStartMode.normal,
   });
+
+  Future<void> requestSudo();
 }
 
 class CliProcessRunner extends ProcessRunner {
@@ -22,6 +26,8 @@ class CliProcessRunner extends ProcessRunner {
   Future<String> runProcess(
     List<String> args, {
     Map<String, String>? environment,
+    bool runInShell = false,
+    ProcessStartMode mode = ProcessStartMode.normal,
   }) async {
     final fullCommand = args.join(' ');
     ImpaktfullCliLogger.verboseSeperator();
@@ -31,6 +37,8 @@ class CliProcessRunner extends ProcessRunner {
       args.first,
       args.length > 1 ? args.sublist(1) : [],
       environment: environment,
+      runInShell: runInShell,
+      mode: mode,
     );
     final stringBuffer = StringBuffer();
     final subscriptionOut = result.stdout.listen((codeUnits) {
@@ -54,5 +62,22 @@ class CliProcessRunner extends ProcessRunner {
     await subscriptionOut.cancel();
     await subscriptionError.cancel();
     return stringBuffer.toString().trim();
+  }
+
+  @override
+  Future<void> requestSudo() async {
+    ImpaktfullCliLogger.stopSpinner();
+    final sudoProcess = await Process.start(
+      'sudo',
+      ['-v'],
+      mode: ProcessStartMode.inheritStdio,
+      runInShell: true,
+    );
+
+    final sudoExit = await sudoProcess.exitCode;
+    if (sudoExit != 0) {
+      throw ImpaktfullCliError('Sudo authorization failed.');
+    }
+    ImpaktfullCliLogger.continueSpinner();
   }
 }
