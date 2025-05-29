@@ -264,10 +264,5 @@ Host github.com
         await processRunner.runProcess(['pod', '--version']);
     ImpaktfullCliLogger.endSpinnerWithMessage(
         "Verifying Cocoapods: $cocoapodsVersion");
-
-    ImpaktfullCliLogger.startSpinner("Verifying Cocoapods");
-    final raycastVersion = await processRunner.runProcess(['pod', '--version']);
-    ImpaktfullCliLogger.endSpinnerWithMessage(
-        "Verifying Cocoapods: $raycastVersion");
   }
 }
