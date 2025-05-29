@@ -122,7 +122,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> installFvm() async {
     ImpaktfullCliLogger.startSpinner("Adding fvm & flutter paths to PATH");
     await zshrcUtil.addToPath(
-      comment: "Add fvm paths to PATH variable",
+      comment: "Add fvm & flutter paths to PATH variable",
       pathsToAdd: [
         r"$HOME/.pub-cache/bin",
         r"$HOME/.pub-cache",

@@ -26,12 +26,14 @@ abstract class ProcessRunner {
     _pathsToAdd.addAll(pathsToAdd);
     final pathEnvVariable =
         ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
+    final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
     final sb = StringBuffer(pathEnvVariable);
     for (final path in _pathsToAdd) {
+      final cleanPath = path.replaceAll('\$HOME', home);
       if (sb.isEmpty) {
-        sb.write(path);
+        sb.write(cleanPath);
       } else {
-        sb.write(':$path');
+        sb.write(':$cleanPath');
       }
     }
     _path = sb.toString();

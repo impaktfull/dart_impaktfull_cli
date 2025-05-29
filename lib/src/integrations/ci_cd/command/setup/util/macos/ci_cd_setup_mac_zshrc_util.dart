@@ -13,14 +13,14 @@ class CiCdSetupMacZshrcUtil {
     required String comment,
     required List<String> pathsToAdd,
   }) {
+    ProcessRunner.updatePath(
+      pathsToAdd: pathsToAdd,
+    );
     final exports = pathsToAdd.map((e) => 'export PATH="$e:\$PATH"');
     final newLines = [
       ...exports,
       if (exports.isNotEmpty) "\n",
     ].join('\n');
-    ProcessRunner.updatePath(
-      pathsToAdd: pathsToAdd,
-    );
     return addToZshrc(
       comment: comment,
       content: newLines,
