@@ -22,6 +22,7 @@ if ! grep -q "$EXPORT_VALUE" ~/.zshrc-impaktfull-cli; then
     echo "# Add impaktfull-cli zshrc file to zshrc" >> ~/.zshrc
     echo "source ~/.impaktfull/impaktfull_cli/.zshrc" >> ~/.zshrc
     source ~/.zshrc
+    exec zsh
 fi
 
 impaktfull_cli --help

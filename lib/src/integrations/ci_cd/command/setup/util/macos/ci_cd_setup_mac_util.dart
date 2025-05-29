@@ -19,6 +19,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await processRunner.requestSudo();
     await validateZshrc();
     await installHomebrew();
+    await installOhMyZsh();
     await installAutosuggestions();
   }
 
@@ -49,8 +50,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     );
   }
 
-  Future<void> installAutosuggestions() async {
-    ImpaktfullCliLogger.startSpinner("Installing zsh-autosuggestions");
+  Future<void> installOhMyZsh() async {
+    ImpaktfullCliLogger.startSpinner("Installing oh-my-zsh");
     await processRunner.runProcess(
       [
         '/bin/bash',
@@ -58,6 +59,17 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
         r'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"',
       ],
       runInShell: true,
+    );
+  }
+
+  Future<void> installAutosuggestions() async {
+    ImpaktfullCliLogger.startSpinner("Installing zsh-autosuggestions");
+    await processRunner.runProcess(
+      [
+        'brew',
+        'install',
+        'zsh-autosuggestions',
+      ],
     );
     await zshrcUtil.addToZshrc(
       r'Add zsh-autosuggestions',
