@@ -86,7 +86,8 @@ class CiCdSetupMacZshrcUtil {
   Future<void> validateZshrc() async {
     final zshrcFile = _getZshrcFile();
     if (!zshrcFile.existsSync()) {
-      throw ImpaktfullCliError("Zshrc not found, install zsh first and try again");
+      throw ImpaktfullCliError(
+          "Zshrc not found, install zsh first and try again");
     }
   }
 }
