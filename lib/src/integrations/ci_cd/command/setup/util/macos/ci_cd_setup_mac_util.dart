@@ -91,8 +91,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   @override
   Future<void> installChrome() async {
-    final path = '/Applications/Google Chrome.app';
-    if (Directory(path).existsSync()) {
+    final path = Directory('/Applications/Google Chrome.app');
+    if (path.existsSync()) {
       ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
       return;
     }
@@ -139,6 +139,11 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   Future<void> installRaycast() async {
+    final path = Directory(join('/Applications', 'Raycast.app'));
+    if (path.existsSync()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("Raycast is already installed");
+      return;
+    }
     ImpaktfullCliLogger.startSpinner("Installing raycast");
     await processRunner.runProcess([
       'brew',
@@ -183,7 +188,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       throw ImpaktfullCliError("Private ssh key not found");
     }
 
-    if (sshPublicKeyFile.existsSync()) {
+    if (!sshPublicKeyFile.existsSync()) {
       throw ImpaktfullCliError("Public ssh key not found");
     }
 
