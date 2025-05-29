@@ -31,6 +31,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     );
     ImpaktfullCliLogger.startSpinner("Adding homebrew to .zshrc");
     await _addToZshrc(r'export PATH="/opt/homebrew/bin:$PATH"');
+    await _reloadZshrc();
   }
 
   @override
@@ -105,5 +106,12 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       content,
       mode: FileMode.append,
     );
+  }
+
+  Future<void> _reloadZshrc() async {
+    await processRunner.runProcess([
+      'source',
+      '~/.zshrc',
+    ]);
   }
 }
