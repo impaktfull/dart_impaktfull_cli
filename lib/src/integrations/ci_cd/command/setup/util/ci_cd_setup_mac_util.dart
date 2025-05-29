@@ -30,8 +30,10 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       runInShell: true,
     );
     ImpaktfullCliLogger.startSpinner("Adding homebrew to .zshrc");
-    await _addToZshrc(r'export PATH="/opt/homebrew/bin:$PATH"');
-    await _reloadZshrc();
+    await _addToZshrc(
+      r'Add homebrew to PATH',
+      r'export PATH="/opt/homebrew/bin:$PATH"',
+    );
   }
 
   @override
@@ -76,6 +78,18 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       'install',
       'fvm',
     ]);
+    final content = r"""
+export PATH=$PATH:$HOME/.pub-cache/bin
+export PATH=$PATH:$HOME/.pub-cache
+export PATH=$PATH:$HOME/fvm/default/bin
+export PATH=$PATH:$HOME/fvm/default/bin/dart/bin
+export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/dart2js
+export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
+""";
+    await _addToZshrc(
+      "Add Flutter/Dart paths to PATH variable",
+      content,
+    );
   }
 
   File getZshrcFile() {
@@ -91,21 +105,24 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     }
   }
 
-  Future<void> _addToZshrc(String content) async {
+  Future<void> _addToZshrc(String comments, String content) async {
     final zshrcFile = getZshrcFile();
     if (!zshrcFile.existsSync()) {
       throw ImpaktfullCliError("${zshrcFile.path} not found");
     }
+    final trimmedContent = content.trim();
+    final newContent = "#$comments\n$trimmedContent\n";
     final zshrcContent = zshrcFile.readAsStringSync();
-    if (zshrcContent.contains(content)) {
+    if (zshrcContent.contains(trimmedContent)) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          ".zshrc already contains `$content`");
+          ".zshrc already contains `$trimmedContent`");
       return;
     }
     zshrcFile.writeAsStringSync(
-      content,
+      newContent,
       mode: FileMode.append,
     );
+    await _reloadZshrc();
   }
 
   Future<void> _reloadZshrc() async {
