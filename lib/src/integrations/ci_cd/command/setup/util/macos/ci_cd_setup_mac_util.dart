@@ -110,6 +110,21 @@ export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
   }
 
   @override
+  Future<void> installAdditionalTools() async {
+    await installRaycast();
+  }
+
+  Future<void> installRaycast() async {
+    ImpaktfullCliLogger.startSpinner("Installing raycast");
+    await processRunner.runProcess([
+      'brew',
+      'install',
+      '--cask',
+      'raycast',
+    ]);
+  }
+
+  @override
   Future<void> configureSSHKey(String userName) async {
     ImpaktfullCliLogger.startSpinner("Creating new `ed25519` ssh key");
     final sshConfigFile = File(join(

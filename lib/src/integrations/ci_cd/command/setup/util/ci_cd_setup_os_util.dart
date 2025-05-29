@@ -16,6 +16,7 @@ abstract class CiCdSetupOsUtil {
     final flutterVersion = "stable";
     await installFlutterVersion(flutterVersion);
     await setFlutterVersionAsGlobal(flutterVersion);
+    await installAdditionalTools();
     await configureSSHKey(name!);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     await installGithubActionsRunner();
@@ -60,6 +61,8 @@ abstract class CiCdSetupOsUtil {
       version,
     ]);
   }
+
+  Future<void> installAdditionalTools();
 
   Future<void> configureSSHKey(String userName);
 }
