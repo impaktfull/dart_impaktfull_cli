@@ -19,6 +19,7 @@ if ! grep -q "$EXPORT_VALUE" ~/.zshrc-impaktfull-cli; then
     echo "Adding impaktfull_cli to PATH"
     echo "# Add impaktfull tools to PATH" >> ~/.zshrc-impaktfull-cli
     echo "$EXPORT_VALUE" >> ~/.zshrc-impaktfull-cli
+    echo "# Add impaktfull-cli zshrc file to zshrc" >> ~/.zshrc
     echo "source ~/.zshrc-impaktfull-cli" >> ~/.zshrc
     source ~/.zshrc
 fi
