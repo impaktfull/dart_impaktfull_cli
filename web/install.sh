@@ -23,4 +23,4 @@ if ! grep -q "$EXPORT_VALUE" ~/.zshrc; then
 fi
 
 echo ""
-echo "Restart your teminal and test by running 'impaktfull_cli --help'"
+echo "Restart your terminal and test by running 'impaktfull_cli --help'"
