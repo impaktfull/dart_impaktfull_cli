@@ -148,8 +148,10 @@ class ImpaktfullCliLogger {
   }
 
   static void waitForEnter(String message) {
+    stopSpinner();
     log(message);
     stdin.readLineSync(encoding: utf8);
+    continueSpinner();
   }
 
   // Spinner

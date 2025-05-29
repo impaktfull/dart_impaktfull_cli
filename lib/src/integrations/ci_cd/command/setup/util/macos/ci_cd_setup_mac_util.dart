@@ -151,6 +151,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       '--cask',
       'raycast',
     ]);
+    ImpaktfullCliLogger.log(
+        "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
   }
 
   @override
@@ -170,6 +172,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
         'id_ed25519.pub'));
 
     if (sshPrivateKeyFile.existsSync()) {
+      await printSshPublicKey(sshPublicKeyFile);
       ImpaktfullCliLogger.endSpinnerWithMessage("SSH key already exists");
       return;
     }
@@ -204,7 +207,10 @@ Host github.com
 """
         .trim();
     sshConfigFile.writeAsStringSync(sshConfigContent);
+    await printSshPublicKey(sshPublicKeyFile);
+  }
 
+  Future<void> printSshPublicKey(File sshPublicKeyFile) async {
     ImpaktfullCliLogger.startSpinner("Export ssh public key");
     final sshPublicKeyContent = sshPublicKeyFile.readAsStringSync();
     ImpaktfullCliLogger.log("\nPublic ssh key:");
@@ -215,7 +221,7 @@ Host github.com
     ImpaktfullCliLogger.log("\n");
     ImpaktfullCliLogger.stopSpinner();
     ImpaktfullCliLogger.waitForEnter(
-        "Did you add the public ssh key to your github account?");
+        "Configure github to use the ssh key. Press enter to continue:");
   }
 
   @override
