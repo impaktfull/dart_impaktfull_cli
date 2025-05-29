@@ -15,6 +15,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   @override
   Future<void> installOsDependencies() async {
+    await processRunner.requestSudo();
     await validateZshrc();
     await installHomebrew();
     await installAutosuggestions();
@@ -32,7 +33,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
           "Homebrew is already installed");
       return;
     }
-    await processRunner.requestSudo();
     await processRunner.runProcess(
       [
         '/bin/bash',

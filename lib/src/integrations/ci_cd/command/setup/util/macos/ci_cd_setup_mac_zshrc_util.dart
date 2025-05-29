@@ -15,6 +15,9 @@ class CiCdSetupMacZshrcUtil {
 
   Future<void> addToZshrc(String comments, String content) async {
     final zshrcFile = _getImpaktfullZshrcFile();
+    if (!zshrcFile.existsSync()) {
+      zshrcFile.createSync(recursive: true);
+    }
     final commentLine = "#$comments";
     final newLines = content.split('\n').map((e) => e.trim());
     final linesToAdd = <String>[];
