@@ -16,7 +16,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> installHomebrew() async {
     ImpaktfullCliLogger.startSpinner("Installing homebrew");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.brew)) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Homebrew is already installed");
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Homebrew is already installed");
       return;
     }
     await processRunner.requestSudo();
@@ -50,7 +51,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> installGithubActionsRunner() async {
     ImpaktfullCliLogger.log("\n\n");
     ImpaktfullCliLogger.log("Start github actions runner config");
-    ImpaktfullCliLogger.log("https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
+    ImpaktfullCliLogger.log(
+        "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
     ImpaktfullCliLogger.log("\nConfigure runner as service");
     ImpaktfullCliLogger.log(
         "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac");
@@ -83,7 +85,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> _validateZshrc() async {
     final zshrcFile = getZshrcFile();
     if (!zshrcFile.existsSync()) {
-      throw ImpaktfullCliError("Zshrc not found, install zsh first and try again");
+      throw ImpaktfullCliError(
+          "Zshrc not found, install zsh first and try again");
     }
   }
 
@@ -94,7 +97,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     }
     final zshrcContent = zshrcFile.readAsStringSync();
     if (zshrcContent.contains(content)) {
-      ImpaktfullCliLogger.endSpinnerWithMessage(".zshrc already contains `$content`");
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          ".zshrc already contains `$content`");
       return;
     }
     zshrcFile.writeAsStringSync(

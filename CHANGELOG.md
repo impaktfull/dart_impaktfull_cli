@@ -1,3 +1,14 @@
+# 0.24.6
+
+## Fix
+
+- macos ci/cd setup command now installs:
+  - homebrew
+  - chrome
+  - fvm
+  - updates PATH in .zshrc
+  - Shows info on github actions runner config
+
 # 0.24.5
 
 ## Fix

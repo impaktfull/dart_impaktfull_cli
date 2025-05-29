@@ -15,9 +15,11 @@ abstract class CiCdSetupOsUtil {
     ImpaktfullCliLogger.startSpinner("Installing fvm");
     await installFvm();
     final flutterVersion = "stable";
-    ImpaktfullCliLogger.startSpinner("Installing flutter version `$flutterVersion`");
+    ImpaktfullCliLogger.startSpinner(
+        "Installing flutter version `$flutterVersion`");
     await installFlutterVersion(flutterVersion);
-    ImpaktfullCliLogger.startSpinner("Setting flutter version `$flutterVersion` as global");
+    ImpaktfullCliLogger.startSpinner(
+        "Setting flutter version `$flutterVersion` as global");
     await setFlutterVersionAsGlobal(flutterVersion);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     await installGithubActionsRunner();
