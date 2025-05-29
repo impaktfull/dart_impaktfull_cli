@@ -28,7 +28,11 @@ abstract class ProcessRunner {
         ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
     final sb = StringBuffer(pathEnvVariable);
     for (final path in _pathsToAdd) {
-      sb.write('$pathEnvVariable:$path');
+      if (sb.isEmpty) {
+        sb.write(path);
+      } else {
+        sb.write(':$path');
+      }
     }
     _path = sb.toString();
   }

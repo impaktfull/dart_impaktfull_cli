@@ -135,7 +135,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   @override
   Future<void> installAdditionalTools() async {
-    await installChrome();
     await installRaycast();
   }
 

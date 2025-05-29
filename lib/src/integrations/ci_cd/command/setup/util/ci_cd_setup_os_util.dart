@@ -12,11 +12,11 @@ abstract class CiCdSetupOsUtil {
         "Enter the username for your CI/CD device:");
     validateName(name);
     await installOsDependencies();
-    await installChrome();
     await installFvm();
     final flutterVersion = "stable";
     await installFlutterVersion(flutterVersion);
     await setFlutterVersionAsGlobal(flutterVersion);
+    await installChrome();
     await installAdditionalTools();
     await configureSSHKey(name!);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
