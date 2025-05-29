@@ -20,7 +20,7 @@ class CiCdSetupMacZshrcUtil {
     }
     final commentLine = "#$comments";
     final newLines = content.split('\n').map((e) => e.trim());
-    final linesToAdd = <String>[];
+    final linesToKeep = <String>[];
     final zshrcLines = zshrcFile.readAsLinesSync();
     for (final zshrcLine in zshrcLines) {
       if (zshrcLine == commentLine) {
@@ -29,15 +29,17 @@ class CiCdSetupMacZshrcUtil {
       if (newLines.contains(zshrcLine)) {
         continue;
       }
-      linesToAdd.add(zshrcLine);
+      linesToKeep.add(zshrcLine);
     }
-    if (linesToAdd.isEmpty) {
+    if (linesToKeep.isEmpty) {
       await addImpaktfullZshrcToZshrc();
       return;
     }
     final newContent = [
+      ...linesToKeep,
+      if (linesToKeep.isNotEmpty) "\n",
       commentLine,
-      ...linesToAdd,
+      ...newLines,
     ].join('\n');
     zshrcFile.writeAsStringSync(
       "$newContent\n",
@@ -58,8 +60,14 @@ class CiCdSetupMacZshrcUtil {
     if (zshrcContent.contains(sourceImpaktfullZshrc)) {
       return;
     }
+    final newContent = [
+      if (zshrcContent.isNotEmpty) ['\n'],
+      "#$sourceImpaktfullZshrc",
+      sourceImpaktfullZshrc,
+    ].join('\n');
+    ImpaktfullCliLogger.startSpinner("Adding impaktfull_cli to .zshrc");
     zshrcFile.writeAsStringSync(
-      "$sourceImpaktfullZshrc\n",
+      "$newContent\n",
       mode: FileMode.append,
     );
     await _reloadZshrc();
