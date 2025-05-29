@@ -57,12 +57,12 @@ class CiCdSetupMacZshrcUtil {
     if (zshrcContent.contains(sourceImpaktfullZshrc)) {
       return;
     }
+    ImpaktfullCliLogger.startSpinner("Adding impaktfull_cli to .zshrc");
     final newContent = [
       if (zshrcContent.isNotEmpty) '\n',
       "# Add impaktfull_cli to .zshrc",
       sourceImpaktfullZshrc,
     ].join('\n');
-    ImpaktfullCliLogger.startSpinner("Adding impaktfull_cli to .zshrc");
     zshrcFile.writeAsStringSync(
       "$newContent\n",
       mode: FileMode.append,
@@ -85,8 +85,6 @@ class CiCdSetupMacZshrcUtil {
     final zshrcFile = _getZshrcFile();
     await processRunner.runProcess(
       [
-        '/bin/zsh',
-        '-c',
         'source ${zshrcFile.path}',
       ],
       runInShell: true,

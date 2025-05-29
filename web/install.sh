@@ -29,7 +29,6 @@ if ! grep -q "$EXPORT_IMP_ZSHRC" ~/.zshrc; then
 fi
 
 source ~/.zshrc
-exec zsh
 
 impaktfull_cli --help
 

@@ -133,6 +133,7 @@ export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
 
   @override
   Future<void> installAdditionalTools() async {
+    await installChrome();
     await installRaycast();
   }
 
