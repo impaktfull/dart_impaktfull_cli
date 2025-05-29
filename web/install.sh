@@ -14,17 +14,22 @@ curl -fsSL https://cli.impaktfull.com/download/impaktfull_cli -o $CLI_PATH
 echo "Download impaktfull_cli completed!"
 chmod +x $CLI_PATH
 
-EXPORT_VALUE='export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"'
+EXPORT_IMP_CLI_ZSHRC='export PATH="$HOME/.impaktfull/impaktfull_cli:$PATH"'
 touch ~/.impaktfull/impaktfull_cli/.zshrc
-if ! grep -q "$EXPORT_VALUE" ~/.impaktfull/impaktfull_cli/.zshrc; then
+if ! grep -q "$EXPORT_IMP_CLI_ZSHRC" ~/.impaktfull/impaktfull_cli/.zshrc; then
     echo "Adding impaktfull_cli to PATH"
     echo "# Add impaktfull tools to PATH" >> ~/.impaktfull/impaktfull_cli/.zshrc
-    echo "$EXPORT_VALUE" >> ~/.impaktfull/impaktfull_cli/.zshrc
-    echo "# Add impaktfull-cli zshrc file to zshrc" >> ~/.zshrc
-    echo "source ~/.impaktfull/impaktfull_cli/.zshrc" >> ~/.zshrc
-    source ~/.zshrc
-    exec zsh
+    echo "$EXPORT_IMP_CLI_ZSHRC" >> ~/.impaktfull/impaktfull_cli/.zshrc
 fi
+
+EXPORT_IMP_ZSHRC="source ~/.impaktfull/impaktfull_cli/.zshrc"
+if ! grep -q "$EXPORT_IMP_ZSHRC" ~/.zshrc; then
+    echo "# Add impaktfull-cli zshrc file to zshrc" >> ~/.zshrc
+    echo "$EXPORT_IMP_ZSHRC" >> ~/.zshrc
+fi
+
+source ~/.zshrc
+exec zsh
 
 impaktfull_cli --help
 
