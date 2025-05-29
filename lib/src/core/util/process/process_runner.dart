@@ -47,6 +47,9 @@ class CliProcessRunner extends ProcessRunner {
     final fullCommand = args.join(' ');
     ImpaktfullCliLogger.verboseSeperator();
     ImpaktfullCliLogger.verbose(fullCommand);
+    if (_path != null) {
+      ImpaktfullCliLogger.verbose("PATH: $_path");
+    }
     ImpaktfullCliLogger.verboseSeperator();
     final result = await Process.start(
       args.first,
