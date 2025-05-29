@@ -1,3 +1,9 @@
+# 0.24.7
+
+## Fix
+
+- Fix bug where the cli tools were not checked correctly
+
 # 0.24.6
 
 ## Fix
