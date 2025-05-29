@@ -67,6 +67,7 @@ class CliProcessRunner extends ProcessRunner {
   @override
   Future<void> requestSudo() async {
     ImpaktfullCliLogger.stopSpinner();
+    ImpaktfullCliLogger.log("Enter your sudo password to continue:");
     final sudoProcess = await Process.start(
       'sudo',
       ['-v'],

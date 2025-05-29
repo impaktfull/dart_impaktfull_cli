@@ -15,16 +15,20 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   @override
   Future<void> installOsDependencies() async {
-    await zshrcUtil.validateZshrc();
+    await validateZshrc();
     await installHomebrew();
     await installAutosuggestions();
+  }
+
+  Future<void> validateZshrc() async {
+    ImpaktfullCliLogger.startSpinner("Validate zshrc");
+    await zshrcUtil.validateZshrc();
   }
 
   Future<void> installHomebrew() async {
     ImpaktfullCliLogger.startSpinner("Installing homebrew");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.brew)) {
-      ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Homebrew is already installed");
+      ImpaktfullCliLogger.endSpinnerWithMessage("Homebrew is already installed");
       return;
     }
     await processRunner.requestSudo();
@@ -107,18 +111,9 @@ export PATH=$PATH:$HOME/fvm/default/bin/dart/bin/pub
   @override
   Future<void> configureSSHKey(String userName) async {
     ImpaktfullCliLogger.startSpinner("Creating new `ed25519` ssh key");
-    final sshConfigFile = File(join(
-        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
-        '.ssh',
-        'config'));
-    final sshPrivateKeyFile = File(join(
-        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
-        '.ssh',
-        'id_ed25519'));
-    final sshPublicKeyFile = File(join(
-        ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
-        '.ssh',
-        'id_ed25519.pub'));
+    final sshConfigFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'config'));
+    final sshPrivateKeyFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'id_ed25519'));
+    final sshPublicKeyFile = File(join(ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"), '.ssh', 'id_ed25519.pub'));
 
     if (sshPrivateKeyFile.existsSync()) {
       ImpaktfullCliLogger.endSpinnerWithMessage("SSH key already exists");
@@ -165,8 +160,7 @@ Host github.com
     ImpaktfullCliLogger.log("https://github.com/settings/ssh/new");
     ImpaktfullCliLogger.log("\n");
     ImpaktfullCliLogger.stopSpinner();
-    ImpaktfullCliLogger.waitForEnter(
-        "Did you add the public ssh key to your github account?");
+    ImpaktfullCliLogger.waitForEnter("Did you add the public ssh key to your github account?");
   }
 
   @override
@@ -174,8 +168,7 @@ Host github.com
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
     ImpaktfullCliLogger.log("\n\n");
     ImpaktfullCliLogger.log("Start github actions runner config");
-    ImpaktfullCliLogger.log(
-        "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
+    ImpaktfullCliLogger.log("https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
     ImpaktfullCliLogger.log("\nConfigure runner as service");
     ImpaktfullCliLogger.log(
         "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac");

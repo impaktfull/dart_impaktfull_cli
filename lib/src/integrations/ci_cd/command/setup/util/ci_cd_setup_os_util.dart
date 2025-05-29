@@ -10,7 +10,6 @@ abstract class CiCdSetupOsUtil {
   Future<void> install() async {
     final name = ImpaktfullCliLogger.askQuestion("Name your CI/CD device");
     validateName(name);
-    ImpaktfullCliLogger.startSpinner("Installing dependencies");
     await installOsDependencies();
     await installChrome();
     await installFvm();
