@@ -242,12 +242,23 @@ class ImpaktfullCliLogger {
     _cliSpinner?.start();
   }
 
-  static void endSpinnerWithMessage(String message) {
+  static void endSpinnerWithMessage(
+    String message, {
+    bool isWarning = false,
+  }) {
     if (_cliSpinnerActionDescription == null) return;
     if (_verbose) {
-      log('⚠️ $message');
+      if (_verbose) {
+        log('⚠️ $message');
+      } else {
+        log('✅ $message');
+      }
     } else {
-      _cliSpinner?.warn(message);
+      if (isWarning) {
+        _cliSpinner?.warn(message);
+      } else {
+        _cliSpinner?.success(message);
+      }
     }
     _cliSpinner?.stop();
     _cliSpinnerActionDescription = null;
