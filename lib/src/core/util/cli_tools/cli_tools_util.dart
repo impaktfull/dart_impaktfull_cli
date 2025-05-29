@@ -17,7 +17,10 @@ class CliToolsUtil {
     CliTool cliTool,
     List<InstalledCliTool> allCliTools,
   ) =>
-      allCliTools.any((element) => element.cliTool == cliTool);
+      allCliTools.any((element) {
+        if (element.cliTool != cliTool) return false;
+        return element.isInstalled;
+      });
 
   static Future<List<InstalledCliTool>> checkInstalledTools(
           ProcessRunner processRunner) async =>
