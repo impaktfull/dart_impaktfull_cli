@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
+import 'package:path/path.dart';
 
 class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
   const AppleProvisioningProfilePlugin({
@@ -11,7 +12,7 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
 
   Future<void> scanAndInstallProvisioningProfiles({
     Directory? directory,
-    bool override = false,
+    bool override = true,
   }) async {
     final rootDirectory = directory ?? Directory.current;
     final provisioningProfiles =
@@ -28,11 +29,11 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
 
   Future<void> installProvisioningProfile({
     required File provisioningProfile,
-    bool override = false,
+    bool override = true,
   }) async {
     final uuid = await _retrieveUuid(provisioningProfile);
     final targetDirectory = _targetDirectory();
-    final target = File('$targetDirectory/$uuid.mobileprovision');
+    final target = File(join(targetDirectory.path, '$uuid.mobileprovision'));
 
     if (!targetDirectory.existsSync()) {
       await targetDirectory.create(recursive: true);
