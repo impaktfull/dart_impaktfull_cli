@@ -1,6 +1,6 @@
-import 'package:impaktfull_cli/src/integrations/apple_certificate/command/apple_certificate_root_command.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/command/install/apple_certificate_install_command_config.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/model/install/apple_certificate_install_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/command/apple_certificate_root_command.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/command/install/apple_certificate_install_command_config.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/model/install/apple_certificate_install_config_data.dart';
 import 'package:impaktfull_cli/src/core/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
 

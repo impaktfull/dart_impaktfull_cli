@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/input_listener/force_quit_listener.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/plugin/mac_os_keychain_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
 import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';

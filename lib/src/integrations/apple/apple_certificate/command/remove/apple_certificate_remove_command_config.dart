@@ -1,5 +1,5 @@
 import 'package:args/args.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/model/remove/apple_certificate_remove_config_data.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/model/remove/apple_certificate_remove_config_data.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_result_extensions.dart';
 

@@ -5,13 +5,13 @@ import 'package:impaktfull_cli/src/core/util/input_listener/force_quit_listener.
 import 'package:impaktfull_cli/src/core/util/input_listener/versbose_logging_listener.dart';
 import 'package:impaktfull_cli/src/integrations/android/android_command.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/command/apple_certificate_root_command.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_parser_extensions.dart';
 import 'package:impaktfull_cli/src/core/util/extensions/arg_result_extensions.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/core/util/runner/runner.dart';
-import 'package:impaktfull_cli/src/integrations/apple_certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
@@ -83,7 +83,7 @@ class ImpaktfullCli {
   void _initCommands() {
     _commands = {
       AndroidRootCommand(processRunner: processRunner),
-      AppleCertificateRootCommand(processRunner: processRunner),
+      AppleRootCommand(processRunner: processRunner),
       CiCdRootCommand(processRunner: processRunner),
       OpenSourceRootCommand(processRunner: processRunner),
       SlackRootCommand(processRunner: processRunner),
