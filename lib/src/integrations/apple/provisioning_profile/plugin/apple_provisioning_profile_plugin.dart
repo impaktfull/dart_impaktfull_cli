@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
+import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:path/path.dart';
 
@@ -32,19 +33,22 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
     bool override = true,
   }) async {
     final uuid = await _retrieveUuid(provisioningProfile);
+    ImpaktfullCliLogger.verbose(
+        'Installing provisioning profile with UUID $uuid for ${provisioningProfile.path}');
     final targetDirectory = _targetDirectory();
     final target = File(join(targetDirectory.path, '$uuid.mobileprovision'));
 
     if (!targetDirectory.existsSync()) {
       await targetDirectory.create(recursive: true);
     }
-
-    if (!target.existsSync()) {
+    if (target.existsSync()) {
       if (override) {
+        ImpaktfullCliLogger.verbose(
+            'Deleting provisioning profile at ${target.path}');
         target.deleteSync(recursive: true);
       } else {
         throw ImpaktfullCliError(
-            'Provisioning profile already exists at $target');
+            'Provisioning profile already exists at ${target.path}');
       }
     }
 
