@@ -1,3 +1,15 @@
+# 0.25.0
+
+## Added
+
+- Added support for installing provisioning profiles
+- New command `apple provisioning_profile install` uses `Directory.current` to find the provisioning profile and install them
+
+## Breaking changes
+
+- `apple_certificate install` is now `apple certificate install`
+- `apple_certificate remove` is now `apple certificate remove`
+
 # 0.24.7
 
 ## Fix
