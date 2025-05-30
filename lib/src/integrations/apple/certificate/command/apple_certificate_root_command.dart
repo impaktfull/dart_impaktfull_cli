@@ -1,6 +1,6 @@
 import 'package:args/command_runner.dart';
-import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/command/install/apple_certificate_install_command.dart';
-import 'package:impaktfull_cli/src/integrations/apple/apple_certificate/command/remove/apple_certificate_remove_command.dart';
+import 'package:impaktfull_cli/src/integrations/apple/certificate/command/install/apple_certificate_install_command.dart';
+import 'package:impaktfull_cli/src/integrations/apple/certificate/command/remove/apple_certificate_remove_command.dart';
 import 'package:impaktfull_cli/src/core/command/command/root_command.dart';
 
 class AppleCertificateRootCommand extends RootCommand {

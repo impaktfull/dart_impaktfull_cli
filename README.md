@@ -65,6 +65,20 @@ dart run impaktfull_cli apple certificate install
 dart run impaktfull_cli apple certificate remove
 ```
 
+#### provisioning_profile
+
+##### install
+
+```bash
+dart run impaktfull_cli apple provisioning_profile install
+```
+
+##### remove
+
+```bash
+dart run impaktfull_cli apple provisioning_profile remove
+```
+
 ### ci_cd
 
 #### report_status
