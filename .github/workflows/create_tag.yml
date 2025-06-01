@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 18
       - name: Automated version bump
-        uses: impaktfull/gh_action_dart_conventional_release@deploy-keys
+        uses: impaktfull/gh_action_dart_conventional_release@main
         with:
           tag-prefix: "v"
           use-dart: true
