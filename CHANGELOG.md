@@ -1,3 +1,9 @@
+# 0.25.1
+
+## Fix
+
+- Improve error hanlding on testflight upload when contract is not valid anymore
+
 # 0.25.0
 
 ## Added
