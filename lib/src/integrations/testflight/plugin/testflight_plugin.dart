@@ -66,6 +66,9 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
         result.contains('ContentDelivery Code=90062')) {
       throw ImpaktfullCliError(
           'The bundle version must be higher than the previously uploaded version');
+    } else if (result.contains('FORBIDDEN_ERROR.CONTRACT_NOT_VALID')) {
+      throw ImpaktfullCliError(
+          'You need to accept the latest terms and conditions in the appstoreconnect');
     }
     ImpaktfullCliLogger.clearSpinnerPrefix();
   }
