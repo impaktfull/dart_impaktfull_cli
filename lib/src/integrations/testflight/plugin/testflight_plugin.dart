@@ -68,7 +68,7 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
           'The bundle version must be higher than the previously uploaded version');
     } else if (result.contains('FORBIDDEN_ERROR.CONTRACT_NOT_VALID')) {
       throw ImpaktfullCliError(
-          'You need to accept the latest terms and conditions in the appstoreconnect');
+          'You need to accept the latest terms and conditions in App Store Connect');
     }
     ImpaktfullCliLogger.clearSpinnerPrefix();
   }
