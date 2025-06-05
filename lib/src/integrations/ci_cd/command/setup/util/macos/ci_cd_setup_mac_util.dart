@@ -192,7 +192,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       comment: "Add JAVA_HOME to env variables",
       content: r'export JAVA_HOME=$(/usr/libexec/java_home -v17)',
     );
-    final javaHome = await processRunner.runProcess(['echo', r'$JAVA_HOME']);
+    final javaHome = await processRunner.runProcess(['/usr/libexec/java_home', '-v17']);
     await setFlutterJdkDir(javaHome);
   }
 
