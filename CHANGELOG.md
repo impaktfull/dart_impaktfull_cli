@@ -1,13 +1,20 @@
+# 0.26.1
+
+## Fix
+
+- [ci_cd]: Fix bug where the java home was waiting on sudo password while already given at the start of the cli.
+- [ci_cd]: Fix bug where the xcode select was not set correctly
+
 # 0.26.0
 
 ## Added
 
-- Added support for installing sentry-cli
-- Added support for installing lcov
-- Added support for installing java
-- Added support for installing rosetta (macOS silicon only)
-- Configure JAVA_HOME & ANDROID_HOME
-- Configure the Flutter JDK dir in the flutter config
+- [ci_cd]: Added support for installing sentry-cli
+- [ci_cd]: Added support for installing lcov
+- [ci_cd]: Added support for installing java
+- [ci_cd]: Added support for installing rosetta (macOS silicon only)
+- [ci_cd]: Configure JAVA_HOME & ANDROID_HOME
+- [ci_cd]: Configure the Flutter JDK dir in the flutter config
 - Better error handling for the testflight upload if the contract is not valid anymore
 
 # 0.25.1
