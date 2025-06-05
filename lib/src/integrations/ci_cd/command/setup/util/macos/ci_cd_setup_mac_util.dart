@@ -169,6 +169,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await _brewInstall(['openjdk@17']);
     if (await isSiliconMac()) {
       await processRunner.runProcess([
+        'sudo',
         'ln',
         '-sfn',
         '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk',
@@ -176,6 +177,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ]);
     } else {
       await processRunner.runProcess([
+        'sudo',
         'ln',
         '-sfn',
         '/usr/local/opt/openjdk@17/libexec/openjdk.jdk',
@@ -229,7 +231,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ].join('\n\n');
       ImpaktfullCliLogger.waitForEnter(message);
     }
-    await processRunner.runProcess(['xcode-select', '-s', path.path]);
+    await processRunner.runProcess(['sudo', 'xcode-select', '-s', path.path]);
     final xcode =
         await processRunner.runProcess(['xcode-select', '--print-path']);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
