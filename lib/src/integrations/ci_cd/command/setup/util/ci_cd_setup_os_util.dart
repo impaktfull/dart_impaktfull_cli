@@ -17,6 +17,8 @@ abstract class CiCdSetupOsUtil {
     await installFlutterVersion(flutterVersion);
     await setFlutterVersionAsGlobal(flutterVersion);
     await installChrome();
+    await installLcov();
+    await installJava();
     await installSentryCli();
     await installAdditionalTools();
     await configureSSHKey(name!);
@@ -38,11 +40,15 @@ abstract class CiCdSetupOsUtil {
 
   Future<void> installOsDependencies();
 
-  Future<void> installChrome();
-
   Future<void> installFvm();
 
+  Future<void> installChrome();
+
   Future<void> installSentryCli();
+
+  Future<void> installLcov();
+
+  Future<void> installJava();
 
   Future<void> installGithubActionsRunner();
 
@@ -64,6 +70,15 @@ abstract class CiCdSetupOsUtil {
       'fvm',
       'global',
       version,
+    ]);
+  }
+
+  Future<void> setFlutterJdkDir(String javaHome) async {
+    ImpaktfullCliLogger.startSpinner("Setting flutter jdk dir");
+    await processRunner.runProcess([
+      'flutter',
+      'config',
+      '--jdk-dir=$javaHome',
     ]);
   }
 

@@ -3,7 +3,11 @@
 ## Added
 
 - Added support for installing sentry-cli
-- Added support for installing rosetta (macOS only)
+- Added support for installing lcov
+- Added support for installing java
+- Added support for installing rosetta (macOS silicon only)
+- Configure JAVA_HOME & ANDROID_HOME
+- Configure the Flutter JDK dir in the flutter config
 - Better error handling for the testflight upload if the contract is not valid anymore
 
 # 0.25.1

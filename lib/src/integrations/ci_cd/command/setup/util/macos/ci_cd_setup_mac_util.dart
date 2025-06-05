@@ -101,16 +101,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   @override
-  Future<void> installChrome() async {
-    final path = Directory('/Applications/Google Chrome.app');
-    if (path.existsSync()) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
-      return;
-    }
-    await _brewInstall(['google-chrome']);
-  }
-
-  @override
   Future<void> installFvm() async {
     ImpaktfullCliLogger.startSpinner("Adding fvm & flutter paths to PATH");
     await zshrcUtil.addToPath(
@@ -138,6 +128,16 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   @override
+  Future<void> installChrome() async {
+    final path = Directory('/Applications/Google Chrome.app');
+    if (path.existsSync()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
+      return;
+    }
+    await _brewInstall(['google-chrome']);
+  }
+
+  @override
   Future<void> installSentryCli() async {
     ImpaktfullCliLogger.startSpinner("Installing sentry-cli");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.sentryCli)) {
@@ -146,6 +146,54 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       return;
     }
     await _brewInstall(['getsentry/tools/sentry-cli']);
+  }
+
+  @override
+  Future<void> installLcov() async {
+    ImpaktfullCliLogger.startSpinner("Installing lcov");
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.lcov)) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("lcov is already installed");
+      return;
+    }
+    await _brewInstall(['lcov']);
+  }
+
+  @override
+  Future<void> installJava() async {
+    ImpaktfullCliLogger.startSpinner("Installing java");
+    final java17Installed = await isJava17Installed();
+    if (java17Installed) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("java 17 is already installed");
+      return;
+    }
+    await _brewInstall(['openjdk@17']);
+    if (await isSiliconMac()) {
+      await processRunner.runProcess([
+        'sudo',
+        'ln',
+        '-sfn',
+        '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk',
+        '/Library/Java/JavaVirtualMachines/openjdk-17.jdk',
+      ]);
+    } else {
+      await processRunner.runProcess([
+        'sudo',
+        'ln',
+        '-sfn',
+        '/usr/local/opt/openjdk@17/libexec/openjdk.jdk',
+        '/Library/Java/JavaVirtualMachines/openjdk-17.jdk',
+      ]);
+    }
+    await zshrcUtil.addToZshrc(
+      comment: "Add ANDROID_HOME to env variables",
+      content: r'export ANDROID_HOME=$HOME/Library/Android/sdk',
+    );
+    await zshrcUtil.addToZshrc(
+      comment: "Add JAVA_HOME to env variables",
+      content: r'export JAVA_HOME=$(/usr/libexec/java_home -v17)',
+    );
+    final javaHome = await processRunner.runProcess(['echo', r'$JAVA_HOME']);
+    await setFlutterJdkDir(javaHome);
   }
 
   @override
@@ -306,5 +354,21 @@ Host github.com
   Future<bool> isSiliconMac() async {
     final result = await processRunner.runProcess(['uname', '-m']);
     return result.trim() == 'arm64';
+  }
+
+  Future<bool> isJava17Installed() async {
+    try {
+      final javaVersion = await processRunner.runProcess(['java', '--version']);
+      if (javaVersion.contains('openjdk 17')) {
+        ImpaktfullCliLogger.endSpinnerWithMessage(
+            "java 17 is already installed");
+        return true;
+      }
+      return false;
+    } catch (error, trace) {
+      ImpaktfullCliLogger.verbose(
+          "Fetching java version failed: $error\n$trace");
+      return false;
+    }
   }
 }
