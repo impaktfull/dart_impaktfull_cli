@@ -219,7 +219,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> selectXcode([String? version]) async {
     ImpaktfullCliLogger.startSpinner("Selecting Xcode");
     final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
-    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
+    final path = Directory('/Applications/$xcodeAppname');
     if (!path.existsSync()) {
       final message = [
         "Xcode is not installed.",
@@ -228,7 +228,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ].join('\n\n');
       ImpaktfullCliLogger.waitForEnter(message);
     }
-    await processRunner.runProcess(['xcode-select', path.path]);
+    await processRunner.runProcess(['xcode-select', '-s', path.path]);
     final xcode =
         await processRunner.runProcess(['xcode-select', '--print-path']);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
