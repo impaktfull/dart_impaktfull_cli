@@ -60,11 +60,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       return;
     }
     ImpaktfullCliLogger.startSpinner("Installing cocoapods");
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'cocoapods',
-    ]);
+    await _brewInstall(['cocoapods']);
   }
 
   Future<void> installOhMyZsh() async {
@@ -105,20 +101,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   }
 
   @override
-  Future<void> installChrome() async {
-    final path = Directory('/Applications/Google Chrome.app');
-    if (path.existsSync()) {
-      ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
-      return;
-    }
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'google-chrome',
-    ]);
-  }
-
-  @override
   Future<void> installFvm() async {
     ImpaktfullCliLogger.startSpinner("Adding fvm & flutter paths to PATH");
     await zshrcUtil.addToPath(
@@ -142,17 +124,84 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       'tap',
       'leoafarias/fvm',
     ]);
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'fvm',
-    ]);
+    await _brewInstall(['fvm']);
+  }
+
+  @override
+  Future<void> installChrome() async {
+    final path = Directory('/Applications/Google Chrome.app');
+    if (path.existsSync()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
+      return;
+    }
+    await _brewInstall(['google-chrome']);
+  }
+
+  @override
+  Future<void> installSentryCli() async {
+    ImpaktfullCliLogger.startSpinner("Installing sentry-cli");
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.sentryCli)) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "sentry-cli is already installed");
+      return;
+    }
+    await _brewInstall(['getsentry/tools/sentry-cli']);
+  }
+
+  @override
+  Future<void> installLcov() async {
+    ImpaktfullCliLogger.startSpinner("Installing lcov");
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.lcov)) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("lcov is already installed");
+      return;
+    }
+    await _brewInstall(['lcov']);
+  }
+
+  @override
+  Future<void> installJava() async {
+    ImpaktfullCliLogger.startSpinner("Installing java");
+    final java17Installed = await isJava17Installed();
+    if (java17Installed) {
+      ImpaktfullCliLogger.endSpinnerWithMessage("java 17 is already installed");
+      return;
+    }
+    await _brewInstall(['openjdk@17']);
+    if (await isSiliconMac()) {
+      await processRunner.runProcess([
+        'sudo',
+        'ln',
+        '-sfn',
+        '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk',
+        '/Library/Java/JavaVirtualMachines/openjdk-17.jdk',
+      ]);
+    } else {
+      await processRunner.runProcess([
+        'sudo',
+        'ln',
+        '-sfn',
+        '/usr/local/opt/openjdk@17/libexec/openjdk.jdk',
+        '/Library/Java/JavaVirtualMachines/openjdk-17.jdk',
+      ]);
+    }
+    await zshrcUtil.addToZshrc(
+      comment: "Add ANDROID_HOME to env variables",
+      content: r'export ANDROID_HOME=$HOME/Library/Android/sdk',
+    );
+    await zshrcUtil.addToZshrc(
+      comment: "Add JAVA_HOME to env variables",
+      content: r'export JAVA_HOME=$(/usr/libexec/java_home -v17)',
+    );
+    final javaHome =
+        await processRunner.runProcess(['/usr/libexec/java_home', '-v17']);
+    await setFlutterJdkDir(javaHome);
   }
 
   @override
   Future<void> installAdditionalTools() async {
     await installRaycast();
     await selectXcode();
+    await installRosetta();
   }
 
   Future<void> installRaycast() async {
@@ -162,14 +211,42 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ImpaktfullCliLogger.endSpinnerWithMessage("Raycast is already installed");
       return;
     }
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      '--cask',
-      'raycast',
-    ]);
+    await _brewInstall(['--cask', 'raycast']);
     ImpaktfullCliLogger.log(
         "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
+  }
+
+  Future<void> selectXcode([String? version]) async {
+    ImpaktfullCliLogger.startSpinner("Selecting Xcode");
+    final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
+    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
+    if (!path.existsSync()) {
+      final message = [
+        "Xcode is not installed.",
+        "Install Xcode here: https://developer.apple.com/download/all/?q=xcode",
+        "If installed press enter to continue",
+      ].join('\n\n');
+      ImpaktfullCliLogger.waitForEnter(message);
+    }
+    await processRunner.runProcess(['xcode-select', path.path]);
+    final xcode =
+        await processRunner.runProcess(['xcode-select', '--print-path']);
+    ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
+    ImpaktfullCliLogger.log("Xcode path: $path");
+  }
+
+  Future<void> installRosetta() async {
+    ImpaktfullCliLogger.startSpinner("Installing rosetta");
+    if (!await isSiliconMac()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Rosetta is not needed on a non-silicon mac");
+      return;
+    }
+    await processRunner.runProcess([
+      'softwareupdate',
+      '--install-rosetta',
+      '--agree-to-license',
+    ]);
   }
 
   @override
@@ -267,21 +344,32 @@ Host github.com
         "Verifying Cocoapods: $cocoapodsVersion");
   }
 
-  Future<void> selectXcode() async {
-    ImpaktfullCliLogger.startSpinner("Selecting Xcode");
-    final path = Directory('/Applications/Xcode.app/Contents/Developer');
-    if (!path.existsSync()) {
-      final message = [
-        "Xcode is not installed.",
-        "Install Xcode here: https://developer.apple.com/download/all/?q=xcode",
-        "If installed press enter to continue",
-      ].join('\n\n');
-      ImpaktfullCliLogger.waitForEnter(message);
+  Future<void> _brewInstall(List<String> args) async {
+    await processRunner.runProcess([
+      'brew',
+      'install',
+      ...args,
+    ]);
+  }
+
+  Future<bool> isSiliconMac() async {
+    final result = await processRunner.runProcess(['uname', '-m']);
+    return result.trim() == 'arm64';
+  }
+
+  Future<bool> isJava17Installed() async {
+    try {
+      final javaVersion = await processRunner.runProcess(['java', '--version']);
+      if (javaVersion.contains('openjdk 17')) {
+        ImpaktfullCliLogger.endSpinnerWithMessage(
+            "java 17 is already installed");
+        return true;
+      }
+      return false;
+    } catch (error, trace) {
+      ImpaktfullCliLogger.verbose(
+          "Fetching java version failed: $error\n$trace");
+      return false;
     }
-    await processRunner.runProcess(['xcode-select', path.path]);
-    final xcode =
-        await processRunner.runProcess(['xcode-select', '--print-path']);
-    ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
-    ImpaktfullCliLogger.log("Xcode path: $path");
   }
 }

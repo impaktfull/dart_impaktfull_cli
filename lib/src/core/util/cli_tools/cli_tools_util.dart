@@ -59,14 +59,6 @@ class CliToolsUtil {
     final sb = StringBuffer();
     final installedCliTools = getInstalledCliTools(allCliTools);
     final notInstalledCliTools = getNotInstalledCliTools(allCliTools);
-    sb.writeln('Installed Tools:');
-    for (final cliTool in installedCliTools) {
-      sb.writeln('\t${cliTool.cliTool.commandName} - ${cliTool.path}');
-    }
-    sb.writeln('Not Installed Tools:');
-    for (final cliTool in installedCliTools) {
-      sb.writeln('\t${cliTool.cliTool.commandName} - ${cliTool.path}');
-    }
     if (installedCliTools.isNotEmpty) {
       sb.writeln('Installed Tools:');
       for (final clitool in installedCliTools) {
