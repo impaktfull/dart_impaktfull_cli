@@ -169,7 +169,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await _brewInstall(['openjdk@17']);
     if (await isSiliconMac()) {
       await processRunner.runProcess([
-        'sudo',
         'ln',
         '-sfn',
         '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk',
@@ -177,7 +176,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ]);
     } else {
       await processRunner.runProcess([
-        'sudo',
         'ln',
         '-sfn',
         '/usr/local/opt/openjdk@17/libexec/openjdk.jdk',
@@ -188,12 +186,14 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       comment: "Add ANDROID_HOME to env variables",
       content: r'export ANDROID_HOME=$HOME/Library/Android/sdk',
     );
+    final javaHome = await processRunner.runProcess([
+      '/usr/libexec/java_home',
+      '-v17',
+    ]);
     await zshrcUtil.addToZshrc(
       comment: "Add JAVA_HOME to env variables",
-      content: r'export JAVA_HOME=$(/usr/libexec/java_home -v17)',
+      content: 'export JAVA_HOME=$javaHome',
     );
-    final javaHome =
-        await processRunner.runProcess(['/usr/libexec/java_home', '-v17']);
     await setFlutterJdkDir(javaHome);
   }
 
