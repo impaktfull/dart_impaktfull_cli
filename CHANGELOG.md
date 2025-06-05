@@ -1,3 +1,10 @@
+# 0.26.0
+
+## Added
+
+- Added support for installing sentry-cli
+- Better error handling for the testflight upload if the contract is not valid anymore
+
 # 0.25.1
 
 ## Fix
