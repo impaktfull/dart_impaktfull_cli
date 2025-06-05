@@ -169,7 +169,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await _brewInstall(['openjdk@17']);
     if (await isSiliconMac()) {
       await processRunner.runProcess([
-        'sudo',
         'ln',
         '-sfn',
         '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk',
@@ -177,7 +176,6 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ]);
     } else {
       await processRunner.runProcess([
-        'sudo',
         'ln',
         '-sfn',
         '/usr/local/opt/openjdk@17/libexec/openjdk.jdk',
@@ -188,13 +186,16 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       comment: "Add ANDROID_HOME to env variables",
       content: r'export ANDROID_HOME=$HOME/Library/Android/sdk',
     );
+    final javaHome = await processRunner.runProcess([
+      '/usr/libexec/java_home',
+      '-v17',
+    ]);
+    final trimmedJavaHome = javaHome.trim();
     await zshrcUtil.addToZshrc(
       comment: "Add JAVA_HOME to env variables",
-      content: r'export JAVA_HOME=$(/usr/libexec/java_home -v17)',
+      content: 'export JAVA_HOME=$trimmedJavaHome',
     );
-    final javaHome =
-        await processRunner.runProcess(['/usr/libexec/java_home', '-v17']);
-    await setFlutterJdkDir(javaHome);
+    await setFlutterJdkDir(trimmedJavaHome);
   }
 
   @override
@@ -219,7 +220,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> selectXcode([String? version]) async {
     ImpaktfullCliLogger.startSpinner("Selecting Xcode");
     final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
-    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
+    final path = Directory('/Applications/$xcodeAppname');
     if (!path.existsSync()) {
       final message = [
         "Xcode is not installed.",
@@ -228,7 +229,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ].join('\n\n');
       ImpaktfullCliLogger.waitForEnter(message);
     }
-    await processRunner.runProcess(['xcode-select', path.path]);
+    await processRunner.runProcess(['xcode-select', '-s', path.path]);
     final xcode =
         await processRunner.runProcess(['xcode-select', '--print-path']);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
