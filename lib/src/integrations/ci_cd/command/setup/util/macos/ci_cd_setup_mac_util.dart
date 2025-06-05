@@ -190,11 +190,12 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       '/usr/libexec/java_home',
       '-v17',
     ]);
+    final trimmedJavaHome = javaHome.trim();
     await zshrcUtil.addToZshrc(
       comment: "Add JAVA_HOME to env variables",
-      content: 'export JAVA_HOME=$javaHome',
+      content: 'export JAVA_HOME=$trimmedJavaHome',
     );
-    await setFlutterJdkDir(javaHome);
+    await setFlutterJdkDir(trimmedJavaHome);
   }
 
   @override
