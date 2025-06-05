@@ -236,9 +236,9 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> installRosetta() async {
     ImpaktfullCliLogger.startSpinner("Installing rosetta");
-    if (await isSiliconMac()) {
+    if (!await isSiliconMac()) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Rosetta is not needed on a silicon mac");
+          "Rosetta is not needed on a non-silicon mac");
       return;
     }
     await processRunner.runProcess([
