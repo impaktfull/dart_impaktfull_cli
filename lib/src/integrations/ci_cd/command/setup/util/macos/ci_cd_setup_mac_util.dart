@@ -60,11 +60,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       return;
     }
     ImpaktfullCliLogger.startSpinner("Installing cocoapods");
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'cocoapods',
-    ]);
+    await _brewInstall(['cocoapods']);
   }
 
   Future<void> installOhMyZsh() async {
@@ -111,11 +107,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ImpaktfullCliLogger.endSpinnerWithMessage("Chrome is already installed");
       return;
     }
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'google-chrome',
-    ]);
+    await _brewInstall(['google-chrome']);
   }
 
   @override
@@ -142,11 +134,18 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       'tap',
       'leoafarias/fvm',
     ]);
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      'fvm',
-    ]);
+    await _brewInstall(['fvm']);
+  }
+
+  @override
+  Future<void> installSentryCli() async {
+    ImpaktfullCliLogger.startSpinner("Installing sentry-cli");
+    if (ImpaktfullCliEnvironment.isInstalled(CliTool.sentryCli)) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "sentry-cli is already installed");
+      return;
+    }
+    await _brewInstall(['getsentry/tools/sentry-cli']);
   }
 
   @override
@@ -162,12 +161,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ImpaktfullCliLogger.endSpinnerWithMessage("Raycast is already installed");
       return;
     }
-    await processRunner.runProcess([
-      'brew',
-      'install',
-      '--cask',
-      'raycast',
-    ]);
+    await _brewInstall(['--cask', 'raycast']);
     ImpaktfullCliLogger.log(
         "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
   }
@@ -267,9 +261,10 @@ Host github.com
         "Verifying Cocoapods: $cocoapodsVersion");
   }
 
-  Future<void> selectXcode() async {
+  Future<void> selectXcode([String? version]) async {
     ImpaktfullCliLogger.startSpinner("Selecting Xcode");
-    final path = Directory('/Applications/Xcode.app/Contents/Developer');
+    final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
+    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
     if (!path.existsSync()) {
       final message = [
         "Xcode is not installed.",
@@ -283,5 +278,13 @@ Host github.com
         await processRunner.runProcess(['xcode-select', '--print-path']);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
     ImpaktfullCliLogger.log("Xcode path: $path");
+  }
+
+  Future<void> _brewInstall(List<String> args) async {
+    await processRunner.runProcess([
+      'brew',
+      'install',
+      ...args,
+    ]);
   }
 }

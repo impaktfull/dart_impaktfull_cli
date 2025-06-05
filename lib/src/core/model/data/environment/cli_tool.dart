@@ -61,6 +61,10 @@ enum CliTool {
       OperatingSystem.macOS,
     ],
   ),
+  sentryCli(
+    name: 'Sentry CLI',
+    commandName: 'sentry-cli',
+  ),
   brew(
     name: 'brew',
     commandName: 'brew',

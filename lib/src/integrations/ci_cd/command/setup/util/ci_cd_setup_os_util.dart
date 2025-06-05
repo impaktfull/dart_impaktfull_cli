@@ -17,6 +17,7 @@ abstract class CiCdSetupOsUtil {
     await installFlutterVersion(flutterVersion);
     await setFlutterVersionAsGlobal(flutterVersion);
     await installChrome();
+    await installSentryCli();
     await installAdditionalTools();
     await configureSSHKey(name!);
     ImpaktfullCliLogger.startSpinner("Installing github actions runner");
@@ -40,6 +41,8 @@ abstract class CiCdSetupOsUtil {
   Future<void> installChrome();
 
   Future<void> installFvm();
+
+  Future<void> installSentryCli();
 
   Future<void> installGithubActionsRunner();
 
