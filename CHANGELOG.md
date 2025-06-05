@@ -3,6 +3,7 @@
 ## Added
 
 - Added support for installing sentry-cli
+- Added support for installing rosetta (macOS only)
 - Better error handling for the testflight upload if the contract is not valid anymore
 
 # 0.25.1

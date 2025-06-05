@@ -152,6 +152,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> installAdditionalTools() async {
     await installRaycast();
     await selectXcode();
+    await installRosetta();
   }
 
   Future<void> installRaycast() async {
@@ -164,6 +165,39 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await _brewInstall(['--cask', 'raycast']);
     ImpaktfullCliLogger.log(
         "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
+  }
+
+  Future<void> selectXcode([String? version]) async {
+    ImpaktfullCliLogger.startSpinner("Selecting Xcode");
+    final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
+    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
+    if (!path.existsSync()) {
+      final message = [
+        "Xcode is not installed.",
+        "Install Xcode here: https://developer.apple.com/download/all/?q=xcode",
+        "If installed press enter to continue",
+      ].join('\n\n');
+      ImpaktfullCliLogger.waitForEnter(message);
+    }
+    await processRunner.runProcess(['xcode-select', path.path]);
+    final xcode =
+        await processRunner.runProcess(['xcode-select', '--print-path']);
+    ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
+    ImpaktfullCliLogger.log("Xcode path: $path");
+  }
+
+  Future<void> installRosetta() async {
+    ImpaktfullCliLogger.startSpinner("Installing rosetta");
+    if (await isSiliconMac()) {
+      ImpaktfullCliLogger.endSpinnerWithMessage(
+          "Rosetta is not needed on a silicon mac");
+      return;
+    }
+    await processRunner.runProcess([
+      'softwareupdate',
+      '--install-rosetta',
+      '--agree-to-license',
+    ]);
   }
 
   @override
@@ -261,30 +295,16 @@ Host github.com
         "Verifying Cocoapods: $cocoapodsVersion");
   }
 
-  Future<void> selectXcode([String? version]) async {
-    ImpaktfullCliLogger.startSpinner("Selecting Xcode");
-    final xcodeAppname = version == null ? 'Xcode.app' : 'Xcode_$version.app';
-    final path = Directory('/Applications/$xcodeAppname/Contents/Developer');
-    if (!path.existsSync()) {
-      final message = [
-        "Xcode is not installed.",
-        "Install Xcode here: https://developer.apple.com/download/all/?q=xcode",
-        "If installed press enter to continue",
-      ].join('\n\n');
-      ImpaktfullCliLogger.waitForEnter(message);
-    }
-    await processRunner.runProcess(['xcode-select', path.path]);
-    final xcode =
-        await processRunner.runProcess(['xcode-select', '--print-path']);
-    ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
-    ImpaktfullCliLogger.log("Xcode path: $path");
-  }
-
   Future<void> _brewInstall(List<String> args) async {
     await processRunner.runProcess([
       'brew',
       'install',
       ...args,
     ]);
+  }
+
+  Future<bool> isSiliconMac() async {
+    final result = await processRunner.runProcess(['uname', '-m']);
+    return result.trim() == 'arm64';
   }
 }
