@@ -1,3 +1,9 @@
+# 0.26.2
+
+## Fix
+
+- [ci_cd]: Fix bug where the sudo password was asked again after 5 minutes
+
 # 0.26.1
 
 ## Fix
