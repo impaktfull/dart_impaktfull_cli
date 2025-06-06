@@ -40,6 +40,8 @@ abstract class ProcessRunner {
   }
 }
 
+DateTime? _lastRequestSudoTime;
+
 class CliProcessRunner extends ProcessRunner {
   const CliProcessRunner();
 
@@ -50,6 +52,9 @@ class CliProcessRunner extends ProcessRunner {
     bool runInShell = false,
     ProcessStartMode mode = ProcessStartMode.normal,
   }) async {
+    if (args.isNotEmpty && args.first == "sudo") {
+      await _checkIfSudoQuestionIsRequiredAgain();
+    }
     final fullCommand = args.join(' ');
     ImpaktfullCliLogger.verboseSeperator();
     ImpaktfullCliLogger.verbose(fullCommand);
@@ -101,11 +106,25 @@ class CliProcessRunner extends ProcessRunner {
       mode: ProcessStartMode.inheritStdio,
       runInShell: true,
     );
+    _lastRequestSudoTime = DateTime.now();
 
     final sudoExit = await sudoProcess.exitCode;
     if (sudoExit != 0) {
       throw ImpaktfullCliError('Sudo authorization failed.');
     }
     ImpaktfullCliLogger.continueSpinner();
+  }
+
+  Future<void> _checkIfSudoQuestionIsRequiredAgain() async {
+    final lastRequestSudoTime = _lastRequestSudoTime;
+    if (lastRequestSudoTime != null) {
+      final now = DateTime.now();
+      final diff = now.difference(lastRequestSudoTime);
+      // less than 5 minutes since last sudo request
+      if (diff.inSeconds < 300) {
+        return;
+      }
+    }
+    await requestSudo();
   }
 }
