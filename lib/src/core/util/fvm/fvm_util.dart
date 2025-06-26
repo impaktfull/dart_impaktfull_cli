@@ -14,6 +14,9 @@ class FvmUtil {
     if (fvmConfigFile.existsSync()) {
       return true;
     }
+    if (workingDir.parent.path == workingDir.path) {
+      return false;
+    }
     return isFvmProject(workingDir.parent);
   }
 }
