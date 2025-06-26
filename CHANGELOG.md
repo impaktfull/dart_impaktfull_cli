@@ -1,3 +1,9 @@
+# 0.26.3
+
+## Fix
+
+- Fix bug where the fvm project was not detected correctly
+
 # 0.26.2
 
 ## Fix
