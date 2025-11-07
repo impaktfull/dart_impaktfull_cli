@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/force_quit_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
+import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_process_runner_error.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 
@@ -84,16 +85,20 @@ class CliProcessRunner extends ProcessRunner {
       ImpaktfullCliLogger.verbose(line);
     });
     final exitCode = await result.exitCode;
+    await subscriptionOut.cancel();
+    await subscriptionError.cancel();
     ImpaktfullCliLogger.verboseSeperator();
     if (exitCode == -2) {
       throw ForceQuitError('`$fullCommand` was force quit');
     }
+    final fullOutput = stringBuffer.toString().trim();
     if (exitCode != 0) {
-      throw ImpaktfullCliError('`$fullCommand` exited with code $exitCode');
+      throw ImpaktfullCliProcessRunnerError(
+        '`$fullCommand` exited with code $exitCode',
+        fullOutput,
+      );
     }
-    await subscriptionOut.cancel();
-    await subscriptionError.cancel();
-    return stringBuffer.toString().trim();
+    return fullOutput;
   }
 
   @override
