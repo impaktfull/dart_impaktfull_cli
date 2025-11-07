@@ -46,7 +46,7 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
 
     ImpaktfullCliLogger.startSpinner('Uploading');
     try {
-      final result = await processRunner.runProcess([
+      await processRunner.runProcess([
         aToolFile.path,
         '--upload-app',
         '--file',
@@ -58,7 +58,6 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
         '--type',
         type,
       ]);
-      print("RESULT: $result");
       ImpaktfullCliLogger.clearSpinnerPrefix();
     } on ImpaktfullCliProcessRunnerError catch (error) {
       final errorOutput = error.errorOutput;
