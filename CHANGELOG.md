@@ -1,3 +1,9 @@
+# 0.26.4
+
+## Fix
+
+- Improve error handling for testflight upload
+
 # 0.26.3
 
 ## Fix
