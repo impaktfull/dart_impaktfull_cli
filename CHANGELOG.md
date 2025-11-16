@@ -1,3 +1,9 @@
+# 0.27.0
+
+## Added
+
+- Added support for uploading app testing versions to Impaktfull Dashboard
+
 # 0.26.4
 
 ## Fix
