@@ -43,11 +43,10 @@ class ImpaktfullDashboardFileUploadUtil {
 
     final response = await request.send();
     final body = await response.stream.bytesToString();
-    final bodyText = utf8.decode(body.codeUnits);
-    final json = jsonDecode(bodyText) as Map<String, dynamic>;
+    final json = jsonDecode(body) as Map<String, dynamic>;
     if (response.statusCode != 200) {
       throw ImpaktfullCliError(
-          'Failed to upload file: ${response.statusCode} - $bodyText');
+          'Failed to upload file: ${response.statusCode} - $body');
     }
     return json;
   }

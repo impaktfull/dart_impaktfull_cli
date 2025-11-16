@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/util/impaktfull_dashboard_file_upload_util.dart';
+import 'package:path/path.dart';
 
 class ImpaktfullDashboardAppTestingUtil {
+  static const allowedExtensions = ['apk', 'ipa', 'aab'];
   const ImpaktfullDashboardAppTestingUtil();
   Future<void> upload({
     required File file,
@@ -27,19 +29,18 @@ class ImpaktfullDashboardAppTestingUtil {
   }
 
   String _getExtensionType(File file) {
-    final extension = file.path.split('.').last;
-    final allowedExtensions = ['apk', 'ipa', 'aab'];
-    if (!allowedExtensions.contains(extension)) {
+    final fileExtension = extension(file.path);
+    if (!allowedExtensions.contains(fileExtension)) {
       throw ImpaktfullCliError(
-        'Extension `$extension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli, allowed extensions are: $allowedExtensions',
+        'Extension `$fileExtension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli, allowed extensions are: $allowedExtensions',
       );
     }
-    return extension;
+    return fileExtension;
   }
 
   String _getAppTestingAppType(File file) {
-    final extension = file.path.split('.').last;
-    switch (extension) {
+    final fileExtension = extension(file.path);
+    switch (fileExtension) {
       case 'apk':
       case 'aab':
         return 'android';
@@ -47,7 +48,7 @@ class ImpaktfullDashboardAppTestingUtil {
         return 'ios';
       default:
         throw ImpaktfullCliError(
-          'Extension `$extension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli',
+          'Extension `$fileExtension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli, allowed extensions are: $allowedExtensions',
         );
     }
   }
