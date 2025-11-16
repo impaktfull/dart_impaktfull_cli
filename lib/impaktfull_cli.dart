@@ -16,6 +16,9 @@ export 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload
 export 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_credentials.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_ios_extension.dart';
 export 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
