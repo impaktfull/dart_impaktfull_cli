@@ -12,6 +12,8 @@ import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_ios_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugin.dart';
@@ -25,6 +27,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
   final AppCenterPlugin appCenterPlugin;
   final TestFlightPlugin testflightPlugin;
   final PlayStorePlugin playStorePlugin;
+  final ImpaktfullDashboardPlugin impaktfullDashboardPlugin;
 
   const CiCdPlugin({
     required this.onePasswordPlugin,
@@ -33,6 +36,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
     required this.appCenterPlugin,
     required this.testflightPlugin,
     required this.playStorePlugin,
+    required this.impaktfullDashboardPlugin,
   });
 
   Future<void> buildAndroidWithFlavor({
@@ -44,6 +48,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     int? buildNr,
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    ImpaktfullDashboardAppTestingVersionUploadConfig?
+        impaktfullDashboardUploadConfig,
   }) async =>
       buildAndroid(
         flavor: flavor,
@@ -54,6 +60,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
         buildNr: buildNr,
         appCenterUploadConfig: appCenterUploadConfig,
         playStoreUploadConfig: playStoreUploadConfig,
+        impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
       );
 
   Future<void> buildAndroid({
@@ -65,6 +72,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     int? buildNr,
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    ImpaktfullDashboardAppTestingVersionUploadConfig?
+        impaktfullDashboardUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
     final file = await flutterBuildPlugin.buildAndroid(
@@ -94,6 +103,13 @@ class CiCdPlugin extends ImpaktfullPlugin {
         releaseStatus: playStoreUploadConfig.releaseStatus,
       );
     }
+    if (impaktfullDashboardUploadConfig != null) {
+      await impaktfullDashboardPlugin
+          .uploadAppTestingVersionToImpaktfullDashboard(
+        file: file,
+        config: impaktfullDashboardUploadConfig,
+      );
+    }
   }
 
   Future<void> buildIosWithFlavor({
@@ -105,6 +121,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     int? buildNr,
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    ImpaktfullDashboardAppTestingVersionUploadConfig?
+        impaktfullDashboardUploadConfig,
   }) async =>
       buildIos(
         flavor: flavor,
@@ -115,6 +133,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
         buildNr: buildNr,
         appCenterUploadConfig: appCenterUploadConfig,
         testflightUploadConfig: testflightUploadConfig,
+        impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
       );
 
   Future<void> buildIos({
@@ -126,6 +145,8 @@ class CiCdPlugin extends ImpaktfullPlugin {
     int? buildNr,
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    ImpaktfullDashboardAppTestingVersionUploadConfig?
+        impaktfullDashboardUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([
       CliTool.flutter,
@@ -157,6 +178,13 @@ class CiCdPlugin extends ImpaktfullPlugin {
         appSpecificPassword:
             testflightUploadConfig.credentials?.appSpecificPassword,
         type: testflightUploadConfig.type,
+      );
+    }
+    if (impaktfullDashboardUploadConfig != null) {
+      await impaktfullDashboardPlugin
+          .uploadAppTestingVersionToImpaktfullDashboard(
+        file: file,
+        config: impaktfullDashboardUploadConfig,
       );
     }
   }
