@@ -19,6 +19,7 @@ abstract class ProcessRunner {
     Map<String, String>? environment,
     bool runInShell = false,
     ProcessStartMode mode = ProcessStartMode.normal,
+    bool maskOutput = false,
   });
 
   Future<void> requestSudo();
@@ -52,6 +53,7 @@ class CliProcessRunner extends ProcessRunner {
     Map<String, String>? environment,
     bool runInShell = false,
     ProcessStartMode mode = ProcessStartMode.normal,
+    bool maskOutput = false,
   }) async {
     if (args.isNotEmpty && args.first == "sudo") {
       await _checkIfSudoQuestionIsRequiredAgain();
@@ -77,12 +79,20 @@ class CliProcessRunner extends ProcessRunner {
     final subscriptionOut = result.stdout.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      ImpaktfullCliLogger.verbose(line);
+      if (maskOutput) {
+        ImpaktfullCliLogger.verbose("******");
+      } else {
+        ImpaktfullCliLogger.verbose(line);
+      }
     });
     final subscriptionError = result.stderr.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      ImpaktfullCliLogger.verbose(line);
+      if (maskOutput) {
+        ImpaktfullCliLogger.verbose("******");
+      } else {
+        ImpaktfullCliLogger.verbose(line);
+      }
     });
     final exitCode = await result.exitCode;
     await subscriptionOut.cancel();

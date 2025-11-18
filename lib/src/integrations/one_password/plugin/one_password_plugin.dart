@@ -30,6 +30,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           serviceAccountEnvKey: rawServiceAccount.value,
         },
       },
+      maskOutput: true,
     );
     ImpaktfullCliLogger.endSpinner();
     return result;
