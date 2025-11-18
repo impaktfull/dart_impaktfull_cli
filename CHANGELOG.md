@@ -1,3 +1,9 @@
+# 0.28.1
+
+## Fix
+
+- Mask output of 1password commands
+
 # 0.28.0
 
 ## Added

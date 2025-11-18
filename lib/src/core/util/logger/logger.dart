@@ -118,6 +118,17 @@ class ImpaktfullCliLogger {
     _print(message);
   }
 
+  static void verboseMasked(
+    String message, {
+    required bool mask,
+  }) {
+    if (mask) {
+      verbose("****");
+    } else {
+      verbose(message);
+    }
+  }
+
   static void _print(String message) {
     var safeMessage = message;
     for (final secret in _secrets) {
