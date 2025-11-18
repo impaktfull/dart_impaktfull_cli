@@ -22,6 +22,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     await installCocoapods();
     await installOhMyZsh();
     await installAutosuggestions();
+    await copyToCiZshrc();
   }
 
   Future<void> validateZshrc() async {
@@ -97,6 +98,7 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       comment: r'Add zsh-autosuggestions',
       content:
           r'source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh',
+      skipZshrcCi: true,
     );
   }
 
@@ -374,5 +376,9 @@ Host github.com
           "Fetching java version failed: $error\n$trace");
       return false;
     }
+  }
+
+  Future<void> copyToCiZshrc() async {
+    ImpaktfullCliLogger.startSpinner("Copying to ci .zshrc");
   }
 }
