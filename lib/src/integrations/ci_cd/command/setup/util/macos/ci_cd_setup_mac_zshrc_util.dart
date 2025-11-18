@@ -30,8 +30,21 @@ class CiCdSetupMacZshrcUtil {
   Future<void> addToZshrc({
     required String comment,
     required String content,
+    bool skipZshrcCi = false,
   }) async {
     final zshrcFile = _getImpaktfullZshrcFile();
+    await _addToZhrcFile(zshrcFile, comment, content);
+    if (!skipZshrcCi) {
+      final zshrcCiFile = _getImpaktfullZshrcCiFile();
+      await _addToZhrcFile(zshrcCiFile, comment, content);
+    }
+  }
+
+  Future<void> _addToZhrcFile(
+    File zshrcFile,
+    String comment,
+    String content,
+  ) async {
     if (!zshrcFile.existsSync()) {
       zshrcFile.createSync(recursive: true);
     }
@@ -95,6 +108,11 @@ class CiCdSetupMacZshrcUtil {
   File _getImpaktfullZshrcFile() {
     final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
     return File(join(home, '.impaktfull', 'impaktfull_cli', '.zshrc'));
+  }
+
+  File _getImpaktfullZshrcCiFile() {
+    final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
+    return File(join(home, '.impaktfull', 'impaktfull_cli', '.zshrc-ci'));
   }
 
   Future<void> validateZshrc() async {
