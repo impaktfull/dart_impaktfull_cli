@@ -10,7 +10,7 @@ import 'package:impaktfull_cli/src/core/util/extensions/arg_result_extensions.da
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/core/util/runner/runner.dart';
-import 'package:impaktfull_cli/src/integrations/apple/certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/apple/keychain/plugin/mac_os_keychain_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple/apple_command.dart';
 import 'package:impaktfull_cli/src/integrations/apple/provisioning_profile/plugin/apple_provisioning_profile_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';

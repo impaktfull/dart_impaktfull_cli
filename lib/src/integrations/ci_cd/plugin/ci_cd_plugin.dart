@@ -3,14 +3,12 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
-import 'package:impaktfull_cli/src/core/util/input_listener/force_quit_listener.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
-import 'package:impaktfull_cli/src/integrations/apple/certificate/plugin/mac_os_keychain_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/apple/keychain/plugin/mac_os_keychain_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
 import 'package:impaktfull_cli/src/core/model/data/environment/cli_tool.dart';
-import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
@@ -263,69 +261,5 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
         config: impaktfullDashboardUploadConfig,
       );
     }
-  }
-
-  Future<void> startBuildWithCertificateAndPasswordFromOnePassword({
-    required String opUuid,
-    required String opVaultName,
-    required String keyChainName,
-    required Future<void> Function() onStartBuild,
-    Secret? rawServiceAccount,
-    Secret? globalKeyChainPassword,
-  }) async {
-    ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
-    ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.onePasswordCli]);
-
-    final certFile = await onePasswordPlugin.downloadDistributionCertificate(
-      opUuid: opUuid,
-      rawServiceAccount: rawServiceAccount,
-    );
-    final certPassword = await onePasswordPlugin.getCertificatePassword(
-      vaultName: opVaultName,
-      opUuid: opUuid,
-      rawServiceAccount: rawServiceAccount,
-    );
-
-    await startBuildWithCertificateAndPassword(
-      keyChainName: keyChainName,
-      certFile: certFile,
-      certPassword: certPassword,
-      onStartBuild: onStartBuild,
-      globalKeyChainPassword: globalKeyChainPassword,
-    );
-  }
-
-  Future<void> startBuildWithCertificateAndPassword({
-    required String keyChainName,
-    required File certFile,
-    required Secret certPassword,
-    required Future<void> Function() onStartBuild,
-    Secret? globalKeyChainPassword,
-  }) async {
-    ImpaktfullCliEnvironment.requiresMacOs(reason: 'Building iOS/macOS apps');
-    final globalKeyChainPasswordSecret = globalKeyChainPassword ??
-        ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
-
-    final defaultKeyChain = await macOsKeyChainPlugin.getDefaultKeyChain();
-    await macOsKeyChainPlugin.createKeyChain(
-        keyChainName, globalKeyChainPasswordSecret);
-
-    await ForceQuitListener.catchForceQuit(
-      () async {
-        await macOsKeyChainPlugin.setDefaultKeyChain(keyChainName);
-        // await macOsKeyChainPlugin.unlockKeyChain(keyChainName, globalKeyChainPasswordSecret);
-        await macOsKeyChainPlugin.addCertificateToKeyChain(
-          keyChainName,
-          certFile,
-          certPassword,
-          accessControlAll: true,
-        );
-        await onStartBuild();
-      },
-      cleanup: () async {
-        await macOsKeyChainPlugin.setDefaultKeyChain(defaultKeyChain);
-        await macOsKeyChainPlugin.removeKeyChain(keyChainName);
-      },
-    );
   }
 }

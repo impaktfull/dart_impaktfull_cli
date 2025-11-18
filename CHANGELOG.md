@@ -1,3 +1,14 @@
+# 0.29.0
+
+## Removed
+
+- `apple certificate` commands
+- implementation to install certificates into the keychain (because it was not working correctly)
+
+## Fixed
+
+- `unlockKeyChain` now actually unlocks your keychain
+
 # 0.28.1
 
 ## Fix
