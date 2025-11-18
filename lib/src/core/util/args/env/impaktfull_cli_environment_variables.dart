@@ -14,6 +14,7 @@ class ImpaktfullCliEnvironmentVariables {
   static const envKeyOnePasswordAccountToken = 'OP_SERVICE_ACCOUNT_TOKEN';
   static const _envKeySlackBotToken = 'SLACK_BOT_TOKEN';
   static const envKeySlackSendMessageChannel = 'SLACK_SEND_MESSAGE_CHANNEL';
+  static const envKeyGithubBuildNr = 'GITHUB_RUN_NUMBER';
 
   static const _initEnvKyes = [
     _envKeyCiKeyChainPassword,
@@ -103,6 +104,9 @@ class ImpaktfullCliEnvironmentVariables {
 
   static String getSlackSendMessageChannel() =>
       _getRequiredEnvVariable(envKeySlackSendMessageChannel);
+
+  static String getGithubBuildNr() =>
+      _getRequiredEnvVariable(envKeyGithubBuildNr);
 
   static String getEnvVariable(String envVariable) =>
       _getRequiredEnvVariable(envVariable);

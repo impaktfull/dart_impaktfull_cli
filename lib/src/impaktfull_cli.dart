@@ -16,6 +16,7 @@ import 'package:impaktfull_cli/src/integrations/apple/provisioning_profile/plugi
 import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
@@ -102,6 +103,7 @@ class ImpaktfullCli {
         MacOsKeyChainPlugin(processRunner: processRunner);
     final appleProvisioningProfilePlugin =
         AppleProvisioningProfilePlugin(processRunner: processRunner);
+    final gitPlugin = GitPlugin(processRunner: processRunner);
     final flutterBuildPlugin = FlutterBuildPlugin(processRunner: processRunner);
     final appCenterPlugin = AppCenterPlugin();
     final testflightPlugin = TestFlightPlugin(processRunner: processRunner);
@@ -125,6 +127,8 @@ class ImpaktfullCli {
         testflightPlugin: testflightPlugin,
         playStorePlugin: playStorePlugin,
         impaktfullDashboardPlugin: impaktfullDashboardPlugin,
+        gitPlugin: gitPlugin,
+        processRunner: processRunner,
       ),
       TestCoveragePlugin(processRunner: processRunner),
       SlackPlugin(processRunner: processRunner),
