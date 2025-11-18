@@ -79,20 +79,12 @@ class CliProcessRunner extends ProcessRunner {
     final subscriptionOut = result.stdout.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      if (maskOutput) {
-        ImpaktfullCliLogger.verbose("****");
-      } else {
-        ImpaktfullCliLogger.verbose(line);
-      }
+      ImpaktfullCliLogger.verboseMasked(line, mask: maskOutput);
     });
     final subscriptionError = result.stderr.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      if (maskOutput) {
-        ImpaktfullCliLogger.verbose("****");
-      } else {
-        ImpaktfullCliLogger.verbose(line);
-      }
+      ImpaktfullCliLogger.verboseMasked(line, mask: maskOutput);
     });
     final exitCode = await result.exitCode;
     await subscriptionOut.cancel();
