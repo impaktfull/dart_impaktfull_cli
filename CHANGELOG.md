@@ -1,3 +1,9 @@
+# 0.28.0
+
+## Added
+
+- .zshrc-ci file in `.impaktfull/impaktfull_cli` when running `ci_cd setup`
+
 # 0.27.2
 
 ## Fix (Breaking)
