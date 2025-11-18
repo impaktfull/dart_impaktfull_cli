@@ -1,3 +1,9 @@
+# 0.29.0
+
+## Added
+
+- Added support for getting the github build nr from the environment variables (GITHUB_RUN_NUMBER)
+
 # 0.28.0
 
 ## Added

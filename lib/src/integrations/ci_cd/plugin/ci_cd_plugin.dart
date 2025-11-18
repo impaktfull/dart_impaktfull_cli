@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:impaktfull_cli/src/core/plugin/impaktfull_plugin.dart';
+import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
+import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/input_listener/force_quit_listener.dart';
+import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
+import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/apple/certificate/plugin/mac_os_keychain_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
@@ -12,6 +16,7 @@ import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_ios_extension.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
@@ -20,7 +25,7 @@ import 'package:impaktfull_cli/src/integrations/playstore/plugin/playstore_plugi
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
 
-class CiCdPlugin extends ImpaktfullPlugin {
+class CiCdPlugin extends ImpaktfullCliPlugin {
   final OnePasswordPlugin onePasswordPlugin;
   final MacOsKeyChainPlugin macOsKeyChainPlugin;
   final FlutterBuildPlugin flutterBuildPlugin;
@@ -28,6 +33,7 @@ class CiCdPlugin extends ImpaktfullPlugin {
   final TestFlightPlugin testflightPlugin;
   final PlayStorePlugin playStorePlugin;
   final ImpaktfullDashboardPlugin impaktfullDashboardPlugin;
+  final GitPlugin gitPlugin;
 
   const CiCdPlugin({
     required this.onePasswordPlugin,
@@ -37,7 +43,78 @@ class CiCdPlugin extends ImpaktfullPlugin {
     required this.testflightPlugin,
     required this.playStorePlugin,
     required this.impaktfullDashboardPlugin,
+    required this.gitPlugin,
+    super.processRunner = const CliProcessRunner(),
   });
+
+  Future<int> getGithubBuildNr({
+    required String flavor,
+    required String suffix,
+  }) async {
+    final githubBuildNr = ImpaktfullCliEnvironmentVariables.getGithubBuildNr();
+    final buildNr = int.tryParse(githubBuildNr);
+    if (buildNr == null) {
+      throw ImpaktfullCliError(
+          '`${ImpaktfullCliEnvironmentVariables.envKeyGithubBuildNr}` is not a valid number: $githubBuildNr');
+    }
+    return buildNr;
+  }
+
+  /// Bumps the version of the app in release_config.yaml
+  /// Commits the change & returns the build_nr of the new version
+  Future<int> versionBump({
+    String? flavor,
+    String? suffix,
+    bool commitChanges = true,
+  }) async {
+    ImpaktfullCliLogger.setSpinnerPrefix('VersionBump');
+    ImpaktfullCliLogger.startSpinner('Validating git clean');
+    await gitPlugin.validateGitClean();
+    final isGitProject = await gitPlugin.isGitProject();
+    final file = File('release_config.json');
+    var newConfigData = <String, dynamic>{};
+    var buildNr = 0;
+    var buildNrKey = 'build_nr';
+    if (flavor != null) {
+      buildNrKey += '_$flavor';
+    }
+    if (suffix != null) {
+      buildNrKey += '_$suffix';
+    }
+    ImpaktfullCliLogger.startSpinner('bumping for `$buildNrKey`');
+    if (file.existsSync()) {
+      final content = file.readAsStringSync();
+      final orignalConfigData = jsonDecode(content) as Map<String, dynamic>;
+      newConfigData = orignalConfigData;
+      if (orignalConfigData.containsKey(buildNrKey)) {
+        buildNr = orignalConfigData[buildNrKey] as int;
+      }
+    }
+    buildNr++;
+    ImpaktfullCliLogger.verbose(
+        'New build_nr: $buildNr (for key: $buildNrKey)');
+    newConfigData[buildNrKey] = buildNr;
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    final encoder = JsonEncoder.withIndent('  ');
+    file.writeAsStringSync(encoder.convert(newConfigData));
+    if (commitChanges && isGitProject) {
+      await processRunner.runProcess([
+        'git',
+        'add',
+        'release_config.json',
+      ]);
+      await processRunner.runProcess([
+        'git',
+        'commit',
+        '-m',
+        'Bump build_nr to $buildNr (for key: $buildNrKey)',
+      ]);
+    }
+    ImpaktfullCliLogger.clearSpinnerPrefix();
+    return buildNr;
+  }
 
   Future<void> buildAndroidWithFlavor({
     required String flavor,
