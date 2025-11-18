@@ -11,7 +11,7 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
   String _fullKeyChainName(String keyChainName) => '$keyChainName.keychain';
 
   Future<void> unlockKeyChain({
-    String name = "login",
+    String name = 'login',
     Secret? password,
   }) async {
     final fullName = _fullKeyChainName(name);
