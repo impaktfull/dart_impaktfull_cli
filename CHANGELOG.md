@@ -1,3 +1,9 @@
+# 0.27.1
+
+## Fix
+
+- File extension was not detected correctly
+
 # 0.27.0
 
 ## Added
