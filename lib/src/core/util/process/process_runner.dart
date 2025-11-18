@@ -26,8 +26,7 @@ abstract class ProcessRunner {
 
   static void updatePath({required List<String> pathsToAdd}) {
     _pathsToAdd.addAll(pathsToAdd);
-    final pathEnvVariable =
-        ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
+    final pathEnvVariable = ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
     final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
     final sb = StringBuffer(pathEnvVariable);
     for (final path in _pathsToAdd) {
@@ -80,7 +79,7 @@ class CliProcessRunner extends ProcessRunner {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
       if (maskOutput) {
-        ImpaktfullCliLogger.verbose("******");
+        ImpaktfullCliLogger.verbose("****");
       } else {
         ImpaktfullCliLogger.verbose(line);
       }
@@ -89,7 +88,7 @@ class CliProcessRunner extends ProcessRunner {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
       if (maskOutput) {
-        ImpaktfullCliLogger.verbose("******");
+        ImpaktfullCliLogger.verbose("****");
       } else {
         ImpaktfullCliLogger.verbose(line);
       }
