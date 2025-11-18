@@ -48,8 +48,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
   });
 
   Future<int> getGithubBuildNr({
-    required String flavor,
-    required String suffix,
+    int incrementBy = 0,
   }) async {
     final githubBuildNr = ImpaktfullCliEnvironmentVariables.getGithubBuildNr();
     final buildNr = int.tryParse(githubBuildNr);
@@ -57,10 +56,10 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
       throw ImpaktfullCliError(
           '`${ImpaktfullCliEnvironmentVariables.envKeyGithubBuildNr}` is not a valid number: $githubBuildNr');
     }
-    return buildNr;
+    return buildNr + incrementBy;
   }
 
-  /// Bumps the version of the app in release_config.yaml
+  /// Bumps the version of the app in release_config.json
   /// Commits the change & returns the build_nr of the new version
   Future<int> versionBump({
     String? flavor,
@@ -84,10 +83,10 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     ImpaktfullCliLogger.startSpinner('bumping for `$buildNrKey`');
     if (file.existsSync()) {
       final content = file.readAsStringSync();
-      final orignalConfigData = jsonDecode(content) as Map<String, dynamic>;
-      newConfigData = orignalConfigData;
-      if (orignalConfigData.containsKey(buildNrKey)) {
-        buildNr = orignalConfigData[buildNrKey] as int;
+      final originalConfigData = jsonDecode(content) as Map<String, dynamic>;
+      newConfigData = originalConfigData;
+      if (originalConfigData.containsKey(buildNrKey)) {
+        buildNr = originalConfigData[buildNrKey] as int;
       }
     }
     buildNr++;
