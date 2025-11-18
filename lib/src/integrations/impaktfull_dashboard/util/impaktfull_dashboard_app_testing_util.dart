@@ -29,7 +29,7 @@ class ImpaktfullDashboardAppTestingUtil {
   }
 
   String _getExtensionType(File file) {
-    final fileExtension = extension(file.path);
+    final fileExtension = _getFileExtension(file);
     if (!allowedExtensions.contains(fileExtension)) {
       throw ImpaktfullCliError(
         'Extension `$fileExtension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli, allowed extensions are: $allowedExtensions',
@@ -39,7 +39,7 @@ class ImpaktfullDashboardAppTestingUtil {
   }
 
   String _getAppTestingAppType(File file) {
-    final fileExtension = extension(file.path);
+    final fileExtension = _getFileExtension(file);
     switch (fileExtension) {
       case 'apk':
       case 'aab':
@@ -51,5 +51,10 @@ class ImpaktfullDashboardAppTestingUtil {
           'Extension `$fileExtension` is not supported to upload to Impaktfull Dashboard using the impaktfull_cli, allowed extensions are: $allowedExtensions',
         );
     }
+  }
+
+  String _getFileExtension(File file) {
+    final fileExtension = extension(file.path);
+    return fileExtension.replaceAll('.', '');
   }
 }
