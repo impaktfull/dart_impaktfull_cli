@@ -26,7 +26,8 @@ abstract class ProcessRunner {
 
   static void updatePath({required List<String> pathsToAdd}) {
     _pathsToAdd.addAll(pathsToAdd);
-    final pathEnvVariable = ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
+    final pathEnvVariable =
+        ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
     final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
     final sb = StringBuffer(pathEnvVariable);
     for (final path in _pathsToAdd) {
