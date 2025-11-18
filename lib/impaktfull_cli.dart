@@ -11,7 +11,7 @@ export 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 export 'package:impaktfull_cli/src/core/util/path/path_utils.dart';
 export 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 export 'package:impaktfull_cli/src/impaktfull_cli.dart';
-export 'package:impaktfull_cli/src/integrations/apple/certificate/plugin/mac_os_keychain_plugin.dart';
+export 'package:impaktfull_cli/src/integrations/apple/keychain/plugin/mac_os_keychain_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload_config.dart';
 export 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
