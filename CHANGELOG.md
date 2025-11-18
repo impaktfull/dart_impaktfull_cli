@@ -1,3 +1,9 @@
+# 0.27.2
+
+## Fix (Breaking)
+
+- `runMultiplCommands` was renamed to `runMultipleCommands`
+
 # 0.27.1
 
 ## Fix

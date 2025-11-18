@@ -163,7 +163,7 @@ class ImpaktfullCli {
     dispose();
   }
 
-  Future<void> runMultiplCommands(AsyncCallback function) async {
+  Future<void> runMultipleCommands(AsyncCallback function) async {
     VerboseLoggingListener.setupMutiCommandInputListener();
     await function();
     VerboseLoggingListener.clearMultipleCommandInputListener();
