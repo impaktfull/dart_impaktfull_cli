@@ -1,3 +1,9 @@
+# 0.30.1
+
+## Fixed
+
+- Error when cleaning 1password stored files
+
 # 0.30.0
 
 ## Added
