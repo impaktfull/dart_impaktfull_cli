@@ -1,3 +1,14 @@
+# 0.30.0
+
+## Added
+
+- Cleanup stored files after `ImpaktfullCli.run`
+
+## Fixed
+
+- typo's
+- Do not mask 1password error output. It is not useful to mask it, because it contains the error message.
+
 # 0.29.0
 
 ## Removed
