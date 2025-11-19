@@ -7,6 +7,7 @@
 ## Fixed
 
 - typo's
+- Do not mask 1password error output. It is not useful to mask it, because it contains the error message.
 
 # 0.29.0
 
