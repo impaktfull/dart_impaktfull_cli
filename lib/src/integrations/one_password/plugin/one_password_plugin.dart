@@ -6,6 +6,8 @@ import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
+const _storedFilesToRemove = <File>[];
+
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
   String get serviceAccountEnvKey =>
       ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
@@ -42,6 +44,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     String? vaultName,
     Secret? rawServiceAccount,
     String? logContext,
+    bool removeFileAfterCliRun = true,
   }) async {
     final exportFile = File(outputPath);
     if (!exportFile.existsSync()) {
@@ -66,6 +69,11 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
           'Downloading file from 1Password ${logContext == null ? '' : '($logContext)'}',
       rawServiceAccount: rawServiceAccount,
     );
+    if (removeFileAfterCliRun) {
+      if (exportFile.existsSync()) {
+        _storedFilesToRemove.add(exportFile);
+      }
+    }
     return exportFile;
   }
 
@@ -122,11 +130,13 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     String? vaultName,
     String outputPath = 'certificates/apple_distribution.p12',
     Secret? rawServiceAccount,
+    bool removeFileAfterCliRun = true,
   }) =>
       downloadFile(
         opUuid: opUuid,
         outputPath: outputPath,
         rawServiceAccount: rawServiceAccount,
+        removeFileAfterCliRun: removeFileAfterCliRun,
       );
 
   Future<TestFlightCredentials> getTestFlightCredentials({
@@ -155,6 +165,7 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     String outputPath = 'android/playstore_credentials.json',
     String? vaultName,
     Secret? rawServiceAccount,
+    bool removeFileAfterCliRun = true,
   }) async =>
       downloadFile(
         opUuid: opUuid,
@@ -162,5 +173,15 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
         vaultName: vaultName,
         rawServiceAccount: rawServiceAccount,
         logContext: 'Service Account Credentials',
+        removeFileAfterCliRun: removeFileAfterCliRun,
       );
+
+  Future<void> cleanupStoredFiles() async {
+    for (final file in _storedFilesToRemove) {
+      if (file.existsSync()) {
+        file.deleteSync(recursive: true);
+      }
+    }
+    _storedFilesToRemove.clear();
+  }
 }

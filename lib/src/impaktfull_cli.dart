@@ -140,6 +140,7 @@ class ImpaktfullCli {
   ) async {
     init();
     await runImpaktfullCli(() => runner(this));
+    await onePasswordPlugin.cleanupStoredFiles();
     dispose();
   }
 
@@ -163,6 +164,7 @@ class ImpaktfullCli {
       ImpaktfullCliLogger.enableVerbose(
           isVerboseLoggingEnabled: argResults.isVerboseLoggingEnabled());
       await runner.run(arguments);
+      await onePasswordPlugin.cleanupStoredFiles();
     });
     dispose();
   }
