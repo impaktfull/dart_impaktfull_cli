@@ -6,7 +6,7 @@ import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
 
-const _storedFilesToRemove = <File>[];
+final _storedFilesToRemove = <File>[];
 
 class OnePasswordPlugin extends ImpaktfullCliPlugin {
   String get serviceAccountEnvKey =>
