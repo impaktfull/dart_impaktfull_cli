@@ -20,6 +20,7 @@ abstract class ProcessRunner {
     bool runInShell = false,
     ProcessStartMode mode = ProcessStartMode.normal,
     bool maskOutput = false,
+    bool maskErrorOutput = false,
   });
 
   Future<void> requestSudo();
@@ -54,6 +55,7 @@ class CliProcessRunner extends ProcessRunner {
     bool runInShell = false,
     ProcessStartMode mode = ProcessStartMode.normal,
     bool maskOutput = false,
+    bool maskErrorOutput = false,
   }) async {
     if (args.isNotEmpty && args.first == "sudo") {
       await _checkIfSudoQuestionIsRequiredAgain();
@@ -84,7 +86,7 @@ class CliProcessRunner extends ProcessRunner {
     final subscriptionError = result.stderr.listen((codeUnits) {
       final line = utf8.decode(codeUnits);
       stringBuffer.writeln(line);
-      ImpaktfullCliLogger.verboseMasked(line, mask: maskOutput);
+      ImpaktfullCliLogger.verboseMasked(line, mask: maskErrorOutput);
     });
     final exitCode = await result.exitCode;
     await subscriptionOut.cancel();
