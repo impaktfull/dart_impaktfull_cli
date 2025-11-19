@@ -26,5 +26,5 @@ class GitPlugin extends ImpaktfullCliPlugin {
   }
 
   // TODO: Implement this
-  Future<bool> isGitProject() async => false;
+  Future<bool> isGitProject() async => true;
 }

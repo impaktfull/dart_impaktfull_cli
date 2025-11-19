@@ -1,3 +1,9 @@
+# 0.30.2
+
+## Fixed
+
+- `GitPlugin.isGitProject` now returns true by default. Implementation should still be done fully. But for now we always consider it a git project.
+
 # 0.30.1
 
 ## Fixed
