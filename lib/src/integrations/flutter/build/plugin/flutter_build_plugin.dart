@@ -87,7 +87,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     final correctFile = files.firstWhere(
       (element) => element.existsSync(),
       orElse: () => throw ImpaktfullCliError(
-          'After building $flavor for Android, `${file.path}` does not exists.'),
+          'After building $flavor for Android, `${files.join(', ')}` does not exist.'),
     );
     ImpaktfullCliLogger.clearSpinnerPrefix();
     return correctFile;
