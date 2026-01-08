@@ -1,3 +1,9 @@
+# 0.31.0
+
+## Added
+
+- Added support for building Flutter Android apps (with and without flavor) where the APK is built to `build/app/outputs/flutter-apk/app-{flavor-}release.apk` and `build/app/outputs/apk/{flavor}/release/app-{flavor}-release.apk`
+
 # 0.30.2
 
 ## Fixed

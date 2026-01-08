@@ -50,22 +50,47 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         '--build-number=$buildNr',
       ],
     ]);
+    final String fileName;
+    if (flavor == null) {
+      fileName = 'app-release.apk';
+    } else {
+      fileName = 'app-$flavor-release.apk';
+    }
+    final files = <File>[];
+    // Default path
     final file = File(joinAll(
       [
-        extension.getBuildDirectory(flavor: flavor).path,
-        if (flavor == null) ...[
-          'app-release.${extension.fileExtension}',
-        ] else ...[
-          'app-$flavor-release.${extension.fileExtension}',
-        ],
+        extension
+            .getBuildDirectory(
+              flavor: flavor,
+              androidSplitPath: false,
+            )
+            .path,
+        fileName,
       ],
     ));
-    if (!file.existsSync()) {
-      throw ImpaktfullCliError(
-          'After building $flavor for Android, `${file.path}` does not exists.');
-    }
+    files.add(file);
+
+    // Additional paths
+    final additionalFile = File(joinAll(
+      [
+        extension
+            .getBuildDirectory(
+              flavor: flavor,
+              androidSplitPath: true,
+            )
+            .path,
+        fileName,
+      ],
+    ));
+    files.add(additionalFile);
+    final correctFile = files.firstWhere(
+      (element) => element.existsSync(),
+      orElse: () => throw ImpaktfullCliError(
+          'After building $flavor for Android, `${files.join(', ')}` does not exist.'),
+    );
     ImpaktfullCliLogger.clearSpinnerPrefix();
-    return file;
+    return correctFile;
   }
 
   Future<File> buildIos({

@@ -16,18 +16,31 @@ enum FlutterBuildAndroidExtension {
 }
 
 extension FlutterBuildAndroidExtensions on FlutterBuildAndroidExtension {
-  Directory getBuildDirectory({String? flavor}) {
+  Directory getBuildDirectory({
+    String? flavor,
+    bool androidSplitPath = false,
+  }) {
     final List<String> parts;
     switch (this) {
       case FlutterBuildAndroidExtension.apk:
-        parts = [
-          'build',
-          'app',
-          'outputs',
-          'apk',
-          if (flavor != null) flavor,
-          'release',
-        ];
+        if (androidSplitPath) {
+          parts = [
+            'build',
+            'app',
+            'outputs',
+            'apk',
+            if (flavor != null) flavor,
+            'release',
+          ];
+        } else {
+          parts = [
+            'build',
+            'app',
+            'outputs',
+            'flutter-apk',
+          ];
+        }
+        break;
       case FlutterBuildAndroidExtension.aab:
         parts = [
           'build',
@@ -40,6 +53,7 @@ extension FlutterBuildAndroidExtensions on FlutterBuildAndroidExtension {
             '${flavor}Release',
           ]
         ];
+        break;
     }
     return Directory(joinAll(parts));
   }
