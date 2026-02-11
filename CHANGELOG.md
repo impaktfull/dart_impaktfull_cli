@@ -1,3 +1,9 @@
+# 0.31.1
+
+## Fixed
+
+- Fixed Android build output file name to use the correct file extension based on build type (`.apk` for APK builds, `.aab` for AAB builds) instead of always using `.apk`
+
 # 0.31.0
 
 ## Added

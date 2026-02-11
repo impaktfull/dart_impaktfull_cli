@@ -52,9 +52,9 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     ]);
     final String fileName;
     if (flavor == null) {
-      fileName = 'app-release.apk';
+      fileName = 'app-release.${extension.fileExtension}';
     } else {
-      fileName = 'app-$flavor-release.apk';
+      fileName = 'app-$flavor-release.${extension.fileExtension}';
     }
     final files = <File>[];
     // Default path
