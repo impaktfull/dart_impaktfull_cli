@@ -1,0 +1,460 @@
+---
+title: Dart API
+---
+
+The built-in plugins can be accessed programmatically from Dart code — no CLI invocation needed. This is useful for build scripts, custom tooling, or integrating impaktfull_cli into your own Dart application.
+
+## Setup
+
+Use `cli.run()` to get direct access to plugin instances:
+
+```dart
+void main(List<String> args) async {
+  final cli = ImpaktfullCli(arguments: args);
+  await cli.run((cli) async {
+    // use plugins here
+  });
+}
+```
+
+Use `runMultipleCommands` to sequence several plugin calls:
+
+```dart
+await cli.run((cli) async {
+  await cli.runMultipleCommands(() async {
+    await cli.flutterBuildPlugin.buildAndroid();
+    await cli.playStorePlugin.uploadToPlayStore(/* ... */);
+  });
+});
+```
+
+---
+
+## CiCdPlugin
+
+`cli.ciCdPlugin` — Orchestrates full CI/CD pipelines. Combines build, sign, and upload into single calls.
+
+### `buildAndroid`
+
+```dart
+Future<void> buildAndroid({
+  String? flavor,
+  String mainDartFile = 'lib/main.dart',
+  FlutterBuildAndroidExtension extension = FlutterBuildAndroidExtension.aab,
+  bool obfuscate = true,
+  String? splitDebugInfoPath = '.build/debug-info',
+  int? buildNr,
+  AppCenterUploadConfig? appCenterUploadConfig,
+  PlayStoreUploadConfig? playStoreUploadConfig,
+  ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+})
+```
+
+Builds and optionally uploads an Android artifact. Pass an upload config to automatically push to App Center, Play Store, or the impaktfull dashboard after building.
+
+### `buildAndroidWithFlavor`
+
+```dart
+Future<void> buildAndroidWithFlavor({
+  required String flavor,
+  String mainDartPrefix = 'lib/main_',
+  FlutterBuildAndroidExtension extension = FlutterBuildAndroidExtension.aab,
+  bool obfuscate = true,
+  String? splitDebugInfoPaths = 'lib/main_',
+  int? buildNr,
+  AppCenterUploadConfig? appCenterUploadConfig,
+  PlayStoreUploadConfig? playStoreUploadConfig,
+  ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+})
+```
+
+Same as `buildAndroid` but resolves the entry point from a prefix + flavor name (e.g. `lib/main_production.dart`).
+
+### `buildIos`
+
+```dart
+Future<void> buildIos({
+  String? flavor,
+  String mainDartFile = 'lib/main.dart',
+  FlutterBuildIosExtension extension = FlutterBuildIosExtension.ipa,
+  bool obfuscate = true,
+  String? splitDebugInfoPath = '.build/debug-info',
+  int? buildNr,
+  AppCenterUploadConfig? appCenterUploadConfig,
+  TestFlightUploadConfig? testflightUploadConfig,
+  ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+})
+```
+
+### `buildIosWithFlavor`
+
+```dart
+Future<void> buildIosWithFlavor({
+  required String flavor,
+  String mainDartPrefix = 'lib/main_',
+  FlutterBuildIosExtension extension = FlutterBuildIosExtension.ipa,
+  bool obfuscate = true,
+  String? splitDebugInfoPaths = 'lib/main_',
+  int? buildNr,
+  AppCenterUploadConfig? appCenterUploadConfig,
+  TestFlightUploadConfig? testflightUploadConfig,
+  ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+})
+```
+
+### `versionBump`
+
+```dart
+Future<int> versionBump({
+  String? flavor,
+  String? suffix,
+  bool commitChanges = true,
+})
+```
+
+Bumps the version in `release_config.json`, optionally commits the change, and returns the new build number.
+
+### `getGithubBuildNr`
+
+```dart
+Future<int> getGithubBuildNr({int incrementBy = 0})
+```
+
+Returns the current `GITHUB_RUN_NUMBER` env variable as an integer, optionally incremented.
+
+---
+
+## FlutterBuildPlugin
+
+`cli.flutterBuildPlugin` — Builds Flutter apps and returns the output file.
+
+### `buildAndroid`
+
+```dart
+Future<File> buildAndroid({
+  String? flavor,
+  String? mainDartFile = 'lib/main.dart',
+  FlutterBuildAndroidExtension extension = FlutterBuildAndroidExtension.aab,
+  bool obfuscate = true,
+  String? splitDebugInfoPath = 'build/debug-info',
+  int? buildNr,
+})
+```
+
+Returns the built `.aab` or `.apk` file.
+
+### `buildIos`
+
+```dart
+Future<File> buildIos({
+  String? flavor,
+  String? mainDartFile = 'lib/main.dart',
+  FlutterBuildIosExtension extension = FlutterBuildIosExtension.ipa,
+  bool obfuscate = true,
+  String? splitDebugInfoPath = '.build/debug-info',
+  int? buildNr,
+})
+```
+
+Returns the built `.ipa` or `.xcarchive` file.
+
+---
+
+## PlayStorePlugin
+
+`cli.playStorePlugin` — Uploads Android builds to the Google Play Store.
+
+### `uploadToPlayStore`
+
+```dart
+Future<void> uploadToPlayStore({
+  required File file,
+  required PlaystoreTrackType trackType,
+  required PlaystoreReleaseStatus releaseStatus,
+  File? serviceAccountCredentialsFile,
+})
+```
+
+Uploads the given `.aab` or `.apk` to the specified Play Store track. If `serviceAccountCredentialsFile` is not provided, falls back to the `GOOGLE_SERVICE_ACCOUNT_JSON_RAW` environment variable.
+
+---
+
+## AppCenterPlugin
+
+`cli.appCenterPlugin` — Uploads builds to Microsoft App Center.
+
+### `uploadToAppCenter`
+
+```dart
+Future<void> uploadToAppCenter({
+  required String appName,
+  required File file,
+  String? ownerName,
+  Secret? apiToken,
+  List<String> distributionGroups = defaultDistributionGroups,
+  bool notifyListeners = true,
+})
+```
+
+Uploads a build artifact to App Center and optionally notifies distribution group members. Falls back to `APPCENTER_OWNER_NAME` and `APPCENTER_API_TOKEN` environment variables if not provided.
+
+### `cleanup`
+
+```dart
+Future<void> cleanup()
+```
+
+---
+
+## TestFlightPlugin
+
+`cli.testflightPlugin` — Uploads iOS builds to Apple TestFlight.
+
+### `uploadToTestflightWithEmailPassword`
+
+```dart
+Future<void> uploadToTestflightWithEmailPassword({
+  required File file,
+  String? email,
+  Secret? appSpecificPassword,
+  String type = 'ios',
+})
+```
+
+Uses `altool` under the hood. Falls back to `APPLE_EMAIL` and `APPLE_APP_SPECIFIC_PASSWORD` environment variables if not provided.
+
+---
+
+## OnePasswordPlugin
+
+`cli.onePasswordPlugin` — Reads secrets and files from 1Password.
+
+### `getPassword`
+
+```dart
+Future<Secret> getPassword({
+  required String vaultName,
+  required String opUuid,
+  required String fieldName,
+  Secret? rawServiceAccount,
+  String? logContext,
+})
+```
+
+### `getOnePasswordField`
+
+```dart
+Future<String> getOnePasswordField({
+  required String vaultName,
+  required String opUuid,
+  required String fieldName,
+  Secret? rawServiceAccount,
+  String? logContext,
+})
+```
+
+Returns the field value as a plain string (use `getPassword` for sensitive values).
+
+### `downloadFile`
+
+```dart
+Future<File> downloadFile({
+  required String opUuid,
+  required String outputPath,
+  String? vaultName,
+  Secret? rawServiceAccount,
+  String? logContext,
+  bool removeFileAfterCliRun = true,
+})
+```
+
+### `downloadDistributionCertificate`
+
+```dart
+Future<File> downloadDistributionCertificate({
+  required String opUuid,
+  String? vaultName,
+  String outputPath = 'certificates/apple_distribution.p12',
+  Secret? rawServiceAccount,
+  bool removeFileAfterCliRun = true,
+})
+```
+
+### `downloadServiceAccountCredentials`
+
+```dart
+Future<File> downloadServiceAccountCredentials({
+  required String opUuid,
+  String outputPath = 'android/playstore_credentials.json',
+  String? vaultName,
+  Secret? rawServiceAccount,
+  bool removeFileAfterCliRun = true,
+})
+```
+
+### `getCertificatePassword`
+
+```dart
+Future<Secret> getCertificatePassword({
+  required String opUuid,
+  required String vaultName,
+  String fieldName = 'password',
+  Secret? rawServiceAccount,
+})
+```
+
+### `getTestFlightCredentials`
+
+```dart
+Future<TestFlightCredentials> getTestFlightCredentials({
+  required String vaultName,
+  required String opUuid,
+  Secret? rawServiceAccount,
+})
+```
+
+### `cleanupStoredFiles`
+
+```dart
+Future<void> cleanupStoredFiles()
+```
+
+Deletes any files downloaded from 1Password that were registered for cleanup. Called automatically at the end of `ImpaktfullCli.run()`.
+
+---
+
+## MacOsKeyChainPlugin
+
+`cli.macOsKeyChainPlugin` — Manages macOS keychains for code signing.
+
+### `unlockKeyChain`
+
+```dart
+Future<void> unlockKeyChain({
+  String name = 'login',
+  Secret? password,
+})
+```
+
+Unlocks the named keychain. Falls back to the `CI_KEYCHAIN_PASSWORD` environment variable if `password` is not provided.
+
+---
+
+## AppleProvisioningProfilePlugin
+
+`cli.appleProvisioningProfilePlugin` — Installs Apple provisioning profiles.
+
+### `installProvisioningProfile`
+
+```dart
+Future<void> installProvisioningProfile({
+  required File provisioningProfile,
+  bool override = true,
+})
+```
+
+### `scanAndInstallProvisioningProfiles`
+
+```dart
+Future<void> scanAndInstallProvisioningProfiles({
+  Directory? directory,
+  bool override = true,
+})
+```
+
+Scans the given directory (defaults to the current directory) for `.mobileprovision` files and installs all of them.
+
+---
+
+## SlackPlugin
+
+Instantiate directly — not exposed on `ImpaktfullCli`:
+
+```dart
+final slack = SlackPlugin(processRunner: cli.processRunner);
+```
+
+### `sendMessage`
+
+```dart
+Future<void> sendMessage({
+  required String channelName,
+  String? message,
+  List<SlackMessageAttachment> attachments = const [],
+})
+```
+
+---
+
+## GitPlugin
+
+Instantiate directly — not exposed on `ImpaktfullCli`:
+
+```dart
+final git = GitPlugin(processRunner: cli.processRunner);
+```
+
+### `isGitClean`
+
+```dart
+Future<bool> isGitClean()
+```
+
+Returns `true` if there are no uncommitted changes. Returns `true` if git is not installed.
+
+### `validateGitClean`
+
+```dart
+Future<void> validateGitClean()
+```
+
+Throws if the working tree is not clean.
+
+### `isGitProject`
+
+```dart
+Future<bool> isGitProject()
+```
+
+---
+
+## TestCoveragePlugin
+
+Instantiate directly — not exposed on `ImpaktfullCli`:
+
+```dart
+final coverage = TestCoveragePlugin(processRunner: cli.processRunner);
+```
+
+### `testCoverage`
+
+```dart
+Future<TestCoverageReport> testCoverage({
+  required String path,
+  required TestCoverageType type,
+  String outputPath = 'coverage',
+  bool overrideLcovFile = true,
+  List<RegExp> ignorePatterns = const [],
+})
+```
+
+Runs tests, generates an lcov report, and returns a `TestCoverageReport` with the coverage percentage and file breakdown.
+
+---
+
+## ImpaktfullDashboardPlugin
+
+Instantiate directly — not exposed on `ImpaktfullCli`:
+
+```dart
+final dashboard = ImpaktfullDashboardPlugin(processRunner: cli.processRunner);
+```
+
+### `uploadAppTestingVersionToImpaktfullDashboard`
+
+```dart
+Future<void> uploadAppTestingVersionToImpaktfullDashboard({
+  required File file,
+  required ImpaktfullDashboardAppTestingVersionUploadConfig config,
+})
+```

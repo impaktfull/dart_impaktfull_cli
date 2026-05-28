@@ -26,4 +26,8 @@ jobs:
       - run: dart format --set-exit-if-changed .
       - run: dart analyze
       - run: dart test
+      - name: Check docs are up to date
+        run: |
+          dart run tool/generate_docs.dart
+          git diff --exit-code docs/ README.md
       - run: dart pub publish --dry-run

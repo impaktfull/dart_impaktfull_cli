@@ -35,6 +35,7 @@ certificates/
 example/bin/example_config.dart
 
 # Builds
+/build/
 **.ipa
 **.aab
 **.apk

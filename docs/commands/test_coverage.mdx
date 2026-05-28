@@ -1,0 +1,37 @@
+---
+title: test_coverage
+---
+
+Commands for test coverage integrations.
+
+## flutter
+
+Create a test coverage report for a Flutter project (after lcov.info is already generated)
+
+**Usage:**
+
+```bash
+dart run impaktfull_cli test_coverage flutter [options]
+```
+
+| Option | Description | Required | Default | Allowed |
+|---|---|---|---|---|
+| `--[no-]runTests` | Run tests before generating test coverage report | No | true |  |
+| `--[no-]overrideLcovFile` | Override the lcov file changes were made because of the `ignorePatterns` | No | true |  |
+
+## dart
+
+Create a test coverage report for a Dart project (after lcov.info is already generated)
+
+**Usage:**
+
+```bash
+dart run impaktfull_cli test_coverage dart [options]
+```
+
+| Option | Description | Required | Default | Allowed |
+|---|---|---|---|---|
+| `--[no-]runTests` | Run tests before generating test coverage report | No | true |  |
+| `--[no-]convertToLcov` | Convert test coverage report to lcov format | No | true |  |
+| `--[no-]overrideLcovFile` | Override the lcov file changes were made because of the `ignorePatterns` | No | true |  |
+
