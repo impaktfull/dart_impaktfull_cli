@@ -1,10 +1,46 @@
+import 'dart:io';
+
 import 'package:args/command_runner.dart';
+import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
+import 'package:impaktfull_cli/src/integrations/android/android_command.dart';
+import 'package:impaktfull_cli/src/integrations/apple/apple_command.dart';
+import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
+import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
+import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
+import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 
 void main() => DocsGenerator().generate();
 
 class DocsGenerator {
+  static const _docsDir = 'docs';
+  static const _commandsDir = '$_docsDir/commands';
+  static const _envVarsFile =
+      'lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
+
   void generate() {
-    throw UnimplementedError();
+    final commands = [
+      AndroidRootCommand(processRunner: const CliProcessRunner()),
+      AppleRootCommand(processRunner: const CliProcessRunner()),
+      CiCdRootCommand(processRunner: const CliProcessRunner()),
+      OpenSourceRootCommand(processRunner: const CliProcessRunner()),
+      SlackRootCommand(processRunner: const CliProcessRunner()),
+      TestCoverageRootCommand(processRunner: const CliProcessRunner()),
+    ];
+
+    Directory(_commandsDir).createSync(recursive: true);
+
+    for (final cmd in commands) {
+      final content = buildCommandPage(cmd);
+      final file = File('$_commandsDir/${cmd.name}.mdx');
+      file.writeAsStringSync(content);
+      print('Generated ${file.path}');
+    }
+
+    final envSource = File(_envVarsFile).readAsStringSync();
+    final envKeys = extractEnvKeys(envSource);
+    final configFile = File('$_docsDir/configuration.mdx');
+    configFile.writeAsStringSync(buildConfigurationPage(envKeys));
+    print('Generated ${configFile.path}');
   }
 
   String buildCommandPage(Command<void> rootCmd) {
@@ -85,6 +121,21 @@ class DocsGenerator {
   }
 
   String buildConfigurationPage(List<String> envKeys) {
-    throw UnimplementedError();
+    final buffer = StringBuffer();
+    buffer.writeln('---');
+    buffer.writeln('title: Configuration');
+    buffer.writeln('---');
+    buffer.writeln();
+    buffer.writeln(
+      'impaktfull CLI reads these environment variables at runtime. '
+      'Set them in your CI/CD environment or local shell.',
+    );
+    buffer.writeln();
+    buffer.writeln('| Variable | Description |');
+    buffer.writeln('|---|---|');
+    for (final key in envKeys) {
+      buffer.writeln('| `$key` | |');
+    }
+    return buffer.toString();
   }
 }
