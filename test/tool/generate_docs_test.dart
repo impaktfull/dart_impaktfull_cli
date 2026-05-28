@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/android/android_command.dart';
 import 'package:impaktfull_cli/src/integrations/apple/apple_command.dart';
@@ -107,6 +109,62 @@ void main() {
 
       expect(page, contains('## report_status'));
       expect(page, contains('## setup'));
+    });
+  });
+
+  group('extractEnvKeys', () {
+    test('extracts private env key constants', () {
+      const source = """
+        static const _envKeyCiKeyChainPassword = 'CI_KEYCHAIN_PASSWORD';
+        static const _envKeyAppleEmail = 'APPLE_EMAIL';
+      """;
+      final keys = generator.extractEnvKeys(source);
+      expect(keys, containsAll(['CI_KEYCHAIN_PASSWORD', 'APPLE_EMAIL']));
+    });
+
+    test('extracts public env key constants', () {
+      const source = """
+        static const envKeyOnePasswordAccountToken = 'OP_SERVICE_ACCOUNT_TOKEN';
+        static const envKeySlackSendMessageChannel = 'SLACK_SEND_MESSAGE_CHANNEL';
+      """;
+      final keys = generator.extractEnvKeys(source);
+      expect(
+          keys,
+          containsAll(
+              ['OP_SERVICE_ACCOUNT_TOKEN', 'SLACK_SEND_MESSAGE_CHANNEL']));
+    });
+
+    test('does not extract non-envKey constants', () {
+      const source = """
+        static const _optionJobName = 'jobName';
+        static const _envKeyAppleEmail = 'APPLE_EMAIL';
+      """;
+      final keys = generator.extractEnvKeys(source);
+      expect(keys, equals(['APPLE_EMAIL']));
+      expect(keys, isNot(contains('jobName')));
+    });
+
+    test('extracts all 10 keys from the actual env vars file', () {
+      final source = File(
+        'lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart',
+      ).readAsStringSync();
+      final keys = generator.extractEnvKeys(source);
+      expect(keys.length, equals(10));
+      expect(
+        keys,
+        containsAll([
+          'CI_KEYCHAIN_PASSWORD',
+          'APPCENTER_OWNER_NAME',
+          'APPCENTER_API_TOKEN',
+          'APPLE_EMAIL',
+          'APPLE_APP_SPECIFIC_PASSWORD',
+          'GOOGLE_SERVICE_ACCOUNT_JSON_RAW',
+          'OP_SERVICE_ACCOUNT_TOKEN',
+          'SLACK_BOT_TOKEN',
+          'SLACK_SEND_MESSAGE_CHANNEL',
+          'GITHUB_RUN_NUMBER',
+        ]),
+      );
     });
   });
 }

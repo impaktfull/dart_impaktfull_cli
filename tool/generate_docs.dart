@@ -78,7 +78,10 @@ class DocsGenerator {
   }
 
   List<String> extractEnvKeys(String source) {
-    throw UnimplementedError();
+    final regex = RegExp(
+        r"static const (?:String )?_?envKey\w+\s*=\s*'([^']+)'",
+        multiLine: true);
+    return regex.allMatches(source).map((m) => m.group(1)!).toList();
   }
 
   String buildConfigurationPage(List<String> envKeys) {
