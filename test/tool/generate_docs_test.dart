@@ -26,6 +26,7 @@ void main() {
       expect(table, contains('| Yes |'));
       expect(table, contains('`--configName`'));
       expect(table, contains('debug, release'));
+      expect(table, isNot(contains('[debug, release]')));
     });
 
     test('returns placeholder for command with no options', () {

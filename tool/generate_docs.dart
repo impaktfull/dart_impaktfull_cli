@@ -106,7 +106,10 @@ class DocsGenerator {
       final name = option.isFlag ? '--[no-]${option.name}' : '--${option.name}';
       final desc = option.help ?? '';
       final required = option.mandatory ? 'Yes' : 'No';
-      final def = option.defaultsTo?.toString() ?? '';
+      final def = switch (option.defaultsTo) {
+        List<String> list => list.join(', '),
+        final other => other?.toString() ?? '',
+      };
       final allowed = option.allowed?.join(', ') ?? '';
       buffer.writeln('| `$name` | $desc | $required | $def | $allowed |');
     }
