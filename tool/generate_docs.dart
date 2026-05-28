@@ -1,27 +1,13 @@
-import 'dart:io';
-
 import 'package:args/command_runner.dart';
-import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
-import 'package:impaktfull_cli/src/integrations/android/android_command.dart';
-import 'package:impaktfull_cli/src/integrations/apple/apple_command.dart';
-import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
-import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
-import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
-import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 
 void main() => DocsGenerator().generate();
 
 class DocsGenerator {
-  static const _docsDir = 'docs';
-  static const _commandsDir = '$_docsDir/commands';
-  static const _envVarsFile =
-      'lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
-
   void generate() {
     throw UnimplementedError();
   }
 
-  String buildCommandPage(Command rootCmd) {
+  String buildCommandPage(Command<void> rootCmd) {
     final buffer = StringBuffer();
     buffer.writeln('---');
     buffer.writeln('title: ${rootCmd.name}');
@@ -37,7 +23,7 @@ class DocsGenerator {
     StringBuffer buffer,
     String rootName,
     String sectionPrefix,
-    Command cmd,
+    Command<void> cmd,
   ) {
     for (final sub in cmd.subcommands.values) {
       final sectionName =
@@ -53,7 +39,7 @@ class DocsGenerator {
   String _buildLeafSection(
     String rootName,
     String sectionName,
-    Command cmd,
+    Command<void> cmd,
   ) {
     final buffer = StringBuffer();
     buffer.writeln('## $sectionName');
@@ -72,7 +58,7 @@ class DocsGenerator {
     return buffer.toString();
   }
 
-  String buildOptionsTable(Command cmd) {
+  String buildOptionsTable(Command<void> cmd) {
     final options =
         cmd.argParser.options.values.where((o) => o.name != 'help').toList();
 
