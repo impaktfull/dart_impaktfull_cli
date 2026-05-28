@@ -14,14 +14,14 @@ Report the status of a job
 dart run impaktfull_cli ci_cd report_status [options]
 ```
 
-| Option | Description | Required | Default | Allowed |
-|---|---|---|---|---|
-| `--jobName` | The name of the job to report the status of | Yes |  |  |
-| `--jobStatus` | The status of the job | Yes |  | success, failure, cancelled |
-| `--jobDuration` | The duration of the job | No |  |  |
-| `--reportTo` | The channel to report the status to | No | slack | slack |
-| `--jobUrl` | The URL of the job | No |  |  |
-| `--slackChannelName` | The name of the Slack channel to report the status to | No |  |  |
+| Option               | Description                                           | Required | Default | Allowed                     |
+| -------------------- | ----------------------------------------------------- | -------- | ------- | --------------------------- |
+| `--jobName`          | The name of the job to report the status of           | Yes      |         |                             |
+| `--jobStatus`        | The status of the job                                 | Yes      |         | success, failure, cancelled |
+| `--jobDuration`      | The duration of the job                               | No       |         |                             |
+| `--reportTo`         | The channel to report the status to                   | No       | slack   | slack                       |
+| `--jobUrl`           | The URL of the job                                    | No       |         |                             |
+| `--slackChannelName` | The name of the Slack channel to report the status to | No       |         |                             |
 
 ## setup
 
@@ -34,4 +34,3 @@ dart run impaktfull_cli ci_cd setup [options]
 ```
 
 _No options._
-

@@ -82,17 +82,17 @@ ENV variables are extracted by reading `impaktfull_cli_environment_variables.dar
 
 ### Sources
 
-| Source | Extracted data | Method |
-|---|---|---|
-| Root command classes (`AndroidRootCommand`, etc.) | Command tree: names, descriptions, subcommands | Programmatic instantiation + `Command.subcommands` |
-| `ArgParser.options` on each command | Option name, `help`, `defaultsTo`, `allowed`, `mandatory`, `isMultiple` | ArgParser introspection API |
-| `lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart` | All `static const` env key strings | Regex on source file |
+| Source                                                                 | Extracted data                                                          | Method                                             |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------- |
+| Root command classes (`AndroidRootCommand`, etc.)                      | Command tree: names, descriptions, subcommands                          | Programmatic instantiation + `Command.subcommands` |
+| `ArgParser.options` on each command                                    | Option name, `help`, `defaultsTo`, `allowed`, `mandatory`, `isMultiple` | ArgParser introspection API                        |
+| `lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart` | All `static const` env key strings                                      | Regex on source file                               |
 
 ### Generated output per command page
 
 Each `docs/commands/<integration>.mdx` is structured as:
 
-```mdx
+````mdx
 ---
 title: <root command name>
 ---
@@ -104,14 +104,17 @@ title: <root command name>
 <subcommand description>
 
 **Usage:**
+
 ```bash
 dart run impaktfull_cli <root> <sub> [options]
 ```
+````
 
-| Option | Description | Required | Default | Allowed |
-|---|---|---|---|---|
-| --<name> | <help> | Yes/No | <defaultsTo> | <allowed> |
-```
+| Option   | Description | Required | Default      | Allowed   |
+| -------- | ----------- | -------- | ------------ | --------- |
+| --<name> | <help>      | Yes/No   | <defaultsTo> | <allowed> |
+
+````
 
 ### Commands covered
 
@@ -130,7 +133,7 @@ All 6 root commands and their subcommands:
 
 ```bash
 dart run tool/generate_docs.dart
-```
+````
 
 Run locally after changing any command or config file, then commit the updated `docs/` files.
 
@@ -165,14 +168,22 @@ Replace the current landing page content with a meta-redirect:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=https://docs.page/impaktfull/impaktfull_cli">
-  <title>impaktfull CLI</title>
-</head>
-<body>
-  <p>Redirecting to <a href="https://docs.page/impaktfull/impaktfull_cli">docs.page/impaktfull/impaktfull_cli</a>…</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="refresh"
+      content="0; url=https://docs.page/impaktfull/impaktfull_cli"
+    />
+    <title>impaktfull CLI</title>
+  </head>
+  <body>
+    <p>
+      Redirecting to
+      <a href="https://docs.page/impaktfull/impaktfull_cli"
+        >docs.page/impaktfull/impaktfull_cli</a
+      >…
+    </p>
+  </body>
 </html>
 ```
 

@@ -14,11 +14,10 @@ Report the new release to the open source repository
 dart run impaktfull_cli open_source report_new_release [options]
 ```
 
-| Option | Description | Required | Default | Allowed |
-|---|---|---|---|---|
-| `--packageName` | The name of the package to report the new release of | Yes |  |  |
-| `--packageVersion` | The version of the new release | Yes |  |  |
-| `--packageChangeLog` | The changelog of the new release | No |  |  |
-| `--reportTo` | The channel to report the new release to | No | slack | slack |
-| `--slackChannelName` | The name of the Slack channel to report the new release to (defaults to open-source-{packageName in kebab-case}) | No |  |  |
-
+| Option               | Description                                                                                                      | Required | Default | Allowed |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- | -------- | ------- | ------- |
+| `--packageName`      | The name of the package to report the new release of                                                             | Yes      |         |         |
+| `--packageVersion`   | The version of the new release                                                                                   | Yes      |         |         |
+| `--packageChangeLog` | The changelog of the new release                                                                                 | No       |         |         |
+| `--reportTo`         | The channel to report the new release to                                                                         | No       | slack   | slack   |
+| `--slackChannelName` | The name of the Slack channel to report the new release to (defaults to open-source-{packageName in kebab-case}) | No       |         |         |
