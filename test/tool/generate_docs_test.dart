@@ -13,12 +13,12 @@ void main() {
 
   group('buildOptionsTable', () {
     test('generates header and rows for command with options', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final cmd = root.subcommands['create_keystore']!;
       final table = generator.buildOptionsTable(cmd);
 
-      expect(table, contains('| Option | Description | Required | Default | Allowed |'));
+      expect(table,
+          contains('| Option | Description | Required | Default | Allowed |'));
       expect(table, contains('`--fullName`'));
       expect(table, contains('Your full name'));
       expect(table, contains('| Yes |'));
@@ -46,8 +46,7 @@ void main() {
     });
 
     test('excludes the built-in --help option', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final cmd = root.subcommands['create_keystore']!;
       final table = generator.buildOptionsTable(cmd);
 
@@ -57,32 +56,28 @@ void main() {
 
   group('buildCommandPage', () {
     test('generates valid MDX frontmatter with command name as title', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final page = generator.buildCommandPage(root);
 
       expect(page, startsWith('---\ntitle: android\n---\n'));
     });
 
     test('includes root command description', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final page = generator.buildCommandPage(root);
 
       expect(page, contains('Commands for Android integrations.'));
     });
 
     test('includes subcommand section heading', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final page = generator.buildCommandPage(root);
 
       expect(page, contains('## create_keystore'));
     });
 
     test('includes correct usage line', () {
-      final root =
-          AndroidRootCommand(processRunner: const CliProcessRunner());
+      final root = AndroidRootCommand(processRunner: const CliProcessRunner());
       final page = generator.buildCommandPage(root);
 
       expect(
@@ -91,7 +86,9 @@ void main() {
       );
     });
 
-    test('handles deeply nested subcommands (apple provisioning_profile install)', () {
+    test(
+        'handles deeply nested subcommands (apple provisioning_profile install)',
+        () {
       final root = AppleRootCommand(processRunner: const CliProcessRunner());
       final page = generator.buildCommandPage(root);
 

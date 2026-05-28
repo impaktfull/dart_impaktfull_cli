@@ -49,8 +49,7 @@ class DocsGenerator {
     buffer.writeln('**Usage:**');
     buffer.writeln();
     buffer.writeln('```bash');
-    buffer.writeln(
-        'dart run impaktfull_cli $rootName $sectionName [options]');
+    buffer.writeln('dart run impaktfull_cli $rootName $sectionName [options]');
     buffer.writeln('```');
     buffer.writeln();
     buffer.write(buildOptionsTable(cmd));
@@ -68,8 +67,7 @@ class DocsGenerator {
     buffer.writeln('| Option | Description | Required | Default | Allowed |');
     buffer.writeln('|---|---|---|---|---|');
     for (final option in options) {
-      final name =
-          option.isFlag ? '--[no-]${option.name}' : '--${option.name}';
+      final name = option.isFlag ? '--[no-]${option.name}' : '--${option.name}';
       final desc = option.help ?? '';
       final required = option.mandatory ? 'Yes' : 'No';
       final def = option.defaultsTo?.toString() ?? '';
