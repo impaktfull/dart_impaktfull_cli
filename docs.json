@@ -23,7 +23,7 @@
     },
     {
       "group": "Advanced",
-      "pages": ["extending"]
+      "pages": ["extending", "dart-api"]
     }
   ]
 }

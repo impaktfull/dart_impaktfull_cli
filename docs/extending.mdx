@@ -33,22 +33,11 @@ class MyCustomPlugin extends ImpaktfullCliPlugin {
 }
 ```
 
-## Using your CLI
+## Running your CLI
 
 ```dart
 void main(List<String> args) async {
   final cli = MyCli(arguments: args);
   await cli.runCli();
-}
-```
-
-## Accessing plugins programmatically
-
-```dart
-void main(List<String> args) async {
-  final cli = MyCli(arguments: args);
-  await cli.run((cli) async {
-    await cli.flutterBuildPlugin.buildApk(/* ... */);
-  });
 }
 ```

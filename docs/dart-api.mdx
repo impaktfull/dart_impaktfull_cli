@@ -1,0 +1,44 @@
+---
+title: Dart API
+---
+
+The built-in plugins can be accessed programmatically from Dart code — no CLI invocation needed. This is useful for build scripts, custom tooling, or integrating impaktfull_cli into your own Dart application.
+
+## Accessing plugins
+
+Use `cli.run()` instead of `cli.runCli()` to get direct access to plugin instances:
+
+```dart
+void main(List<String> args) async {
+  final cli = ImpaktfullCli(arguments: args);
+  await cli.run((cli) async {
+    await cli.flutterBuildPlugin.buildApk(/* ... */);
+  });
+}
+```
+
+## Available plugins
+
+| Plugin | Accessor | Description |
+|---|---|---|
+| `OnePasswordPlugin` | `cli.onePasswordPlugin` | Read secrets from 1Password |
+| `MacOsKeyChainPlugin` | `cli.macOsKeyChainPlugin` | Manage macOS keychains |
+| `AppleProvisioningProfilePlugin` | `cli.appleProvisioningProfilePlugin` | Install provisioning profiles |
+| `FlutterBuildPlugin` | `cli.flutterBuildPlugin` | Build Flutter apps (APK, IPA, etc.) |
+| `AppCenterPlugin` | `cli.appCenterPlugin` | Upload builds to App Center |
+| `TestFlightPlugin` | `cli.testflightPlugin` | Upload builds to TestFlight |
+| `PlayStorePlugin` | `cli.playStorePlugin` | Upload builds to the Play Store |
+| `CiCdPlugin` | `cli.ciCdPlugin` | Orchestrate full CI/CD pipelines |
+
+## Running multiple commands
+
+Use `runMultipleCommands` to sequence several plugin calls in one session:
+
+```dart
+await cli.run((cli) async {
+  await cli.runMultipleCommands(() async {
+    await cli.flutterBuildPlugin.buildApk(/* ... */);
+    await cli.playStorePlugin.upload(/* ... */);
+  });
+});
+```
