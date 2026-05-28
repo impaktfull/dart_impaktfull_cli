@@ -1,29 +1,54 @@
 {
+  "$schema": "https://docs.page/schema.json",
   "name": "impaktfull CLI",
   "description": "A CLI that combines all tools for development, testing, CI/CD",
   "theme": {
-    "primary": "#7D64F2"
+    "primaryLight": "#7D64F2",
+    "primaryDark": "#7D64F2"
   },
+  "social": {
+    "github": "impaktfull/impaktfull_cli",
+    "website": "impaktfull.com"
+  },
+  "anchors": [
+    {
+      "title": "pub.dev",
+      "icon": "box",
+      "href": "https://pub.dev/packages/impaktfull_cli"
+    },
+    {
+      "title": "GitHub",
+      "icon": "github",
+      "href": "https://github.com/impaktfull/impaktfull_cli"
+    }
+  ],
   "sidebar": [
     {
       "group": "Getting Started",
-      "pages": ["index", "installation", "configuration"]
+      "pages": [
+        { "title": "📖 Overview", "href": "/" },
+        { "title": "🚀 Installation", "href": "/installation" },
+        { "title": "⚙️ Configuration", "href": "/configuration" }
+      ]
     },
     {
       "group": "Commands",
       "pages": [
-        "commands/index",
-        "commands/android",
-        "commands/apple",
-        "commands/ci_cd",
-        "commands/open_source",
-        "commands/slack",
-        "commands/test_coverage"
+        { "title": "📋 All Commands", "href": "/commands/index" },
+        { "title": "🤖 android", "href": "/commands/android" },
+        { "title": "🍎 apple", "href": "/commands/apple" },
+        { "title": "🔄 ci_cd", "href": "/commands/ci_cd" },
+        { "title": "📦 open_source", "href": "/commands/open_source" },
+        { "title": "💬 slack", "href": "/commands/slack" },
+        { "title": "🧪 test_coverage", "href": "/commands/test_coverage" }
       ]
     },
     {
       "group": "Advanced",
-      "pages": ["dart-api", "extending"]
+      "pages": [
+        { "title": "🎯 Dart API", "href": "/dart-api" },
+        { "title": "🔧 Extending the CLI", "href": "/extending" }
+      ]
     }
   ]
 }
