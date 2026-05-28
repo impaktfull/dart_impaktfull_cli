@@ -29,5 +29,5 @@ jobs:
       - name: Check docs are up to date
         run: |
           dart run tool/generate_docs.dart
-          git diff --exit-code docs/
+          git diff --exit-code docs/ README.md
       - run: dart pub publish --dry-run

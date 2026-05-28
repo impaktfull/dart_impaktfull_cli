@@ -18,6 +18,17 @@ Full documentation is available at **[docs.page/impaktfull/impaktfull_cli](https
 - [Dart API](https://docs.page/impaktfull/impaktfull_cli/dart-api)
 - [Extending the CLI](https://docs.page/impaktfull/impaktfull_cli/extending)
 
+## Commands
+
+| Command | Description |
+|---|---|
+| [android](https://docs.page/impaktfull/impaktfull_cli/commands/android) | Commands for Android integrations. |
+| [apple](https://docs.page/impaktfull/impaktfull_cli/commands/apple) | Commands for Apple integrations. |
+| [ci_cd](https://docs.page/impaktfull/impaktfull_cli/commands/ci_cd) | Commands for CI/CD integrations. |
+| [open_source](https://docs.page/impaktfull/impaktfull_cli/commands/open_source) | Commands for open source projects. |
+| [slack](https://docs.page/impaktfull/impaktfull_cli/commands/slack) | Commands for Slack integrations. |
+| [test_coverage](https://docs.page/impaktfull/impaktfull_cli/commands/test_coverage) | Commands for test coverage integrations. |
+
 ## Quick Install
 
 ```bash

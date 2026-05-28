@@ -41,6 +41,9 @@ class DocsGenerator {
     final configFile = File('$_docsDir/configuration.mdx');
     configFile.writeAsStringSync(buildConfigurationPage(envKeys));
     print('Generated ${configFile.path}');
+
+    File('README.md').writeAsStringSync(buildReadme(commands));
+    print('Generated README.md');
   }
 
   String buildCommandPage(Command<void> rootCmd) {
@@ -121,6 +124,57 @@ class DocsGenerator {
         r"static const (?:String )?_?envKey\w+\s*=\s*'([^']+)'",
         multiLine: true);
     return regex.allMatches(source).map((m) => m.group(1)!).toList();
+  }
+
+  String buildReadme(List<Command<void>> commands) {
+    final buffer = StringBuffer();
+    buffer.writeln('# impaktfull_cli');
+    buffer.writeln();
+    buffer.writeln(
+        '> **impaktfull_cli is still unstable. Everything under 1.0.0 should not be used unless you want to test it.**');
+    buffer.writeln();
+    buffer.writeln(
+        '[![pub package](https://img.shields.io/pub/v/impaktfull_cli.svg)](https://pub.dartlang.org/packages/impaktfull_cli)');
+    buffer.writeln(
+        '[![test](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)');
+    buffer.writeln(
+        '[![docs](https://img.shields.io/badge/docs-docs.page-7D64F2)](https://docs.page/impaktfull/impaktfull_cli)');
+    buffer.writeln();
+    buffer.writeln(
+        'A CLI that replaces `fastlane` by simplifying the CI/CD process for Flutter and Dart projects.');
+    buffer.writeln();
+    buffer.writeln('## Documentation');
+    buffer.writeln();
+    buffer.writeln(
+        'Full documentation is available at **[docs.page/impaktfull/impaktfull_cli](https://docs.page/impaktfull/impaktfull_cli)**:');
+    buffer.writeln();
+    buffer.writeln(
+        '- [Installation](https://docs.page/impaktfull/impaktfull_cli/installation)');
+    buffer.writeln(
+        '- [Commands](https://docs.page/impaktfull/impaktfull_cli/commands/index)');
+    buffer.writeln(
+        '- [Configuration / ENV variables](https://docs.page/impaktfull/impaktfull_cli/configuration)');
+    buffer.writeln(
+        '- [Dart API](https://docs.page/impaktfull/impaktfull_cli/dart-api)');
+    buffer.writeln(
+        '- [Extending the CLI](https://docs.page/impaktfull/impaktfull_cli/extending)');
+    buffer.writeln();
+    buffer.writeln('## Commands');
+    buffer.writeln();
+    buffer.writeln('| Command | Description |');
+    buffer.writeln('|---|---|');
+    for (final cmd in commands) {
+      final url =
+          'https://docs.page/impaktfull/impaktfull_cli/commands/${cmd.name}';
+      buffer.writeln('| [${cmd.name}]($url) | ${cmd.description} |');
+    }
+    buffer.writeln();
+    buffer.writeln('## Quick Install');
+    buffer.writeln();
+    buffer.writeln('```bash');
+    buffer.writeln('curl -fsSL https://cli.impaktfull.com/install.sh | bash');
+    buffer.writeln('```');
+    return buffer.toString();
   }
 
   String buildConfigurationPage(List<String> envKeys) {
