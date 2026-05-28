@@ -1,3 +1,9 @@
+# 0.32.0
+
+## Added
+
+- Added proper documentation for the cli using docs.page
+
 # 0.31.1
 
 ## Fixed
