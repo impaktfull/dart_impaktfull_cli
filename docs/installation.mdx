@@ -1,0 +1,38 @@
+---
+title: Installation
+---
+
+## Install script (recommended)
+
+The fastest way to install impaktfull CLI on macOS:
+
+```bash
+curl -fsSL https://cli.impaktfull.com/install.sh | bash
+```
+
+This installs the CLI binary to `~/.impaktfull/impaktfull_cli` and adds it to your `$PATH` via `~/.zshrc`. Restart your terminal after installation.
+
+## pub.dev (Dart global tool)
+
+If you have the Dart SDK installed:
+
+```bash
+dart pub global activate impaktfull_cli
+```
+
+## From source
+
+```bash
+git clone https://github.com/impaktfull/impaktfull_cli.git
+cd impaktfull_cli
+dart pub get
+dart compile exe bin/impaktfull_cli.dart -o impaktfull_cli
+```
+
+## Verify installation
+
+```bash
+impaktfull_cli --help
+```
+
+Expected output lists all available command groups (`android`, `apple`, `ci_cd`, etc.).

@@ -1,0 +1,54 @@
+---
+title: Extending the CLI
+---
+
+`ImpaktfullCli` is designed to be subclassed. You can add custom plugins to a CLI that builds on top of this package.
+
+## Subclassing ImpaktfullCli
+
+```dart
+class MyCli extends ImpaktfullCli {
+  @override
+  Set<ImpaktfullPlugin> get plugins => {
+    MyCustomPlugin(processRunner: processRunner),
+  };
+
+  @override
+  Future<void> run(ImpaktfullCliRunner<MyCli> runner) =>
+      super.run(runner as ImpaktfullCliRunner<ImpaktfullCli>);
+}
+```
+
+## Creating a custom plugin
+
+Extend `ImpaktfullCliPlugin` to get access to the process runner:
+
+```dart
+class MyCustomPlugin extends ImpaktfullCliPlugin {
+  const MyCustomPlugin({required super.processRunner});
+
+  Future<void> doSomething() async {
+    await processRunner.runProcess(['some', 'command']);
+  }
+}
+```
+
+## Using your CLI
+
+```dart
+void main(List<String> args) async {
+  final cli = MyCli(arguments: args);
+  await cli.runCli();
+}
+```
+
+## Accessing plugins programmatically
+
+```dart
+void main(List<String> args) async {
+  final cli = MyCli(arguments: args);
+  await cli.run((cli) async {
+    await cli.flutterBuildPlugin.buildApk(/* ... */);
+  });
+}
+```

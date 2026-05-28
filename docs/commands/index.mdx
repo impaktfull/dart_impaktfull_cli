@@ -1,0 +1,29 @@
+---
+title: Commands
+---
+
+impaktfull CLI groups commands by integration. Use `impaktfull_cli <group> <command> [options]` to run any command.
+
+| Group | Description |
+|---|---|
+| [android](/commands/android) | Android keystores and signing configs |
+| [apple](/commands/apple) | Apple provisioning profiles |
+| [ci_cd](/commands/ci_cd) | CI/CD status reporting and device setup |
+| [open_source](/commands/open_source) | Open source release announcements |
+| [slack](/commands/slack) | Slack messaging |
+| [test_coverage](/commands/test_coverage) | Test coverage reports |
+
+## Global flags
+
+| Flag | Description |
+|---|---|
+| `-v`, `--verbose` | Enable verbose logging |
+| `--version` | Print CLI version |
+| `--help` | Show usage for any command or subcommand |
+
+## Getting help on a command
+
+```bash
+impaktfull_cli android --help
+impaktfull_cli android create_keystore --help
+```
