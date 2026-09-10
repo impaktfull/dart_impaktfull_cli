@@ -17,6 +17,7 @@ import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/plugin/impaktfull_appstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
@@ -57,6 +58,8 @@ class ImpaktfullCli {
   TestFlightPlugin get testflightPlugin => _getPlugin();
 
   PlayStorePlugin get playStorePlugin => _getPlugin();
+
+  ImpaktfullAppstorePlugin get impaktfullAppstorePlugin => _getPlugin();
 
   CiCdPlugin get ciCdPlugin => _getPlugin();
 
@@ -119,6 +122,8 @@ class ImpaktfullCli {
     final impaktfullDashboardPlugin = ImpaktfullDashboardPlugin(
       processRunner: processRunner,
     );
+    final impaktfullAppstorePlugin =
+        ImpaktfullAppstorePlugin(processRunner: processRunner);
     _defaultPlugins = {
       onePasswordPlugin,
       macOsKeyChainPlugin,
@@ -128,6 +133,7 @@ class ImpaktfullCli {
       testflightPlugin,
       playStorePlugin,
       impaktfullDashboardPlugin,
+      impaktfullAppstorePlugin,
       CiCdPlugin(
         onePasswordPlugin: onePasswordPlugin,
         macOsKeyChainPlugin: macOsKeyChainPlugin,
@@ -136,6 +142,7 @@ class ImpaktfullCli {
         testflightPlugin: testflightPlugin,
         playStorePlugin: playStorePlugin,
         impaktfullDashboardPlugin: impaktfullDashboardPlugin,
+        impaktfullAppstorePlugin: impaktfullAppstorePlugin,
         gitPlugin: gitPlugin,
         processRunner: processRunner,
       ),

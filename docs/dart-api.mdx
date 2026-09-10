@@ -47,10 +47,11 @@ Future<void> buildAndroid({
   AppCenterUploadConfig? appCenterUploadConfig,
   PlayStoreUploadConfig? playStoreUploadConfig,
   ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+  ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
 })
 ```
 
-Builds and optionally uploads an Android artifact. Pass an upload config to automatically push to App Center, Play Store, or the impaktfull dashboard after building.
+Builds and optionally uploads an Android artifact. Pass an upload config to automatically push to the impaktfull appstore, App Center, the Play Store, or the impaktfull dashboard after building.
 
 ### `buildAndroidWithFlavor`
 
@@ -65,6 +66,7 @@ Future<void> buildAndroidWithFlavor({
   AppCenterUploadConfig? appCenterUploadConfig,
   PlayStoreUploadConfig? playStoreUploadConfig,
   ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+  ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
 })
 ```
 
@@ -83,6 +85,7 @@ Future<void> buildIos({
   AppCenterUploadConfig? appCenterUploadConfig,
   TestFlightUploadConfig? testflightUploadConfig,
   ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+  ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
 })
 ```
 
@@ -99,6 +102,7 @@ Future<void> buildIosWithFlavor({
   AppCenterUploadConfig? appCenterUploadConfig,
   TestFlightUploadConfig? testflightUploadConfig,
   ImpaktfullDashboardAppTestingVersionUploadConfig? impaktfullDashboardUploadConfig,
+  ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
 })
 ```
 
@@ -179,9 +183,55 @@ Uploads the given `.aab` or `.apk` to the specified Play Store track. If `servic
 
 ---
 
+## ImpaktfullAppstorePlugin
+
+`cli.impaktfullAppstorePlugin` — Uploads test builds to the impaktfull appstore. Replaces App Center Distribute, which Microsoft retired in March 2025.
+
+### `uploadToImpaktfullAppstore`
+
+```dart
+Future<ImpaktfullAppstoreBuild> uploadToImpaktfullAppstore({
+  required File file,
+  required ImpaktfullAppstoreUploadConfig config,
+})
+```
+
+Uploads an `.ipa` or `.apk` and returns the build once the server has finished inspecting it. Throws when the build is rejected, so a pipeline stops on an artifact nobody could have installed.
+
+The artifact is streamed straight to storage with a presigned `PUT` and never passes through an API server, so a gigabyte does not sit in this process's heap.
+
+```dart
+await cli.impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
+  file: File('build/app.ipa'),
+  config: ImpaktfullAppstoreUploadConfig(
+    credentials: ImpaktfullAppstoreCredentials.fromEnvironment(),
+    environmentName: 'staging',
+    releaseNotes: 'Fixes login on iPad',
+  ),
+);
+```
+
+`ImpaktfullAppstoreCredentials.fromEnvironment()` reads `IMPAKTFULL_APPSTORE_UPLOAD_KEY`. The key is scoped to one app and a set of environments, so there is no app id to keep in step with it.
+
+`ImpaktfullAppstoreUploadConfig` takes:
+
+| Field | Default | What it does |
+| --- | --- | --- |
+| `credentials` | required | The upload key |
+| `environmentName` | required | `staging`, `acceptance`, `production` |
+| `releaseNotes` | `null` | Shown to every tester of the app |
+| `ci` | read from the environment | Commit, branch and run URL |
+| `waitForProcessing` | `true` | Wait for the server to validate the artifact |
+| `processingTimeout` | 10 minutes | How long to wait before giving up watching |
+| `baseUrl` | `https://appstore.impaktfull.com` | Only changed for a test instance |
+
+**`waitForProcessing` defaults to `true` on purpose.** Nothing in the appstore is installable before the server has opened the artifact and read it, so a pipeline that does not wait has reported that a file was transferred rather than that anybody can install it.
+
+---
+
 ## AppCenterPlugin
 
-`cli.appCenterPlugin` — Uploads builds to Microsoft App Center.
+`cli.appCenterPlugin` — Uploads builds to Microsoft App Center. Retired by Microsoft in March 2025; new projects should use `ImpaktfullAppstorePlugin`.
 
 ### `uploadToAppCenter`
 
