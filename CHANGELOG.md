@@ -2,6 +2,13 @@
 
 ## Added
 
+- Added `ImpaktfullAppstorePlugin` for uploading test builds to the impaktfull appstore (`cli.impaktfullAppstorePlugin`), the replacement for App Center Distribute. The artifact is streamed straight to storage with a presigned `PUT`, the upload key is scoped to one app and its environments, and the upload waits for the server to validate the build so a pipeline fails on an artifact nobody could have installed.
+- Added `impaktfullAppstoreUploadConfig` to `ciCdPlugin.buildAndroid`, `buildAndroidWithFlavor`, `buildIos` and `buildIosWithFlavor`.
+- Added the `IMPAKTFULL_APPSTORE_UPLOAD_KEY` environment variable.
+
+## Fixed
+
+- The appstore upload resolved an environment by name alone, so an `.apk` sent to `alpha` could land on the iOS environment of that name. The platform now comes from the file extension, matching what the server does.
 - Added proper documentation for the cli using docs.page
 
 # 0.31.1

@@ -12,6 +12,8 @@ class ImpaktfullCliEnvironmentVariables {
   static const _envKeyGoogleServiceAccountJsonRaw =
       'GOOGLE_SERVICE_ACCOUNT_JSON_RAW';
   static const envKeyOnePasswordAccountToken = 'OP_SERVICE_ACCOUNT_TOKEN';
+  static const _envKeyImpaktfullAppstoreUploadKey =
+      'IMPAKTFULL_APPSTORE_UPLOAD_KEY';
   static const _envKeySlackBotToken = 'SLACK_BOT_TOKEN';
   static const envKeySlackSendMessageChannel = 'SLACK_SEND_MESSAGE_CHANNEL';
   static const envKeyGithubBuildNr = 'GITHUB_RUN_NUMBER';
@@ -23,6 +25,7 @@ class ImpaktfullCliEnvironmentVariables {
     _envKeyAppleEmail,
     _envKeyAppleAppSpecificPassword,
     _envKeyGoogleServiceAccountJsonRaw,
+    _envKeyImpaktfullAppstoreUploadKey,
     envKeyOnePasswordAccountToken,
   ];
 
@@ -98,6 +101,11 @@ class ImpaktfullCliEnvironmentVariables {
 
   static Secret getGoogleServiceAccountCredentials() =>
       _getRequiredEnvVariableSecret(_envKeyGoogleServiceAccountJsonRaw);
+
+  /// The appstore upload key, which is scoped to ONE app: the key is the app,
+  /// so there is no app id to keep in step with it.
+  static Secret getImpaktfullAppstoreUploadKey() =>
+      _getRequiredEnvVariableSecret(_envKeyImpaktfullAppstoreUploadKey);
 
   static Secret getSlackBotToken() =>
       _getRequiredEnvVariableSecret(_envKeySlackBotToken);
