@@ -90,10 +90,13 @@ class ImpaktfullAppstoreUploadUtil {
         await api.completeUpload(ticket.build.id);
       }
 
+      // AWAITED, both of them. `finally` disposes the http client, and a
+      // future returned without awaiting would have that run first: the client
+      // closes while the request it is running is still in flight.
       if (!config.waitForProcessing) {
-        return api.getBuild(ticket.build.id);
+        return await api.getBuild(ticket.build.id);
       }
-      return _waitForProcessing(
+      return await _waitForProcessing(
         api: api,
         buildId: ticket.build.id,
         timeout: config.processingTimeout,
