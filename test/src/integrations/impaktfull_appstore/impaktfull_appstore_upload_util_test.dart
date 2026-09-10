@@ -73,6 +73,85 @@ void main() {
     });
   });
 
+  group('resolving the environment', () {
+    // The shape every real app has: the same environment name on both
+    // platforms. Matching on the name alone picks whichever came back first.
+    final app = ImpaktfullAppstoreApp.fromJson({
+      'app': {'id': 'a1', 'name': 'Acme'},
+      'environments': [
+        {
+          'id': 'e-ios',
+          'platform': 'ios',
+          'name': 'alpha',
+          'label': 'iOS - alpha',
+          'appIdentifier': 'com.acme.app.alpha',
+        },
+        {
+          'id': 'e-android',
+          'platform': 'android',
+          'name': 'alpha',
+          'label': 'Android - alpha',
+          'appIdentifier': 'com.acme.app.alpha',
+        },
+      ],
+    });
+
+    test('an .apk resolves to the ANDROID environment of that name', () {
+      // THE REGRESSION. This picked `iOS - alpha` and the upload then failed
+      // for a reason that had nothing to do with what was wrong. The server
+      // derives the platform from the extension for exactly this reason.
+      final resolved = const ImpaktfullAppstoreUploadUtil()
+          .debugResolveEnvironment(app, 'alpha', File('build/app.apk'));
+      expect(resolved.id, 'e-android');
+    });
+
+    test('an .ipa resolves to the iOS environment of that name', () {
+      final resolved = const ImpaktfullAppstoreUploadUtil()
+          .debugResolveEnvironment(app, 'alpha', File('build/app.ipa'));
+      expect(resolved.id, 'e-ios');
+    });
+
+    test('a name that exists only on the other platform says so', () {
+      final iosOnly = ImpaktfullAppstoreApp.fromJson({
+        'app': {'id': 'a1', 'name': 'Acme'},
+        'environments': [
+          {
+            'id': 'e-ios',
+            'platform': 'ios',
+            'name': 'alpha',
+            'label': 'iOS - alpha',
+            'appIdentifier': 'com.acme.app.alpha',
+          },
+        ],
+      });
+      expect(
+        () => const ImpaktfullAppstoreUploadUtil()
+            .debugResolveEnvironment(iosOnly, 'alpha', File('build/app.apk')),
+        throwsA(
+          isA<ImpaktfullCliError>().having(
+            (error) => error.message,
+            'message',
+            allOf(contains('exists but not for android'), contains('.apk')),
+          ),
+        ),
+      );
+    });
+
+    test('an unknown name lists what this key can write to', () {
+      expect(
+        () => const ImpaktfullAppstoreUploadUtil()
+            .debugResolveEnvironment(app, 'stagng', File('build/app.ipa')),
+        throwsA(
+          isA<ImpaktfullCliError>().having(
+            (error) => error.message,
+            'message',
+            allOf(contains('stagng'), contains('alpha')),
+          ),
+        ),
+      );
+    });
+  });
+
   group('the checksum', () {
     test('is the SHA-256 of the file, streamed', () async {
       // The known digest of "abc". The server dedupes on this and verifies it
