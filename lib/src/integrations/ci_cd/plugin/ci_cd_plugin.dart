@@ -16,6 +16,8 @@ import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_buil
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_upload_config.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/plugin/impaktfull_appstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload_config.dart';
@@ -31,6 +33,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
   final TestFlightPlugin testflightPlugin;
   final PlayStorePlugin playStorePlugin;
   final ImpaktfullDashboardPlugin impaktfullDashboardPlugin;
+  final ImpaktfullAppstorePlugin impaktfullAppstorePlugin;
   final GitPlugin gitPlugin;
 
   const CiCdPlugin({
@@ -41,6 +44,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     required this.testflightPlugin,
     required this.playStorePlugin,
     required this.impaktfullDashboardPlugin,
+    required this.impaktfullAppstorePlugin,
     required this.gitPlugin,
     super.processRunner = const CliProcessRunner(),
   });
@@ -124,6 +128,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     PlayStoreUploadConfig? playStoreUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
         impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async =>
       buildAndroid(
         flavor: flavor,
@@ -135,6 +140,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
         appCenterUploadConfig: appCenterUploadConfig,
         playStoreUploadConfig: playStoreUploadConfig,
         impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+        impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
       );
 
   Future<void> buildAndroid({
@@ -148,6 +154,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     PlayStoreUploadConfig? playStoreUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
         impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
     final file = await flutterBuildPlugin.buildAndroid(
@@ -184,6 +191,12 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
         config: impaktfullDashboardUploadConfig,
       );
     }
+    if (impaktfullAppstoreUploadConfig != null) {
+      await impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
+        file: file,
+        config: impaktfullAppstoreUploadConfig,
+      );
+    }
   }
 
   Future<void> buildIosWithFlavor({
@@ -197,6 +210,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     TestFlightUploadConfig? testflightUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
         impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async =>
       buildIos(
         flavor: flavor,
@@ -208,6 +222,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
         appCenterUploadConfig: appCenterUploadConfig,
         testflightUploadConfig: testflightUploadConfig,
         impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+        impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
       );
 
   Future<void> buildIos({
@@ -221,6 +236,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     TestFlightUploadConfig? testflightUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
         impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([
       CliTool.flutter,
@@ -259,6 +275,12 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
           .uploadAppTestingVersionToImpaktfullDashboard(
         file: file,
         config: impaktfullDashboardUploadConfig,
+      );
+    }
+    if (impaktfullAppstoreUploadConfig != null) {
+      await impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
+        file: file,
+        config: impaktfullAppstoreUploadConfig,
       );
     }
   }
