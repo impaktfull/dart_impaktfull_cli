@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:meta/meta.dart';
+
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_build.dart';
@@ -43,12 +45,15 @@ class ImpaktfullAppstoreUploadUtil {
     try {
       ImpaktfullCliLogger.startSpinner('Validating the upload key');
       final app = await api.getApp();
-      final environment = _resolveEnvironment(app, config.environmentName);
+      final environment = _resolveEnvironment(
+        app,
+        config.environmentName,
+        file,
+      );
       ImpaktfullCliLogger.verbose(
         'Uploading to ${app.name} (${environment.label}, '
         '${environment.appIdentifier})',
       );
-      _validateExtensionMatchesPlatform(file, environment);
 
       final sizeBytes = await file.length();
 
@@ -175,23 +180,63 @@ class ImpaktfullAppstoreUploadUtil {
     return build;
   }
 
+  /// Exposed for tests. The resolution rule is worth pinning directly: it is
+  /// two lines that decide which environment a release lands in.
+  @visibleForTesting
+  ImpaktfullAppstoreEnvironment debugResolveEnvironment(
+    ImpaktfullAppstoreApp app,
+    String environmentName,
+    File file,
+  ) =>
+      _resolveEnvironment(app, environmentName, file);
+
+  /// The environment named [environmentName] FOR THIS FILE'S PLATFORM.
+  ///
+  /// Both halves matter. An app almost always has the same environment name on
+  /// both platforms, `alpha` on iOS and `alpha` on Android, and matching on the
+  /// name alone picks whichever was returned first: an `.apk` then resolves to
+  /// the iOS environment and the upload fails for a reason that has nothing to
+  /// do with what went wrong. The server derives the platform from the
+  /// extension for exactly this reason; this matches it.
   ImpaktfullAppstoreEnvironment _resolveEnvironment(
     ImpaktfullAppstoreApp app,
     String environmentName,
+    File file,
   ) {
     final wanted = environmentName.trim().toLowerCase();
+    final platform = _platformOf(file);
+
     for (final environment in app.environments) {
-      if (environment.name == wanted) return environment;
+      if (environment.name == wanted && environment.platform == platform) {
+        return environment;
+      }
     }
-    // The names the key MAY use, which is the useful half of this message: the
-    // environment may exist and simply not be in this key's scope, and the
-    // answer to both is the same list.
-    final available = app.environments.map((e) => e.name).join(', ');
+
+    // The name exists, on the other platform. Worth saying, because it is the
+    // likeliest mistake: the right name and the wrong artifact.
+    final otherPlatform = app.environments.any((e) => e.name == wanted);
+    if (otherPlatform) {
+      throw ImpaktfullCliError(
+        '`$environmentName` exists but not for $platform, and '
+        '`${basename(file.path)}` is a $platform build.',
+      );
+    }
+
+    // Otherwise the names this key MAY use, which is the useful half: the
+    // environment can exist and simply not be in this key's scope.
+    final available = app.environments
+        .where((e) => e.platform == platform)
+        .map((e) => e.name)
+        .join(', ');
     throw ImpaktfullCliError(
-      '`$environmentName` is not an environment this upload key can write to. '
-      '${available.isEmpty ? 'This key has no environments in scope.' : 'Available: $available'}',
+      '`$environmentName` is not a $platform environment this upload key can '
+      'write to. ${available.isEmpty ? 'This key has no $platform environments in scope.' : 'Available: $available'}',
     );
   }
+
+  /// `ios` or `android`, from the extension, exactly as the server decides it.
+  String _platformOf(File file) =>
+      extension(file.path).toLowerCase() == '.ipa' ? 'ios' : 'android';
 
   void _validateExtension(File file) {
     final fileExtension =
@@ -210,24 +255,6 @@ class ImpaktfullAppstoreUploadUtil {
       throw ImpaktfullCliError(
         '`$fileExtension` cannot be uploaded to the impaktfull appstore. '
         'Allowed extensions are: $allowedExtensions',
-      );
-    }
-  }
-
-  /// An `.ipa` into an Android environment is caught HERE as well as by the
-  /// server, because the server catches it after the request and this catches
-  /// it before the transfer.
-  void _validateExtensionMatchesPlatform(
-    File file,
-    ImpaktfullAppstoreEnvironment environment,
-  ) {
-    final fileExtension =
-        extension(file.path).replaceAll('.', '').toLowerCase();
-    final expected = environment.platform == 'ios' ? 'ipa' : 'apk';
-    if (fileExtension != expected) {
-      throw ImpaktfullCliError(
-        '${environment.label} takes a .$expected, and `${basename(file.path)}` '
-        'is a .$fileExtension',
       );
     }
   }
