@@ -72,6 +72,11 @@ class ImpaktfullCli {
   }
 
   void init() {
+    // Snapshot Platform.environment['PATH'] into the process runner so that
+    // every subprocess spawned by impaktfull_cli gets PATH injected explicitly.
+    // Without this, _path stays null on Linux and PATH propagation via
+    // includeParentEnvironment:true is non-deterministic on CI runners.
+    ProcessRunner.updatePath(pathsToAdd: []);
     ImpaktfullCliLogger.startSpinner('Initializing the cli');
     ImpaktfullCliLogger.init();
     ImpaktfullCliLogger.enableVerbose(
