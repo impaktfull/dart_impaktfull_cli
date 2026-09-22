@@ -1,8 +1,12 @@
-# 0.32.0
+# 0.31.2
 
 ## Added
 
 - Added proper documentation for the cli using docs.page
+
+## Fixed
+
+- Fixed intermittent `"flutter (Flutter) are not installed"` error on Linux CI: `ImpaktfullCli.init()` now calls `ProcessRunner.updatePath(pathsToAdd: [])` at startup, which snapshots `Platform.environment['PATH']` into the process runner so every subprocess gets PATH injected explicitly. Previously `_path` stayed null on Linux and subprocess PATH propagation via `includeParentEnvironment: true` was non-deterministic on GitHub-hosted runners.
 
 # 0.31.1
 
