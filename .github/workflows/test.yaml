@@ -60,3 +60,37 @@ jobs:
           sdk: stable
       - run: dart pub get
       - run: dart test
+
+  # Runs the compiled cli against a real Flutter project, the way it runs on CI
+  # machines: it has to find flutter on the PATH, start it (a `.bat` file on
+  # Windows) and read its output.
+  e2e:
+    name: E2E (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: dart pub get
+      - name: Compile the cli
+        run: |
+          dart compile exe bin/impaktfull_cli.dart -o "$RUNNER_TEMP/bin/impaktfull_cli${{ runner.os == 'Windows' && '.exe' || '' }}"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - name: Create a Flutter project
+        working-directory: ${{ runner.temp }}
+        run: flutter create e2e_app
+      # Fails when flutter is not detected as installed, when it cannot be
+      # started, or when its output is lost.
+      - name: impaktfull_cli test_coverage flutter
+        working-directory: ${{ runner.temp }}/e2e_app
+        run: impaktfull_cli test_coverage flutter -v
