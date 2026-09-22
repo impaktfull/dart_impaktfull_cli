@@ -1,118 +1,120 @@
-# 0.31.2
+# Changelog
 
-## Added
+## 0.31.2
+
+### Added
 
 - Added proper documentation for the cli using docs.page
 
-## Fixed
+### Fixed
 
 - Fixed intermittent `"flutter (Flutter) are not installed"` error on Linux CI: `ImpaktfullCli.init()` now calls `ProcessRunner.updatePath(pathsToAdd: [])` at startup, which snapshots `Platform.environment['PATH']` into the process runner so every subprocess gets PATH injected explicitly. Previously `_path` stayed null on Linux and subprocess PATH propagation via `includeParentEnvironment: true` was non-deterministic on GitHub-hosted runners.
 
-# 0.31.1
+## 0.31.1
 
-## Fixed
+### Fixed
 
 - Fixed Android build output file name to use the correct file extension based on build type (`.apk` for APK builds, `.aab` for AAB builds) instead of always using `.apk`
 
-# 0.31.0
+## 0.31.0
 
-## Added
+### Added
 
 - Added support for building Flutter Android apps (with and without flavor) where the APK is built to `build/app/outputs/flutter-apk/app-{flavor-}release.apk` and `build/app/outputs/apk/{flavor}/release/app-{flavor}-release.apk`
 
-# 0.30.2
+## 0.30.2
 
-## Fixed
+### Fixed
 
 - `GitPlugin.isGitProject` now returns true by default. Implementation should still be done fully. But for now we always consider it a git project.
 
-# 0.30.1
+## 0.30.1
 
-## Fixed
+### Fixed
 
 - Error when cleaning 1password stored files
 
-# 0.30.0
+## 0.30.0
 
-## Added
+### Added
 
 - Cleanup stored files after `ImpaktfullCli.run`
 
-## Fixed
+### Fixed
 
 - typo's
 - Do not mask 1password error output. It is not useful to mask it, because it contains the error message.
 
-# 0.29.0
+## 0.29.0
 
-## Removed
+### Removed
 
 - `apple certificate` commands
 - implementation to install certificates into the keychain (because it was not working correctly)
 
-## Fixed
+### Fixed
 
 - `unlockKeyChain` now actually unlocks your keychain
 
-# 0.28.1
+## 0.28.1
 
-## Fix
+### Fix
 
 - Mask output of 1password commands
 
-# 0.28.0
+## 0.28.0
 
-## Added
+### Added
 
 - .zshrc-ci file in `.impaktfull/impaktfull_cli` when running `ci_cd setup`
 - Added support for getting the github build nr from the environment variables (GITHUB_RUN_NUMBER)
 
-# 0.27.2
+## 0.27.2
 
-## Fix (Breaking)
+### Fix (Breaking)
 
 - `runMultiplCommands` was renamed to `runMultipleCommands`
 
-# 0.27.1
+## 0.27.1
 
-## Fix
+### Fix
 
 - File extension was not detected correctly
 
-# 0.27.0
+## 0.27.0
 
-## Added
+### Added
 
 - Added support for uploading app testing versions to Impaktfull Dashboard
 
-# 0.26.4
+## 0.26.4
 
-## Fix
+### Fix
 
 - Improve error handling for testflight upload
 
-# 0.26.3
+## 0.26.3
 
-## Fix
+### Fix
 
 - Fix bug where the fvm project was not detected correctly
 
-# 0.26.2
+## 0.26.2
 
-## Fix
+### Fix
 
 - [ci_cd]: Fix bug where the sudo password was asked again after 5 minutes
 
-# 0.26.1
+## 0.26.1
 
-## Fix
+### Fix
 
 - [ci_cd]: Fix bug where the java home was waiting on sudo password while already given at the start of the cli.
 - [ci_cd]: Fix bug where the xcode select was not set correctly
 
-# 0.26.0
+## 0.26.0
 
-## Added
+### Added
 
 - [ci_cd]: Added support for installing sentry-cli
 - [ci_cd]: Added support for installing lcov
@@ -122,33 +124,33 @@
 - [ci_cd]: Configure the Flutter JDK dir in the flutter config
 - Better error handling for the testflight upload if the contract is not valid anymore
 
-# 0.25.1
+## 0.25.1
 
-## Fix
+### Fix
 
 - Improve error hanlding on testflight upload when contract is not valid anymore
 
-# 0.25.0
+## 0.25.0
 
-## Added
+### Added
 
 - Added support for installing provisioning profiles
 - New command `apple provisioning_profile install` uses `Directory.current` to find the provisioning profile and install them
 
-## Breaking changes
+### Breaking changes
 
 - `apple_certificate install` is now `apple certificate install`
 - `apple_certificate remove` is now `apple certificate remove`
 
-# 0.24.7
+## 0.24.7
 
-## Fix
+### Fix
 
 - Fix bug where the cli tools were not checked correctly
 
-# 0.24.6
+## 0.24.6
 
-## Fix
+### Fix
 
 - macos ci/cd setup command now installs:
   - homebrew
@@ -157,99 +159,99 @@
   - updates PATH in .zshrc
   - Shows info on github actions runner config
 
-# 0.24.5
+## 0.24.5
 
-## Fix
+### Fix
 
 - Fix impaktfull_cli permissions after installation
 
-# 0.24.4
+## 0.24.4
 
-## Fix
+### Fix
 
 - Reload zsh configuration after install
 
-# 0.24.3
+## 0.24.3
 
-## Updated
+### Updated
 
 - Improve web install script
 
-# 0.24.2
+## 0.24.2
 
-## Fix
+### Fix
 
 - Github pages build with macos-latest
 - Fix fvm bug
 
-# 0.24.1
+## 0.24.1
 
-## Fix
+### Fix
 
 - Changelog
 
-# 0.24.0
+## 0.24.0
 
-## Added
+### Added
 
 - Added open source report new release command
 - Added dependabot support
 
-## Fix
+### Fix
 
 - Better detection of fvm projects
 - Github actions
 
-# 0.23.1 - 0.23.2
+## 0.23.1 - 0.23.2
 
-## Fix
+### Fix
 
 - Fix private const constructors in lcov file
 
-# 0.23.0
+## 0.23.0
 
-## Added
+### Added
 
 - Added ci/cd report status command (to slack by default)
 
-# 0.22.0
+## 0.22.0
 
-## Added
+### Added
 
 - Added slack support to send messages to a specific slack channel
 
-# 0.21.1
+## 0.21.1
 
-## Fix
+### Fix
 
 - Fix ignored files in test coverage report
 
-# 0.21.0
+## 0.21.0
 
-## Added
+### Added
 
 - Make it posible to override the lcov file changes were made because of the `ignorePatterns` (--overrideLcovFile or --no-overrideLcovFile)
 
-## Fix
+### Fix
 
 - Cleanup tests
 
-# 0.20.1
+## 0.20.1
 
-## Fix
+### Fix
 
 - Fix ignored files in test coverage report
 
-# 0.20.0
+## 0.20.0
 
-## Added
+### Added
 
 - Make it posible to enable/disable running tests before generating test coverage report (--runTests or --no-runTests)
 - Make it posible to enable/disable converting to lcov format (--convertToLcov or --no-convertToLcov)
 
-# 0.19.0
+## 0.19.0
 
-## Added
+### Added
 
 - Add support for ignore patterns in test coverage report
   Default:
@@ -257,130 +259,130 @@
   - `.*.navigator.dart`
   - `.*.injectable.config.dart`
 
-# 0.18.1
+## 0.18.1
 
-## Fix
+### Fix
 
 - Fix 1000% instead of 100% if there are no lines in the test coverage report
 
-# 0.18.0
+## 0.18.0
 
-## Added
+### Added
 
 - Run tests and convert to lcov.info for Flutter and Dart projects
 
-# 0.17.1
+## 0.17.1
 
-## Fix
+### Fix
 
 - Error when checking if a cli tool is installed
 
-# 0.17.0
+## 0.17.0
 
-## Added
+### Added
 
 - Linux support
 
-# 0.16.0
+## 0.16.0
 
-## Added
+### Added
 
 - Test coverage report support for Flutter and Dart (based on lcov.info files)
 
-# 0.15.3
+## 0.15.3
 
-## Fix
+### Fix
 
 - License update to 2025
 
-# 0.15.2
+## 0.15.2
 
-## Fix
+### Fix
 
 - fvm new config support (if fvm_config.json is not present)
 
-# 0.15.1
+## 0.15.1
 
-## Fix
+### Fix
 
 - Issue where flavor was still used even if it was null (flutter build)
 
-# 0.15.0
+## 0.15.0
 
-## Added
+### Added
 
 - Choose if you want to commit the version bump or not (even if it is a git repo)
 
-# 0.14.2
+## 0.14.2
 
-## Fix
+### Fix
 
 - README.md
 
-# 0.14.1
+## 0.14.1
 
-## Fix
+### Fix
 
 - Typo's in the `create_keychain` command
 
-# 0.14.0
+## 0.14.0
 
-## Feat
+### Feat
 
 - Android create keychain command (cli & plugin)
 
-# 0.13.8
+## 0.13.8
 
-## Fix
+### Fix
 
 - Logger context for onepassword
 
-# 0.13.7
+## 0.13.7
 
-## Fix
+### Fix
 
 - Verbose logger listener converted to a broadcast stream
 
-# 0.13.6
+## 0.13.6
 
-## Fix
+### Fix
 
 - Verbose logger listener steam already listened to
 
-# 0.13.5
+## 0.13.5
 
-## Fix
+### Fix
 
 - Verbose logger listener (when 2 times startListening is called)
 
-# 0.13.4
+## 0.13.4
 
-## Update
+### Update
 
 - Updated license
 
-# 0.13.3
+## 0.13.3
 
-## Update
+### Update
 
 - Updated reamde
 
-# 0.13.2
+## 0.13.2
 
-## Update
+### Update
 
 - Updated changelog format
 
-# 0.13.1
+## 0.13.1
 
-## Update
+### Update
 
 - Updated reamde
 - Updated changelog format
 
-# 0.13.0
+## 0.13.0
 
-## Feat
+### Feat
 
 - Improved logging to easily follow allong
 - Enable/disable verbose logging during run.
@@ -388,246 +390,246 @@
 - Playstore release to `internal` track by default
 - Playstore release to `draft` release status by default
 
-# 0.12.0
+## 0.12.0
 
-## Feat
+### Feat
 
 - Export code_builder
 
-# 0.11.6 - 0.11.8
+## 0.11.6 - 0.11.8
 
-## Update
+### Update
 
 - License BSD-3-Clause license
 
-# 0.11.6 - 0.11.7
+## 0.11.6 - 0.11.7
 
-## Fix
+### Fix
 
 - Improve CI/CD pipeline
 
-# 0.11.5
+## 0.11.5
 
-## Fix
+### Fix
 
 - CI/CD plugin where the buildnr field was not used
 - verbose logging instead of debug loggin for the version bump
 
-# 0.11.4
+## 0.11.4
 
-## Fix
+### Fix
 
 - Formatting of the release_config.json file
 
-# 0.11.3
+## 0.11.3
 
-## Fix
+### Fix
 
 - Bug where the release_config.json did not contain the correct version and failed because it was expected
 
-# 0.11.2
+## 0.11.2
 
-## Fix
+### Fix
 
 - Bug where the git status method would return a list with 1 item if nothing was detected
 
-# 0.11.1
+## 0.11.1
 
-## Fix
+### Fix
 
 - Bug where the git status method would return the wrong value if nothing was detected
 
-# 0.11.0
+## 0.11.0
 
-## Feat
+### Feat
 
 - Add the option to add a `flavor` to the versionbump command
 - Add the option to add a `suffix`to the versionbump command
 
-# 0.10.13
+## 0.10.13
 
-## Feat
+### Feat
 
 - Add the option to check if git is clean
 - Add the option to versionbump using `release_config.json` file
 - Add the option to check if a clitool is installed
 
-# 0.10.12
+## 0.10.12
 
-## Fix
+### Fix
 
 - Cleanup keychain plugin after force quit
 
-# 0.10.7 - 0.10.11
+## 0.10.7 - 0.10.11
 
-## Fix
+### Fix
 
 - Setting default keychain to newly created on in ci/cd plugin
 
-# 0.10.6
+## 0.10.6
 
-## Fix
+### Fix
 
 - Keychain should be accessible to all from ci/cd plugin
 
-# 0.10.5
+## 0.10.5
 
-## Fix
+### Fix
 
 - First check if new keychain already exists before creating a new one
 
-# 0.10.4
+## 0.10.4
 
-## Fix
+### Fix
 
 - Delete build/ios/ipa folder before iOS build
 
-# 0.10.3
+## 0.10.3
 
-## Fix
+### Fix
 
 - Keychain creation on macOS
 
-# 0.10.2
+## 0.10.2
 
-## Fix
+### Fix
 
 - Renamed `valultName` to `opValueName` on `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
-# 0.10.1
+## 0.10.1
 
-## Fix
+### Fix
 
 - Export `valultName` for `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
-# 0.10.0
+## 0.10.0
 
-## Feat
+### Feat
 
 - Added `rawServiceAccount` to `startBuildWithCertificateAndPasswordFromOnePassword` on the `CiCdPlugin`
 
-# 0.9.1
+## 0.9.1
 
-## Fix
+### Fix
 
 - Bug when downloading files using `OnePasswordPlugin`
 
-# 0.9.0
+## 0.9.0
 
-## Feat
+### Feat
 
 - Export enable logging
 
-# 0.8.0
+## 0.8.0
 
-## Feat
+### Feat
 
 - Pass service accounts to override the default service account in the `OnePasswordPlugin`
 
-# 0.7.1
+## 0.7.1
 
-## Fix
+### Fix
 
 - Typo in `getServiceAccountCredentials`
 
-# 0.7.0
+## 0.7.0
 
-## Feat
+### Feat
 
 - Added `getServiceAccountCredentials` to `OnePasswordPlugin` to get google service account credentials from 1password.
 
-# 0.6.1
+## 0.6.1
 
-## Fix
+### Fix
 
 - Typo with `getTestFlightCredentials` in `OnePasswordPlugin`
 
-# 0.6.0
+## 0.6.0
 
-## Feat
+### Feat
 
 - Better config for testflight upload
 
-# 0.5.1 - 0.5.3
+## 0.5.1 - 0.5.3
 
-## Fix
+### Fix
 
 - Bug where testflight upload would succeed when the app was invalid because of a lower,same version number
 
-# 0.5.0
+## 0.5.0
 
-## Feat
+### Feat
 
 - `PlaystoreUploadConfig` will default to `android/playstore_credentials.json`
 
-# 0.4.0
+## 0.4.0
 
-## Feat
+### Feat
 
 - Export `joinPath` which is just an alternative for `join` from `path` package.
 
-# 0.3.3
+## 0.3.3
 
-## Docs
+### Docs
 
 - `PlayStoreUploadConfig` extra documentation
 - `TestflightUploadConfig` extra documentation
 
-# 0.3.2
+## 0.3.2
 
-## Fix
+### Fix
 
 - `PlayStoreUploadConfig` required fields if needed
 - `TestflightUploadConfig` required fields if needed
 
-# 0.3.1
+## 0.3.1
 
-## Fix
+### Fix
 
 - Export `PlayStoreUploadConfig`
 - Export `TestflightUploadConfig`
 
-# 0.3.0
+## 0.3.0
 
-## Feat
+### Feat
 
 - (ci/cd): Upload to playstore with ci/cd plugin
 - (ci/cd): Upload to appstore with ci/cd plugin
 
-# 0.2.3 -> 0.2.20
+## 0.2.3 -> 0.2.20
 
-## Features
+### Features
 
 - (ci): Automatic publish to pub.dev from github actions (some trial and error happened)
 
-# 0.2.2
+## 0.2.2
 
-## Features
+### Features
 
 - (ci): Added ci to publish to pub.dev
 
-# 0.2.1
+## 0.2.1
 
-## Features
+### Features
 
 - (AppCenter): Export default distribution group.
 - (cli): Added support to extend the cli with custom plugins.
 
-# 0.2.0
+## 0.2.0
 
-## Rafactor
+### Rafactor
 
 - Rafactor to a setup where it is clear which plugins are available to use.
 
-# 0.1.1
+## 0.1.1
 
-## Fixes:
+### Fixes:
 
 - Export all required files.
 
-# 0.1.0
+## 0.1.0
 
-## Refactor
+### Refactor
 
 - The plugins should be more flexible now. `ImpaktfullCli()` should be used as a starting point.
   These methods should make it more clear how to use the plugins:
@@ -635,28 +637,28 @@
   - runWithCli()
   - getPlugin()
 
-# 0.0.4
+## 0.0.4
 
-## Fixes
+### Fixes
 
 - cleanup dependency injection with default implementations.
 
-# 0.0.3
+## 0.0.3
 
-## Fixes
+### Fixes
 
 - Removed xml dependency.
 
-# 0.0.2
+## 0.0.2
 
-## Fixes
+### Fixes
 
 - Typo in `EmptyCommandConfig`
 - meta version set to 1.1.0
 
-# 0.0.1
+## 0.0.1
 
-## Features
+### Features
 
 - Unstable initial version.
 - Support for:
