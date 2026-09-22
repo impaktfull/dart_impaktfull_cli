@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:impaktfull_cli/src/core/model/error/force_quit_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_process_runner_error.dart';
-import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
+import 'package:meta/meta.dart';
 
 final _pathsToAdd = <String>[];
 String? _path;
@@ -27,21 +27,41 @@ abstract class ProcessRunner {
 
   static void updatePath({required List<String> pathsToAdd}) {
     _pathsToAdd.addAll(pathsToAdd);
-    final pathEnvVariable =
-        ImpaktfullCliEnvironmentVariables.getEnvVariable("PATH");
-    final home = ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME");
-    final sb = StringBuffer(pathEnvVariable);
-    for (final path in _pathsToAdd) {
-      final cleanPath = path.replaceAll('\$HOME', home);
-      if (sb.isEmpty) {
-        sb.write(cleanPath);
-      } else {
-        sb.write(':$cleanPath');
-      }
-    }
-    _path = sb.toString();
+    final environment = Platform.environment;
+    _path = buildPath(
+      currentPath: environment[_pathKey],
+      // Windows has no HOME, only USERPROFILE.
+      home: environment['HOME'] ?? environment['USERPROFILE'],
+      pathsToAdd: _pathsToAdd,
+      isWindows: Platform.isWindows,
+    );
+  }
+
+  @visibleForTesting
+  static String buildPath({
+    required String? currentPath,
+    required String? home,
+    required List<String> pathsToAdd,
+    required bool isWindows,
+  }) {
+    final separator = isWindows ? ';' : ':';
+    return [
+      if (currentPath != null && currentPath.isNotEmpty) currentPath,
+      for (final path in pathsToAdd)
+        home == null ? path : path.replaceAll('\$HOME', home),
+    ].join(separator);
   }
 }
+
+/// The name of the PATH variable as the parent process spells it.
+///
+/// Windows spells it `Path`. A child environment that contains both `Path`
+/// (inherited) and `PATH` (ours) has two entries, and which one wins is
+/// undefined, so ours has to override the inherited key itself.
+String get _pathKey => Platform.environment.keys.firstWhere(
+      (key) => key.toUpperCase() == 'PATH',
+      orElse: () => 'PATH',
+    );
 
 DateTime? _lastRequestSudoTime;
 
@@ -67,30 +87,39 @@ class CliProcessRunner extends ProcessRunner {
       ImpaktfullCliLogger.verbose("PATH: $_path");
     }
     ImpaktfullCliLogger.verboseSeperator();
-    final result = await Process.start(
+    final process = await Process.start(
       args.first,
       args.length > 1 ? args.sublist(1) : [],
       environment: {
         ...?environment,
-        if (_path != null) 'PATH': _path!,
+        if (_path != null) _pathKey: _path!,
       },
-      runInShell: runInShell,
+      // On Windows `flutter`, `fvm` and friends are `.bat` files, which only
+      // start through the shell. The shell also looks the executable up in
+      // the PATH we pass, instead of the PATH of this process.
+      runInShell: runInShell || Platform.isWindows,
       mode: mode,
     );
     final stringBuffer = StringBuffer();
-    final subscriptionOut = result.stdout.listen((codeUnits) {
-      final line = utf8.decode(codeUnits);
-      stringBuffer.writeln(line);
-      ImpaktfullCliLogger.verboseMasked(line, mask: maskOutput);
-    });
-    final subscriptionError = result.stderr.listen((codeUnits) {
-      final line = utf8.decode(codeUnits);
-      stringBuffer.writeln(line);
-      ImpaktfullCliLogger.verboseMasked(line, mask: maskErrorOutput);
-    });
-    final exitCode = await result.exitCode;
-    await subscriptionOut.cancel();
-    await subscriptionError.cancel();
+    // Decode the stream instead of every chunk on its own: a chunk can end in
+    // the middle of a multi-byte character or a line.
+    Future<void> collect(Stream<List<int>> stream, {required bool mask}) =>
+        stream
+            .transform(const Utf8Decoder(allowMalformed: true))
+            .transform(const LineSplitter())
+            .forEach((line) {
+          stringBuffer.writeln(line);
+          ImpaktfullCliLogger.verboseMasked(line, mask: mask);
+        });
+
+    // The exit code can complete before all output is delivered. Waiting on
+    // the streams as well makes sure none of the output is lost, which used
+    // to make `which flutter` randomly return nothing.
+    final (exitCode, _, _) = await (
+      process.exitCode,
+      collect(process.stdout, mask: maskOutput),
+      collect(process.stderr, mask: maskErrorOutput),
+    ).wait;
     ImpaktfullCliLogger.verboseSeperator();
     if (exitCode == -2) {
       throw ForceQuitError('`$fullCommand` was force quit');

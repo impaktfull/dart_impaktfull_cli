@@ -41,7 +41,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         mainDartFile,
       ],
       if (obfuscate) ...[
-        'obfuscate',
+        '--obfuscate',
         if (splitDebugInfoPath != null) ...[
           '--split-debug-info=$splitDebugInfoPath',
         ],
@@ -128,7 +128,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
         mainDartFile,
       ],
       if (obfuscate) ...[
-        'obfuscate',
+        '--obfuscate',
         if (splitDebugInfoPath != null) ...[
           '--split-debug-info=$splitDebugInfoPath',
         ],
