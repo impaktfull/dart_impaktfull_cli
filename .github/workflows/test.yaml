@@ -84,6 +84,7 @@ jobs:
       - run: dart pub get
       - name: Compile the cli
         run: |
+          mkdir -p "$RUNNER_TEMP/bin"
           dart compile exe bin/impaktfull_cli.dart -o "$RUNNER_TEMP/bin/impaktfull_cli${{ runner.os == 'Windows' && '.exe' || '' }}"
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
       - name: Create a Flutter project
