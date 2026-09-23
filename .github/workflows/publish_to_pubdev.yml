@@ -23,7 +23,7 @@ jobs:
       id-token: write # Required for authentication using OIDC
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Same setup as the `Validate` job in `test.yaml`; keep them in sync.
       - uses: dart-lang/setup-dart@v1
         with:
