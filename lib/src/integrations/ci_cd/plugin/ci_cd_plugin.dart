@@ -52,7 +52,8 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     final buildNr = int.tryParse(githubBuildNr);
     if (buildNr == null) {
       throw ImpaktfullCliError(
-          '`${ImpaktfullCliEnvironmentVariables.envKeyGithubBuildNr}` is not a valid number: $githubBuildNr');
+        '`${ImpaktfullCliEnvironmentVariables.envKeyGithubBuildNr}` is not a valid number: $githubBuildNr',
+      );
     }
     return buildNr + incrementBy;
   }
@@ -89,7 +90,8 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     }
     buildNr++;
     ImpaktfullCliLogger.verbose(
-        'New build_nr: $buildNr (for key: $buildNrKey)');
+      'New build_nr: $buildNr (for key: $buildNrKey)',
+    );
     newConfigData[buildNrKey] = buildNr;
     if (!file.existsSync()) {
       file.createSync(recursive: true);
@@ -123,19 +125,18 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
-        impaktfullDashboardUploadConfig,
-  }) async =>
-      buildAndroid(
-        flavor: flavor,
-        mainDartFile: '$mainDartPrefix$flavor.dart',
-        extension: extension,
-        obfuscate: obfuscate,
-        splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
-        buildNr: buildNr,
-        appCenterUploadConfig: appCenterUploadConfig,
-        playStoreUploadConfig: playStoreUploadConfig,
-        impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
-      );
+    impaktfullDashboardUploadConfig,
+  }) async => buildAndroid(
+    flavor: flavor,
+    mainDartFile: '$mainDartPrefix$flavor.dart',
+    extension: extension,
+    obfuscate: obfuscate,
+    splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
+    buildNr: buildNr,
+    appCenterUploadConfig: appCenterUploadConfig,
+    playStoreUploadConfig: playStoreUploadConfig,
+    impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+  );
 
   Future<void> buildAndroid({
     String? flavor,
@@ -147,7 +148,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
-        impaktfullDashboardUploadConfig,
+    impaktfullDashboardUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
     final file = await flutterBuildPlugin.buildAndroid(
@@ -180,9 +181,9 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     if (impaktfullDashboardUploadConfig != null) {
       await impaktfullDashboardPlugin
           .uploadAppTestingVersionToImpaktfullDashboard(
-        file: file,
-        config: impaktfullDashboardUploadConfig,
-      );
+            file: file,
+            config: impaktfullDashboardUploadConfig,
+          );
     }
   }
 
@@ -196,19 +197,18 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
-        impaktfullDashboardUploadConfig,
-  }) async =>
-      buildIos(
-        flavor: flavor,
-        mainDartFile: '$mainDartPrefix$flavor.dart',
-        extension: extension,
-        obfuscate: obfuscate,
-        splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
-        buildNr: buildNr,
-        appCenterUploadConfig: appCenterUploadConfig,
-        testflightUploadConfig: testflightUploadConfig,
-        impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
-      );
+    impaktfullDashboardUploadConfig,
+  }) async => buildIos(
+    flavor: flavor,
+    mainDartFile: '$mainDartPrefix$flavor.dart',
+    extension: extension,
+    obfuscate: obfuscate,
+    splitDebugInfoPath: '$splitDebugInfoPaths/$flavor.dart',
+    buildNr: buildNr,
+    appCenterUploadConfig: appCenterUploadConfig,
+    testflightUploadConfig: testflightUploadConfig,
+    impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+  );
 
   Future<void> buildIos({
     String? flavor,
@@ -220,7 +220,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
     ImpaktfullDashboardAppTestingVersionUploadConfig?
-        impaktfullDashboardUploadConfig,
+    impaktfullDashboardUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([
       CliTool.flutter,
@@ -257,9 +257,9 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     if (impaktfullDashboardUploadConfig != null) {
       await impaktfullDashboardPlugin
           .uploadAppTestingVersionToImpaktfullDashboard(
-        file: file,
-        config: impaktfullDashboardUploadConfig,
-      );
+            file: file,
+            config: impaktfullDashboardUploadConfig,
+          );
     }
   }
 }

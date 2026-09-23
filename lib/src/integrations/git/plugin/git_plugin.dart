@@ -21,7 +21,8 @@ class GitPlugin extends ImpaktfullCliPlugin {
     final isGitClean = await this.isGitClean();
     if (!isGitClean) {
       throw ImpaktfullCliError(
-          'Git is not clean. Please commit or stash your changes before bumping the version.');
+        'Git is not clean. Please commit or stash your changes before bumping the version.',
+      );
     }
   }
 

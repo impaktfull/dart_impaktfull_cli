@@ -22,7 +22,8 @@ class ForceQuitListener {
       _isShuttingDown = true;
       ImpaktfullCliLogger.log('\nForce quit detected. Cleaning up...');
       ImpaktfullCliLogger.verbose(
-          'Cleaning up ${_listeners.length} listeners...');
+        'Cleaning up ${_listeners.length} listeners...',
+      );
       await Future.wait(_listeners.map((e) => e()));
       exit(0);
     });

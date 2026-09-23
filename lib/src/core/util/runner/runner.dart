@@ -21,7 +21,8 @@ Future<void> runImpaktfullCli(
     VerboseLoggingListener.stopListening();
     ImpaktfullCliLogger.endSpinner();
     ImpaktfullCliLogger.log(
-        '✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})');
+      '✅ Success (You just saved ${stopwatch.elapsed.humanReadibleDuration})',
+    );
   } on ImpaktfullCliExitError catch (e, trace) {
     ImpaktfullCliLogger.failSpinner(e, trace);
     exit(0);

@@ -57,16 +57,28 @@ class AndroidCreateKeyStoreCommandConfig
       AndroidCreateKeyStoreConfigData(
         configNames: argResults.getRequiredOption(_optionConfigName),
         fullName: argResults.getRequiredOptionOrAskInput<String>(
-            _optionFullName, 'Enter your Full Name'),
+          _optionFullName,
+          'Enter your Full Name',
+        ),
         organization: argResults.getRequiredOptionOrAskInput<String>(
-            _optionOrganization, 'Enter your Organization'),
+          _optionOrganization,
+          'Enter your Organization',
+        ),
         organizationUnit: argResults.getOptionOrAskInput<String>(
-            _optionOrganizationUnit, 'Enter your Oranization Unit (optional)'),
+          _optionOrganizationUnit,
+          'Enter your Oranization Unit (optional)',
+        ),
         city: argResults.getOptionOrAskInput<String>(
-            _optionCity, 'Enter your City (optional)'),
+          _optionCity,
+          'Enter your City (optional)',
+        ),
         state: argResults.getOptionOrAskInput(
-            _optionState, 'Enter your State (optional)'),
+          _optionState,
+          'Enter your State (optional)',
+        ),
         country: argResults.getRequiredOptionOrAskInput(
-            _optionCountry, 'Enter the Country'),
+          _optionCountry,
+          'Enter the Country',
+        ),
       );
 }

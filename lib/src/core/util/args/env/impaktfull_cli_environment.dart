@@ -60,22 +60,27 @@ class ImpaktfullCliEnvironment {
       }
     }
     if (requiredToolsFound.length != requiredTools.length) {
-      final missingTools = requiredTools
-          .where((element) => !requiredToolsFound.contains(element));
+      final missingTools = requiredTools.where(
+        (element) => !requiredToolsFound.contains(element),
+      );
       throw ImpaktfullCliError(
-          '${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step');
+        '${missingTools.map((e) => '${e.commandName} (${e.name})').join(', ')} are not installed, but required for the next step',
+      );
     }
   }
 
   static void _printCurrentState() {
     ImpaktfullCliLogger.verboseSeperator();
     ImpaktfullCliLogger.verbose(
-        'Operating system: ${OperatingSystem.current.name}');
+      'Operating system: ${OperatingSystem.current.name}',
+    );
     ImpaktfullCliLogger.verbose(
-        'Working Dir: `${_instance.workingDirectory.path}`');
+      'Working Dir: `${_instance.workingDirectory.path}`',
+    );
     ImpaktfullCliLogger.verbose('Is fvm project: `${_instance.isFvmProject}`');
     ImpaktfullCliLogger.verbose(
-        CliToolsUtil.getCliToolsLog(_instance.allCliTools));
+      CliToolsUtil.getCliToolsLog(_instance.allCliTools),
+    );
     ImpaktfullCliLogger.verboseSeperator();
   }
 }

@@ -59,9 +59,9 @@ abstract class ProcessRunner {
 /// (inherited) and `PATH` (ours) has two entries, and which one wins is
 /// undefined, so ours has to override the inherited key itself.
 String get _pathKey => Platform.environment.keys.firstWhere(
-      (key) => key.toUpperCase() == 'PATH',
-      orElse: () => 'PATH',
-    );
+  (key) => key.toUpperCase() == 'PATH',
+  orElse: () => 'PATH',
+);
 
 DateTime? _lastRequestSudoTime;
 
@@ -92,7 +92,7 @@ class CliProcessRunner extends ProcessRunner {
       args.length > 1 ? args.sublist(1) : [],
       environment: {
         ...?environment,
-        if (_path != null) _pathKey: _path!,
+        _pathKey: ?_path,
       },
       // On Windows `flutter`, `fvm` and friends are `.bat` files, which only
       // start through the shell. The shell also looks the executable up in
@@ -108,9 +108,9 @@ class CliProcessRunner extends ProcessRunner {
             .transform(const Utf8Decoder(allowMalformed: true))
             .transform(const LineSplitter())
             .forEach((line) {
-          stringBuffer.writeln(line);
-          ImpaktfullCliLogger.verboseMasked(line, mask: mask);
-        });
+              stringBuffer.writeln(line);
+              ImpaktfullCliLogger.verboseMasked(line, mask: mask);
+            });
 
     // The exit code can complete before all output is delivered. Waiting on
     // the streams as well makes sure none of the output is lost, which used

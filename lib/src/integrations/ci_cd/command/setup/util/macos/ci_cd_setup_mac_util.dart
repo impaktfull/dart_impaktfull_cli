@@ -41,7 +41,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     ImpaktfullCliLogger.startSpinner("Installing homebrew");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.brew)) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Homebrew is already installed");
+        "Homebrew is already installed",
+      );
       return;
     }
     await processRunner.runProcess(
@@ -57,7 +58,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   Future<void> installCocoapods() async {
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.cocoaPods)) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Cocoapods is already installed");
+        "Cocoapods is already installed",
+      );
       return;
     }
     ImpaktfullCliLogger.startSpinner("Installing cocoapods");
@@ -66,12 +68,16 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
 
   Future<void> installOhMyZsh() async {
     ImpaktfullCliLogger.startSpinner("Installing oh-my-zsh");
-    final dir = Directory(join(
+    final dir = Directory(
+      join(
         ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
-        '.oh-my-zsh'));
+        '.oh-my-zsh',
+      ),
+    );
     if (dir.existsSync()) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Oh-my-zsh is already installed");
+        "Oh-my-zsh is already installed",
+      );
       return;
     }
     await processRunner.runProcess(
@@ -144,7 +150,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     ImpaktfullCliLogger.startSpinner("Installing sentry-cli");
     if (ImpaktfullCliEnvironment.isInstalled(CliTool.sentryCli)) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "sentry-cli is already installed");
+        "sentry-cli is already installed",
+      );
       return;
     }
     await _brewInstall(['getsentry/tools/sentry-cli']);
@@ -218,7 +225,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     }
     await _brewInstall(['--cask', 'raycast']);
     ImpaktfullCliLogger.log(
-        "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup");
+      "Make sure to disable Spotlight in the keyboard shortcut. And configure Raycast at first startup",
+    );
   }
 
   Future<void> selectXcode([String? version]) async {
@@ -234,8 +242,10 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
       ImpaktfullCliLogger.waitForEnter(message);
     }
     await processRunner.runProcess(['sudo', 'xcode-select', '-s', path.path]);
-    final xcode =
-        await processRunner.runProcess(['xcode-select', '--print-path']);
+    final xcode = await processRunner.runProcess([
+      'xcode-select',
+      '--print-path',
+    ]);
     ImpaktfullCliLogger.endSpinnerWithMessage("Selecting Xcode: $xcode");
     ImpaktfullCliLogger.log("Xcode path: $path");
   }
@@ -244,7 +254,8 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     ImpaktfullCliLogger.startSpinner("Installing rosetta");
     if (!await isSiliconMac()) {
       ImpaktfullCliLogger.endSpinnerWithMessage(
-          "Rosetta is not needed on a non-silicon mac");
+        "Rosetta is not needed on a non-silicon mac",
+      );
       return;
     }
     await processRunner.runProcess([
@@ -257,18 +268,27 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
   @override
   Future<void> configureSSHKey(String userName) async {
     ImpaktfullCliLogger.startSpinner("Creating new `ed25519` ssh key");
-    final sshConfigFile = File(join(
+    final sshConfigFile = File(
+      join(
         ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
         '.ssh',
-        'config'));
-    final sshPrivateKeyFile = File(join(
+        'config',
+      ),
+    );
+    final sshPrivateKeyFile = File(
+      join(
         ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
         '.ssh',
-        'id_ed25519'));
-    final sshPublicKeyFile = File(join(
+        'id_ed25519',
+      ),
+    );
+    final sshPublicKeyFile = File(
+      join(
         ImpaktfullCliEnvironmentVariables.getEnvVariable("HOME"),
         '.ssh',
-        'id_ed25519.pub'));
+        'id_ed25519.pub',
+      ),
+    );
 
     if (sshPrivateKeyFile.existsSync()) {
       await printSshPublicKey(sshPublicKeyFile);
@@ -298,13 +318,14 @@ class CiCdSetupMacUtil extends CiCdSetupOsUtil {
     if (!sshConfigFile.existsSync()) {
       sshConfigFile.createSync(recursive: true);
     }
-    final sshConfigContent = """
+    final sshConfigContent =
+        """
 Host github.com
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ~/.ssh/id_github
 """
-        .trim();
+            .trim();
     sshConfigFile.writeAsStringSync(sshConfigContent);
     await printSshPublicKey(sshPublicKeyFile);
   }
@@ -320,7 +341,8 @@ Host github.com
     ImpaktfullCliLogger.log("\n");
     ImpaktfullCliLogger.stopSpinner();
     ImpaktfullCliLogger.waitForEnter(
-        "Configure github to use the ssh key. Press enter to continue:");
+      "Configure github to use the ssh key. Press enter to continue:",
+    );
   }
 
   @override
@@ -329,10 +351,12 @@ Host github.com
     ImpaktfullCliLogger.log("\n\n");
     ImpaktfullCliLogger.log("Start github actions runner config");
     ImpaktfullCliLogger.log(
-        "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx");
+      "https://github.com/organizations/impaktfull/settings/actions/runners/new?arch=arm64&os=osx",
+    );
     ImpaktfullCliLogger.log("\nConfigure runner as service");
     ImpaktfullCliLogger.log(
-        "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac");
+      "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=mac",
+    );
     ImpaktfullCliLogger.log("\n");
   }
 
@@ -343,10 +367,13 @@ Host github.com
     ImpaktfullCliLogger.endSpinnerWithMessage('Verifying Flutter: $result');
 
     ImpaktfullCliLogger.startSpinner("Verifying Cocoapods");
-    final cocoapodsVersion =
-        await processRunner.runProcess(['pod', '--version']);
+    final cocoapodsVersion = await processRunner.runProcess([
+      'pod',
+      '--version',
+    ]);
     ImpaktfullCliLogger.endSpinnerWithMessage(
-        "Verifying Cocoapods: $cocoapodsVersion");
+      "Verifying Cocoapods: $cocoapodsVersion",
+    );
   }
 
   Future<void> _brewInstall(List<String> args) async {
@@ -367,13 +394,15 @@ Host github.com
       final javaVersion = await processRunner.runProcess(['java', '--version']);
       if (javaVersion.contains('openjdk 17')) {
         ImpaktfullCliLogger.endSpinnerWithMessage(
-            "java 17 is already installed");
+          "java 17 is already installed",
+        );
         return true;
       }
       return false;
     } catch (error, trace) {
       ImpaktfullCliLogger.verbose(
-          "Fetching java version failed: $error\n$trace");
+        "Fetching java version failed: $error\n$trace",
+      );
       return false;
     }
   }

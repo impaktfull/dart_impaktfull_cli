@@ -58,36 +58,41 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     }
     final files = <File>[];
     // Default path
-    final file = File(joinAll(
-      [
-        extension
-            .getBuildDirectory(
-              flavor: flavor,
-              androidSplitPath: false,
-            )
-            .path,
-        fileName,
-      ],
-    ));
+    final file = File(
+      joinAll(
+        [
+          extension
+              .getBuildDirectory(
+                flavor: flavor,
+                androidSplitPath: false,
+              )
+              .path,
+          fileName,
+        ],
+      ),
+    );
     files.add(file);
 
     // Additional paths
-    final additionalFile = File(joinAll(
-      [
-        extension
-            .getBuildDirectory(
-              flavor: flavor,
-              androidSplitPath: true,
-            )
-            .path,
-        fileName,
-      ],
-    ));
+    final additionalFile = File(
+      joinAll(
+        [
+          extension
+              .getBuildDirectory(
+                flavor: flavor,
+                androidSplitPath: true,
+              )
+              .path,
+          fileName,
+        ],
+      ),
+    );
     files.add(additionalFile);
     final correctFile = files.firstWhere(
       (element) => element.existsSync(),
       orElse: () => throw ImpaktfullCliError(
-          'After building $flavor for Android, `${files.join(', ')}` does not exist.'),
+        'After building $flavor for Android, `${files.join(', ')}` does not exist.',
+      ),
     );
     ImpaktfullCliLogger.clearSpinnerPrefix();
     return correctFile;
@@ -138,21 +143,26 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       ],
     ]);
     final files = buildDirectory.listSync();
-    final result = files.where((element) =>
-        path.extension(element.path) == '.${extension.fileExtension}');
+    final result = files.where(
+      (element) =>
+          path.extension(element.path) == '.${extension.fileExtension}',
+    );
     if (result.isEmpty) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.');
+        'After building $flavor for iOS, `${buildDirectory.path}` does not contain an `${extension.fileExtension}` file.',
+      );
     }
     if (result.length > 1) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, Multiple .$extension files were found in `${buildDirectory.path}`. Auto selecting the right one is not yet implemented.');
+        'After building $flavor for iOS, Multiple .$extension files were found in `${buildDirectory.path}`. Auto selecting the right one is not yet implemented.',
+      );
     }
 
     final ipaFile = File(result.first.path);
     if (!ipaFile.existsSync()) {
       throw ImpaktfullCliError(
-          'After building $flavor for iOS, `${ipaFile.path}` does not exists.');
+        'After building $flavor for iOS, `${ipaFile.path}` does not exists.',
+      );
     }
     ImpaktfullCliLogger.clearSpinnerPrefix();
     return ipaFile;

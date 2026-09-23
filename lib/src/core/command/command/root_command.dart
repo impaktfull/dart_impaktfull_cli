@@ -23,6 +23,7 @@ abstract class RootCommand extends CliCommand<EmptyCommandConfigData> {
   @override
   Future<void> runCommand(EmptyCommandConfigData configData) async {
     ImpaktfullCliLogger.error(
-        '`$name` is a root command, you can not run it by itself');
+      '`$name` is a root command, you can not run it by itself',
+    );
   }
 }

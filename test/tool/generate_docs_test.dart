@@ -19,8 +19,10 @@ void main() {
       final cmd = root.subcommands['create_keystore']!;
       final table = generator.buildOptionsTable(cmd);
 
-      expect(table,
-          contains('| Option | Description | Required | Default | Allowed |'));
+      expect(
+        table,
+        contains('| Option | Description | Required | Default | Allowed |'),
+      );
       expect(table, contains('`--fullName`'));
       expect(table, contains('Your full name'));
       expect(table, contains('| Yes |'));
@@ -38,8 +40,9 @@ void main() {
     });
 
     test('formats boolean flags with --[no-] prefix', () {
-      final root =
-          TestCoverageRootCommand(processRunner: const CliProcessRunner());
+      final root = TestCoverageRootCommand(
+        processRunner: const CliProcessRunner(),
+      );
       final cmd = root.subcommands['dart']!;
       final table = generator.buildOptionsTable(cmd);
 
@@ -90,19 +93,20 @@ void main() {
     });
 
     test(
-        'handles deeply nested subcommands (apple provisioning_profile install)',
-        () {
-      final root = AppleRootCommand(processRunner: const CliProcessRunner());
-      final page = generator.buildCommandPage(root);
+      'handles deeply nested subcommands (apple provisioning_profile install)',
+      () {
+        final root = AppleRootCommand(processRunner: const CliProcessRunner());
+        final page = generator.buildCommandPage(root);
 
-      expect(page, contains('## provisioning_profile install'));
-      expect(
-        page,
-        contains(
-          'dart run impaktfull_cli apple provisioning_profile install [options]',
-        ),
-      );
-    });
+        expect(page, contains('## provisioning_profile install'));
+        expect(
+          page,
+          contains(
+            'dart run impaktfull_cli apple provisioning_profile install [options]',
+          ),
+        );
+      },
+    );
 
     test('generates sections for all leaf subcommands', () {
       final root = CiCdRootCommand(processRunner: const CliProcessRunner());
@@ -130,9 +134,9 @@ void main() {
       """;
       final keys = generator.extractEnvKeys(source);
       expect(
-          keys,
-          containsAll(
-              ['OP_SERVICE_ACCOUNT_TOKEN', 'SLACK_SEND_MESSAGE_CHANNEL']));
+        keys,
+        containsAll(['OP_SERVICE_ACCOUNT_TOKEN', 'SLACK_SEND_MESSAGE_CHANNEL']),
+      );
     });
 
     test('does not extract non-envKey constants', () {

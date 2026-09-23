@@ -77,7 +77,8 @@ class ImpaktfullCliEnvironmentVariables {
     final secret = _getUnlockKeyChainPassword();
     if (secret == null) {
       throw ImpaktfullCliError(
-          '$_envKeyCiKeyChainPassword env variable is not set');
+        '$_envKeyCiKeyChainPassword env variable is not set',
+      );
     }
     return secret;
   }
@@ -86,7 +87,8 @@ class ImpaktfullCliEnvironmentVariables {
     final secret = _getAppCenterToken();
     if (secret == null) {
       throw ImpaktfullCliError(
-          '$_envKeyAppCenterToken env variable is not set');
+        '$_envKeyAppCenterToken env variable is not set',
+      );
     }
     return secret;
   }

@@ -66,7 +66,8 @@ class LcovFile {
         } else {
           currentSourceFileContentLines = [];
           ImpaktfullCliLogger.log(
-              "File ${currentSourceFile.path} does not exist, skipping content fetch");
+            "File ${currentSourceFile.path} does not exist, skipping content fetch",
+          );
         }
       } else if (line.startsWith('DA:')) {
         final content = line.replaceFirst('DA:', '');
@@ -137,7 +138,9 @@ class LcovFile {
   }
 
   static String? _getLine(
-      List<String> currentSourceFileContentLines, int number) {
+    List<String> currentSourceFileContentLines,
+    int number,
+  ) {
     if (currentSourceFileContentLines.isEmpty) return null;
     return currentSourceFileContentLines[number - 1];
   }
@@ -161,19 +164,21 @@ class LcovFileSourceFile {
     final amountOfLinesCovered = lines.where((e) => e.hits > 0).length;
     if (amountOfLines != linesFound) {
       throw ImpaktfullCliError(
-          'Amount of lines found does not match amount of lines in `$path`');
+        'Amount of lines found does not match amount of lines in `$path`',
+      );
     }
     if (amountOfLinesCovered != linesHit) {
       throw ImpaktfullCliError(
-          'Amount of lines hit does not match amount of lines in `$path`');
+        'Amount of lines hit does not match amount of lines in `$path`',
+      );
     }
   }
 
   bool isIgnored(List<RegExp> patterns) => patterns.any((pattern) {
-        final matchesPattern = pattern.hasMatch(path);
-        if (matchesPattern) return true;
-        return false;
-      });
+    final matchesPattern = pattern.hasMatch(path);
+    if (matchesPattern) return true;
+    return false;
+  });
 }
 
 class LcovFileSourceFileLine {

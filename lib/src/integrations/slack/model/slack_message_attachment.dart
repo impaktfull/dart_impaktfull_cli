@@ -8,7 +8,7 @@ class SlackMessageAttachment {
   });
 
   Map<String, dynamic> toJson() => {
-        'color': color,
-        'text': text,
-      };
+    'color': color,
+    'text': text,
+  };
 }

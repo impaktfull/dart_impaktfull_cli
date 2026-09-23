@@ -16,8 +16,10 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
     bool override = true,
   }) async {
     final rootDirectory = directory ?? Directory.current;
-    final provisioningProfiles =
-        rootDirectory.listSync(recursive: true, followLinks: true);
+    final provisioningProfiles = rootDirectory.listSync(
+      recursive: true,
+      followLinks: true,
+    );
     for (final file in provisioningProfiles) {
       if (file is File && file.path.endsWith('.mobileprovision')) {
         await installProvisioningProfile(
@@ -34,7 +36,8 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
   }) async {
     final uuid = await _retrieveUuid(provisioningProfile);
     ImpaktfullCliLogger.verbose(
-        'Installing provisioning profile with UUID $uuid for ${provisioningProfile.path}');
+      'Installing provisioning profile with UUID $uuid for ${provisioningProfile.path}',
+    );
     final targetDirectory = _targetDirectory();
     final target = File(join(targetDirectory.path, '$uuid.mobileprovision'));
 
@@ -44,11 +47,13 @@ class AppleProvisioningProfilePlugin extends ImpaktfullCliPlugin {
     if (target.existsSync()) {
       if (override) {
         ImpaktfullCliLogger.verbose(
-            'Deleting provisioning profile at ${target.path}');
+          'Deleting provisioning profile at ${target.path}',
+        );
         target.deleteSync(recursive: true);
       } else {
         throw ImpaktfullCliError(
-            'Provisioning profile already exists at ${target.path}');
+          'Provisioning profile already exists at ${target.path}',
+        );
       }
     }
 

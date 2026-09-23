@@ -11,6 +11,6 @@ class AppleProvisioningProfileInstallCommandConfig
 
   @override
   AppleProvisioningProfileInstallConfigData parseResult(
-          ArgResults? argResults) =>
-      AppleProvisioningProfileInstallConfigData();
+    ArgResults? argResults,
+  ) => AppleProvisioningProfileInstallConfigData();
 }

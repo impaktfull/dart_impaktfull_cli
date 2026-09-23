@@ -48,7 +48,9 @@ extension ArgResultExtensions on ArgResults? {
     String? suffix;
     do {
       result = getOptionOrAskInput<T>(
-          option, suffix == null ? question : '$question: $suffix');
+        option,
+        suffix == null ? question : '$question: $suffix',
+      );
       suffix = '(Required)';
     } while (result == null);
     return result;
@@ -65,15 +67,18 @@ extension ArgResultExtensions on ArgResults? {
     if (value == null) {
       final secret =
           ImpaktfullCliEnvironmentVariables.getOptionalEnvVariableSecret(
-              envVariable);
+            envVariable,
+          );
       if (secret == null) {
         throw ArgumentError(
-            '$option not found in arguments or env variable `$envVariable`');
+          '$option not found in arguments or env variable `$envVariable`',
+        );
       }
       final result = _parseResult<T>(secret.value);
       if (result == null) {
         throw ArgumentError(
-            '$option not found in arguments or env variable `$envVariable`');
+          '$option not found in arguments or env variable `$envVariable`',
+        );
       }
       return result;
     }

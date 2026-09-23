@@ -12,8 +12,11 @@ import 'dart:io';
 
 const _appCenterApiBaseUrl = 'https://api.appcenter.ms/v0.1';
 const _appCenterFilesBaseUrl = 'https://file.appcenter.ms';
-String _tempDirectoryPath =
-    join(CliConstants.buildFolderPath, 'appcenter', 'upload');
+String _tempDirectoryPath = join(
+  CliConstants.buildFolderPath,
+  'appcenter',
+  'upload',
+);
 const _extensionMimeTypeMapper = {
   'apk': 'application/vnd.android.package-archive',
   'aab': 'application/x-authorware-bin',
@@ -141,7 +144,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
   }) async {
     final response = await http.post(
       Uri.parse(
-          "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases"),
+        "$_appCenterApiBaseUrl/apps/$ownerName/$appName/uploads/releases",
+      ),
       headers: _getHeaders(apiToken),
     );
     if (response.statusCode != HttpStatus.created) {
@@ -195,8 +199,9 @@ class AppCenterPlugin extends ImpaktfullPlugin {
           ? chunks.length
           : chunksUsed + chunkSize;
       final chunk = chunks.sublist(chunksUsed, newChunksUsed);
-      final chunkFile =
-          File(join(outputDirectory.path, 'chunk_$chunksIndex.apk'));
+      final chunkFile = File(
+        join(outputDirectory.path, 'chunk_$chunksIndex.apk'),
+      );
       await chunkFile.writeAsBytes(chunk);
       chunksUsed = newChunksUsed;
     }
@@ -236,7 +241,8 @@ class AppCenterPlugin extends ImpaktfullPlugin {
       if (response.statusCode != HttpStatus.ok) {
         ImpaktfullCliLogger.verbose(response.body);
         throw ImpaktfullCliError(
-            'Failed to upload chunk ($chunkProgress) to AppCenter');
+          'Failed to upload chunk ($chunkProgress) to AppCenter',
+        );
       }
     }
   }
@@ -340,10 +346,10 @@ class AppCenterPlugin extends ImpaktfullPlugin {
   }
 
   Map<String, String> _getHeaders(Secret apiToken) => {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'X-API-Token': apiToken.value,
-      };
+    'Content-Type': 'application/json',
+    'accept': 'application/json',
+    'X-API-Token': apiToken.value,
+  };
 
   Future<void> cleanup() async {
     final tempDirectory = Directory(_tempDirectoryPath);
@@ -358,6 +364,7 @@ class AppCenterPlugin extends ImpaktfullPlugin {
       return _extensionMimeTypeMapper[extension]!;
     }
     throw ImpaktfullCliError(
-        'Extension `$extension` is not supported to upload to AppCenter using the impaktfull_cli');
+      'Extension `$extension` is not supported to upload to AppCenter using the impaktfull_cli',
+    );
   }
 }

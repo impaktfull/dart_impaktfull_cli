@@ -26,7 +26,8 @@ class OpenSourceReportNewReleaseCommand
 
   @override
   Future<void> runCommand(
-      OpenSourceReportNewReleaseConfigData configData) async {
+    OpenSourceReportNewReleaseConfigData configData,
+  ) async {
     ImpaktfullCliLogger.log('Preparing report message');
     var message =
         'New version of ${configData.packageName} was released to pub.dev: `${configData.packageVersion}`';
@@ -38,7 +39,9 @@ class OpenSourceReportNewReleaseCommand
   }
 
   Future<void> sendSlackMessage(
-      String message, OpenSourceReportNewReleaseConfigData configData) async {
+    String message,
+    OpenSourceReportNewReleaseConfigData configData,
+  ) async {
     final plugin = SlackPlugin(processRunner: processRunner);
     final attachments = [
       SlackMessageAttachment(
@@ -46,7 +49,8 @@ class OpenSourceReportNewReleaseCommand
         color: '#00b330',
       ),
     ];
-    final channelName = configData.slackChannelName ??
+    final channelName =
+        configData.slackChannelName ??
         'open-source-${CaseUtil.snakeCaseToKebabCase(configData.packageName)}';
     await plugin.sendMessage(
       channelName: channelName,

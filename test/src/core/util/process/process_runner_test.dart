@@ -73,8 +73,9 @@ void main(List<String> args) {
     test('finds executables in the paths added to PATH', () async {
       final binDir = Directory(join(tempDir.path, 'bin'))..createSync();
       if (Platform.isWindows) {
-        File(join(binDir.path, 'impaktfull_fake_tool.bat'))
-            .writeAsStringSync('@echo fake tool\r\n');
+        File(
+          join(binDir.path, 'impaktfull_fake_tool.bat'),
+        ).writeAsStringSync('@echo fake tool\r\n');
       } else {
         final tool = File(join(binDir.path, 'impaktfull_fake_tool'))
           ..writeAsStringSync('#!/bin/sh\necho fake tool\n');

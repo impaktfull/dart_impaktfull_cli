@@ -23,8 +23,9 @@ class AndroidCreateKeystoreCommand
 
   @override
   Future<void> runCommand(AndroidCreateKeyStoreConfigData configData) async {
-    final androidCreateKeyStorePlugin =
-        AndroidCreateKeyStorePlugin(processRunner: processRunner);
+    final androidCreateKeyStorePlugin = AndroidCreateKeyStorePlugin(
+      processRunner: processRunner,
+    );
     for (final name in configData.configNames) {
       ImpaktfullCliLogger.startSpinner('Creating keystore for $name');
       await androidCreateKeyStorePlugin.createKeyStore(

@@ -21,18 +21,18 @@ class TestCoverageReport {
     required double percentage,
     required int amountOfLines,
     required int amountOfLinesCovered,
-  })  : _percentage = percentage,
-        _amountOfLines = amountOfLines,
-        _amountOfLinesCovered = amountOfLinesCovered,
-        _lcovFile = null;
+  }) : _percentage = percentage,
+       _amountOfLines = amountOfLines,
+       _amountOfLinesCovered = amountOfLinesCovered,
+       _lcovFile = null;
 
   TestCoverageReport.lcov({
     required this.name,
     required LcovFile lcovFile,
-  })  : _lcovFile = lcovFile,
-        _percentage = lcovFile.percentage,
-        _amountOfLines = lcovFile.amountOfLines,
-        _amountOfLinesCovered = lcovFile.amountOfLinesCovered;
+  }) : _lcovFile = lcovFile,
+       _percentage = lcovFile.percentage,
+       _amountOfLines = lcovFile.amountOfLines,
+       _amountOfLinesCovered = lcovFile.amountOfLinesCovered;
 
   String printReport(String name) {
     final percentage = (lcovFile.percentage * 100).toStringAsFixed(2);
@@ -42,7 +42,8 @@ class TestCoverageReport {
     sb.writeln('\n$name test coverage:');
     if (amountOfLines == 0) {
       sb.writeln(
-          '=> The test coverage report does not contain any lines! Did you write any tests?');
+        '=> The test coverage report does not contain any lines! Did you write any tests?',
+      );
     } else {
       sb.writeln('=> $percentage% ($amountOfLinesCovered / $amountOfLines)');
     }

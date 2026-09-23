@@ -29,7 +29,8 @@ class SlackSendMessageCommandConfig
       SlackSendMessageConfigData(
         message: argResults.getRequiredOption(_optionMessage),
         channelName: argResults.getRequiredOptionOrEnvVariable(
-            _optionChannelName,
-            ImpaktfullCliEnvironmentVariables.envKeySlackSendMessageChannel),
+          _optionChannelName,
+          ImpaktfullCliEnvironmentVariables.envKeySlackSendMessageChannel,
+        ),
       );
 }

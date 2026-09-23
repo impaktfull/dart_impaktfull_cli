@@ -27,21 +27,27 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
       throw ImpaktfullCliError('File `${file.path}` does not exists');
     }
     ImpaktfullCliEnvironment.requiresMacOs(
-        reason: 'Uploading to testflight can only be done on macos');
+      reason: 'Uploading to testflight can only be done on macos',
+    );
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.xcodeSelect]);
-    final path =
-        await processRunner.runProcess(['xcode-select', '--print-path']);
+    final path = await processRunner.runProcess([
+      'xcode-select',
+      '--print-path',
+    ]);
     final xCodeDirectory = Directory(path);
-    final xCodeToolsDirectory =
-        Directory(join(xCodeDirectory.path, 'usr', 'bin'));
+    final xCodeToolsDirectory = Directory(
+      join(xCodeDirectory.path, 'usr', 'bin'),
+    );
     final aToolFile = File(join(xCodeToolsDirectory.path, 'altool'));
     if (!aToolFile.existsSync()) {
       throw ImpaktfullCliError(
-          '`${aToolFile.path}` does not exists, `altool` is required to upload to testflight');
+        '`${aToolFile.path}` does not exists, `altool` is required to upload to testflight',
+      );
     }
 
     email = email ?? ImpaktfullCliEnvironmentVariables.getAppleEmail();
-    appSpecificPassword = appSpecificPassword ??
+    appSpecificPassword =
+        appSpecificPassword ??
         ImpaktfullCliEnvironmentVariables.getAppleAppSpecificPassword();
 
     ImpaktfullCliLogger.startSpinner('Uploading');
@@ -61,21 +67,27 @@ class TestFlightPlugin extends ImpaktfullCliPlugin {
       ImpaktfullCliLogger.clearSpinnerPrefix();
     } on ImpaktfullCliProcessRunnerError catch (error) {
       final errorOutput = error.errorOutput;
-      if (errorOutput
-          .contains('ITunesConnectionOperationErrorDomain Code=-19000')) {
+      if (errorOutput.contains(
+        'ITunesConnectionOperationErrorDomain Code=-19000',
+      )) {
         throw ImpaktfullCliError(
-            'Sign in with the app-specific password you generated. If you forgot the app-specific password or need to create a new one, go to appleid.apple.com');
-      } else if (errorOutput
-          .contains('The auth server returned a bad status code.')) {
+          'Sign in with the app-specific password you generated. If you forgot the app-specific password or need to create a new one, go to appleid.apple.com',
+        );
+      } else if (errorOutput.contains(
+        'The auth server returned a bad status code.',
+      )) {
         throw ImpaktfullCliError(
-            'Error during authentication with appstoreconnect (check email, app-specific password, connection to the internet)');
+          'Error during authentication with appstoreconnect (check email, app-specific password, connection to the internet)',
+        );
       } else if (errorOutput.contains('ContentDelivery Code=-19232') ||
           errorOutput.contains('ContentDelivery Code=90062')) {
         throw ImpaktfullCliError(
-            'The bundle version must be higher than the previously uploaded version');
+          'The bundle version must be higher than the previously uploaded version',
+        );
       } else if (errorOutput.contains('FORBIDDEN_ERROR.CONTRACT_NOT_VALID')) {
         throw ImpaktfullCliError(
-            'You need to accept the latest terms and conditions in App Store Connect');
+          'You need to accept the latest terms and conditions in App Store Connect',
+        );
       } else {
         rethrow;
       }
