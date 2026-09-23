@@ -27,9 +27,14 @@ class TestCoverageFlutterCommand
   Future<void> runCommand(TestCoverageFlutterConfigData configData) async {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
     if (configData.runTests) {
+      final isFvmProject = ImpaktfullCliEnvironment.instance.isFvmProject;
+      ImpaktfullCliEnvironment.requiresInstalledTools([
+        if (isFvmProject) CliTool.fvm,
+        CliTool.flutter,
+      ]);
       ImpaktfullCliLogger.startSpinner('Running tests...');
       await processRunner.runProcess([
-        if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
+        if (isFvmProject) ...[
           'fvm',
         ],
         'flutter',

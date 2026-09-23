@@ -27,9 +27,14 @@ class TestCoverageDartCommand extends CliCommand<TestCoverageDartConfigData> {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
 
     if (configData.runTests) {
+      final isFvmProject = ImpaktfullCliEnvironment.instance.isFvmProject;
+      ImpaktfullCliEnvironment.requiresInstalledTools([
+        if (isFvmProject) CliTool.fvm,
+        CliTool.dart,
+      ]);
       ImpaktfullCliLogger.startSpinner('Running tests...');
       await processRunner.runProcess([
-        if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
+        if (isFvmProject) ...[
           'fvm',
         ],
         'dart',

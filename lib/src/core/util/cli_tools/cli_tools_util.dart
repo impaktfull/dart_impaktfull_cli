@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/model/data/environment/installed_cli_tool.dart';
 import 'package:impaktfull_cli/src/core/model/data/environment/operating_system.dart';
+import 'package:meta/meta.dart';
 
 class CliToolsUtil {
   const CliToolsUtil._();
@@ -35,16 +38,20 @@ class CliToolsUtil {
     CliTool cliTool,
   ) async {
     try {
-      final result =
-          await processRunner.runProcess(['which', cliTool.commandName]);
-      if (result.isEmpty) {
+      final result = await processRunner.runProcess([
+        // Windows has no `which`.
+        OperatingSystem.current == OperatingSystem.windows ? 'where' : 'which',
+        cliTool.commandName,
+      ]);
+      final path = parseToolPath(result);
+      if (path == null) {
         return InstalledCliTool.notInstalled(
           cliTool: cliTool,
         );
       }
       return InstalledCliTool.installed(
         cliTool: cliTool,
-        path: result,
+        path: path,
       );
     } catch (e) {
       ImpaktfullCliLogger.verbose(
@@ -53,6 +60,17 @@ class CliToolsUtil {
         cliTool: cliTool,
       );
     }
+  }
+
+  /// The first path in the output of `which` or `where`. `where` lists every
+  /// match on the PATH, one per line (`flutter` and `flutter.bat`).
+  @visibleForTesting
+  static String? parseToolPath(String output) {
+    for (final line in const LineSplitter().convert(output)) {
+      final path = line.trim();
+      if (path.isNotEmpty) return path;
+    }
+    return null;
   }
 
   static String getCliToolsLog(List<InstalledCliTool> allCliTools) {
