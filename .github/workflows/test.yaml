@@ -11,10 +11,13 @@ on:
 permissions:
   contents: read
 
-# A new push to the same ref supersedes older runs instead of queueing them.
+# On a pull request, a new push supersedes older runs instead of queueing them.
+# Every commit on `main` is tested on its own: merges that land close together
+# can start their runs out of order, and an older commit must never cancel the
+# run of a newer one.
 concurrency:
-  group: test-${{ github.ref }}
-  cancel-in-progress: true
+  group: test-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # Format, analyze, docs and a publish dry run: everything that does not
