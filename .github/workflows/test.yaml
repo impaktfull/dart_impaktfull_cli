@@ -19,14 +19,17 @@ concurrency:
 jobs:
   # Format, analyze, docs and a publish dry run: everything that does not
   # depend on the host platform.
+  #
+  # Uses the same setup as `publish_to_pubdev.yml` (Dart stable on Ubuntu), so
+  # a release that passed this job on its release pull request also publishes.
+  # Keep the two in sync.
   validate:
     name: Validate
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
       - run: dart pub get
@@ -36,6 +39,8 @@ jobs:
         run: |
           dart run tool/generate_docs.dart
           git diff --exit-code docs/ README.md
+      # Fails on warnings too. The publish itself uses `--force`, so this is
+      # the only place they are caught.
       - run: dart pub publish --dry-run
 
   # impaktfull_cli starts other tools (flutter, fvm, git, ...) on every OS, and

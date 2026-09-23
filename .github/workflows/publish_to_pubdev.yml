@@ -12,9 +12,21 @@ permissions:
   contents: read
 
 jobs:
+  # Everything that could make this fail (analyze, tests, the publish dry run
+  # on the same toolchain) already ran on the release pull request, so this
+  # only publishes. `dart-lang/setup-dart` with `id-token: write` sets up the
+  # pub.dev authentication.
   publish:
+    name: Publish to pub.dev
+    environment: pub.dev
     permissions:
       id-token: write # Required for authentication using OIDC
-    uses: impaktfull/gh_action_dart_conventional_release/.github/workflows/flutter_release.yml@main
-    with:
-      environment: "pub.dev"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Same setup as the `Validate` job in `test.yaml`; keep them in sync.
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - run: dart pub get
+      - run: dart pub publish --force
