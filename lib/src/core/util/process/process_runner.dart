@@ -92,7 +92,7 @@ class CliProcessRunner extends ProcessRunner {
       args.length > 1 ? args.sublist(1) : [],
       environment: {
         ...?environment,
-        if (_path != null) _pathKey: _path!,
+        _pathKey: ?_path,
       },
       // On Windows `flutter`, `fvm` and friends are `.bat` files, which only
       // start through the shell. The shell also looks the executable up in

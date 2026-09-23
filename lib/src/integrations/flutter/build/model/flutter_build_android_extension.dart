@@ -29,7 +29,7 @@ extension FlutterBuildAndroidExtensions on FlutterBuildAndroidExtension {
             'app',
             'outputs',
             'apk',
-            if (flavor != null) flavor,
+            ?flavor,
             'release',
           ];
         } else {
