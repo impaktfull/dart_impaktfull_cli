@@ -1,6 +1,7 @@
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
+import 'package:impaktfull_cli/src/core/util/flutter/flutter_command.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/test_coverage_dart_command_config.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/command/dart/command/model/test_coverage_dart_config_data.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/model/test_coverage_type.dart';
@@ -27,17 +28,11 @@ class TestCoverageDartCommand extends CliCommand<TestCoverageDartConfigData> {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
 
     if (configData.runTests) {
-      final isFvmProject = ImpaktfullCliEnvironment.instance.isFvmProject;
-      ImpaktfullCliEnvironment.requiresInstalledTools([
-        if (isFvmProject) CliTool.fvm,
-        CliTool.dart,
-      ]);
+      // Without fvm, `FlutterCommand` falls back to the `dart` on the PATH.
+      ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.dart]);
       ImpaktfullCliLogger.startSpinner('Running tests...');
       await processRunner.runProcess([
-        if (isFvmProject) ...[
-          'fvm',
-        ],
-        'dart',
+        ...await FlutterCommand.dart(processRunner),
         'test',
         '--coverage=coverage',
       ]);
@@ -46,10 +41,7 @@ class TestCoverageDartCommand extends CliCommand<TestCoverageDartConfigData> {
     if (configData.convertToLcov) {
       ImpaktfullCliLogger.startSpinner('Converting to lcov...');
       await processRunner.runProcess([
-        if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
-          'fvm',
-        ],
-        'dart',
+        ...await FlutterCommand.dart(processRunner),
         'run',
         'coverage:format_coverage',
         '--lcov',
