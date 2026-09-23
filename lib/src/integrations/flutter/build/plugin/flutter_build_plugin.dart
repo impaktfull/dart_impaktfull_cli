@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
-import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
+import 'package:impaktfull_cli/src/core/util/flutter/flutter_command.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/core/util/process/process_runner.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
@@ -26,10 +26,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
     ImpaktfullCliLogger.setSpinnerPrefix('Flutter Build Android');
     ImpaktfullCliLogger.startSpinner('Building `$flavor`');
     await processRunner.runProcess([
-      if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
-        'fvm',
-      ],
-      'flutter',
+      ...await FlutterCommand.flutter(processRunner),
       'build',
       extension.flutterBuildArgument,
       '--release',
@@ -113,10 +110,7 @@ class FlutterBuildPlugin extends ImpaktfullCliPlugin {
       buildDirectory.deleteSync(recursive: true);
     }
     await processRunner.runProcess([
-      if (ImpaktfullCliEnvironment.instance.isFvmProject) ...[
-        'fvm',
-      ],
-      'flutter',
+      ...await FlutterCommand.flutter(processRunner),
       'build',
       extension.flutterBuildArgument,
       '--release',

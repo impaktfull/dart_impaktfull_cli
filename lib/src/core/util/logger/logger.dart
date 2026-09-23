@@ -65,6 +65,16 @@ class ImpaktfullCliLogger {
   static void verboseSeperator({bool singleLine = false}) =>
       verbose(singleLine ? _seperatorSingleLine : _seperator);
 
+  /// Always printed, also without verbose logging, without breaking a
+  /// running spinner.
+  static void warning(String message) {
+    stopSpinner();
+    // Without a terminal (like in CI logs) the spinner cannot clear its line.
+    if (_cliSpinnerActionDescription != null && !stdout.hasTerminal) _print('');
+    _print('⚠️ $message');
+    continueSpinner();
+  }
+
   static void error(String message) {
     if (message.startsWith('[ERROR]')) {
       _print(message);

@@ -100,3 +100,17 @@ jobs:
       - name: impaktfull_cli test_coverage flutter
         working-directory: ${{ runner.temp }}/e2e_app
         run: impaktfull_cli test_coverage flutter -v
+      # A project with an `.fvmrc` on a runner without fvm, the usual setup on
+      # GitHub-hosted runners: impaktfull_cli falls back to the `flutter` on the
+      # PATH and reports whether it is the version `.fvmrc` pins.
+      - name: impaktfull_cli test_coverage flutter (fvm project, fvm not installed)
+        working-directory: ${{ runner.temp }}/e2e_app
+        run: |
+          if command -v fvm; then
+            echo "fvm is installed on this runner, so the fallback is not tested"
+            exit 1
+          fi
+          flutter_version=$(flutter --version --machine | jq -r .frameworkVersion)
+          echo "{\"flutter\": \"$flutter_version\"}" > .fvmrc
+          impaktfull_cli test_coverage flutter | tee output.txt
+          grep -q "pins \`$flutter_version\`: matches" output.txt

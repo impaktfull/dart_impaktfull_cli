@@ -1,6 +1,7 @@
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/core/command/command/cli_command.dart';
 import 'package:impaktfull_cli/src/core/command/config/command_config.dart';
+import 'package:impaktfull_cli/src/core/util/flutter/flutter_command.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/command/flutter/command/test_coverage_flutter_command_config.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/command/flutter/command/model/test_coverage_flutter_config_data.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/model/test_coverage_type.dart';
@@ -27,17 +28,11 @@ class TestCoverageFlutterCommand
   Future<void> runCommand(TestCoverageFlutterConfigData configData) async {
     final testCoveragePlugin = TestCoveragePlugin(processRunner: processRunner);
     if (configData.runTests) {
-      final isFvmProject = ImpaktfullCliEnvironment.instance.isFvmProject;
-      ImpaktfullCliEnvironment.requiresInstalledTools([
-        if (isFvmProject) CliTool.fvm,
-        CliTool.flutter,
-      ]);
+      // Without fvm, `FlutterCommand` falls back to the `flutter` on the PATH.
+      ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
       ImpaktfullCliLogger.startSpinner('Running tests...');
       await processRunner.runProcess([
-        if (isFvmProject) ...[
-          'fvm',
-        ],
-        'flutter',
+        ...await FlutterCommand.flutter(processRunner),
         'test',
         '--coverage',
       ]);
