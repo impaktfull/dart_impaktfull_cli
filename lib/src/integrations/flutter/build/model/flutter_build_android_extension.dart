@@ -51,7 +51,7 @@ extension FlutterBuildAndroidExtensions on FlutterBuildAndroidExtension {
             'release',
           ] else ...[
             '${flavor}Release',
-          ]
+          ],
         ];
         break;
     }

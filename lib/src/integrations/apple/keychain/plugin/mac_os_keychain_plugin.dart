@@ -15,7 +15,8 @@ class MacOsKeyChainPlugin extends ImpaktfullCliPlugin {
     Secret? password,
   }) async {
     final fullName = _fullKeyChainName(name);
-    final unlockPassword = password ??
+    final unlockPassword =
+        password ??
         ImpaktfullCliEnvironmentVariables.getUnlockKeyChainPassword();
     await processRunner.runProcess([
       'security',

@@ -82,13 +82,12 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String vaultName,
     String fieldName = 'password',
     Secret? rawServiceAccount,
-  }) =>
-      getPassword(
-        vaultName: vaultName,
-        opUuid: opUuid,
-        fieldName: fieldName,
-        rawServiceAccount: rawServiceAccount,
-      );
+  }) => getPassword(
+    vaultName: vaultName,
+    opUuid: opUuid,
+    fieldName: fieldName,
+    rawServiceAccount: rawServiceAccount,
+  );
 
   Future<Secret> getPassword({
     required String vaultName,
@@ -113,17 +112,16 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     required String fieldName,
     Secret? rawServiceAccount,
     String? logContext,
-  }) async =>
-      _executeOnePasswordCommand(
-        [
-          'op',
-          'read',
-          'op://$vaultName/$opUuid/$fieldName',
-        ],
-        log:
-            'Reading field ($fieldName) from 1Password ${logContext == null ? null : '($logContext)'}',
-        rawServiceAccount: rawServiceAccount,
-      );
+  }) async => _executeOnePasswordCommand(
+    [
+      'op',
+      'read',
+      'op://$vaultName/$opUuid/$fieldName',
+    ],
+    log:
+        'Reading field ($fieldName) from 1Password ${logContext == null ? null : '($logContext)'}',
+    rawServiceAccount: rawServiceAccount,
+  );
 
   Future<File> downloadDistributionCertificate({
     required String opUuid,
@@ -131,34 +129,32 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     String outputPath = 'certificates/apple_distribution.p12',
     Secret? rawServiceAccount,
     bool removeFileAfterCliRun = true,
-  }) =>
-      downloadFile(
-        opUuid: opUuid,
-        outputPath: outputPath,
-        rawServiceAccount: rawServiceAccount,
-        removeFileAfterCliRun: removeFileAfterCliRun,
-      );
+  }) => downloadFile(
+    opUuid: opUuid,
+    outputPath: outputPath,
+    rawServiceAccount: rawServiceAccount,
+    removeFileAfterCliRun: removeFileAfterCliRun,
+  );
 
   Future<TestFlightCredentials> getTestFlightCredentials({
     required String vaultName,
     required String opUuid,
     Secret? rawServiceAccount,
-  }) async =>
-      TestFlightCredentials(
-        userName: await getOnePasswordField(
-          vaultName: vaultName,
-          opUuid: opUuid,
-          fieldName: 'username',
-          rawServiceAccount: rawServiceAccount,
-        ),
-        appSpecificPassword: await getPassword(
-          vaultName: vaultName,
-          opUuid: opUuid,
-          fieldName: 'password',
-          rawServiceAccount: rawServiceAccount,
-          logContext: 'Service Account Credentials',
-        ),
-      );
+  }) async => TestFlightCredentials(
+    userName: await getOnePasswordField(
+      vaultName: vaultName,
+      opUuid: opUuid,
+      fieldName: 'username',
+      rawServiceAccount: rawServiceAccount,
+    ),
+    appSpecificPassword: await getPassword(
+      vaultName: vaultName,
+      opUuid: opUuid,
+      fieldName: 'password',
+      rawServiceAccount: rawServiceAccount,
+      logContext: 'Service Account Credentials',
+    ),
+  );
 
   Future<File> downloadServiceAccountCredentials({
     required String opUuid,
@@ -166,15 +162,14 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
     String? vaultName,
     Secret? rawServiceAccount,
     bool removeFileAfterCliRun = true,
-  }) async =>
-      downloadFile(
-        opUuid: opUuid,
-        outputPath: outputPath,
-        vaultName: vaultName,
-        rawServiceAccount: rawServiceAccount,
-        logContext: 'Service Account Credentials',
-        removeFileAfterCliRun: removeFileAfterCliRun,
-      );
+  }) async => downloadFile(
+    opUuid: opUuid,
+    outputPath: outputPath,
+    vaultName: vaultName,
+    rawServiceAccount: rawServiceAccount,
+    logContext: 'Service Account Credentials',
+    removeFileAfterCliRun: removeFileAfterCliRun,
+  );
 
   Future<void> cleanupStoredFiles() async {
     for (final file in _storedFilesToRemove) {

@@ -89,7 +89,8 @@ class ImpaktfullCliLogger {
       if (errorMessages.isNotEmpty) {
         sb.writeln();
         sb.writeln(
-            'Possible logs we detected could be interesting to investigate:');
+          'Possible logs we detected could be interesting to investigate:',
+        );
         sb.writeln();
         sb.writeln();
         for (final element in errorMessages) {
@@ -187,7 +188,8 @@ class ImpaktfullCliLogger {
     if (_cliSpinnerActionDescription != null) {
       if (!overidePreviousSpinner) {
         throw ImpaktfullCliError(
-            '$_cliSpinnerActionDescription is still running, and `overidePreviousSpinner` is set to `false`');
+          '$_cliSpinnerActionDescription is still running, and `overidePreviousSpinner` is set to `false`',
+        );
       }
       endSpinner();
     }

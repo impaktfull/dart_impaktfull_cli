@@ -15,7 +15,8 @@ class ImpaktfullDashboardPlugin extends ImpaktfullCliPlugin {
     required ImpaktfullDashboardAppTestingVersionUploadConfig config,
   }) async {
     ImpaktfullCliLogger.setSpinnerPrefix(
-        'Impaktfull Dashboard app testing version upload');
+      'Impaktfull Dashboard app testing version upload',
+    );
     ImpaktfullCliLogger.startSpinner('Uploading');
     const appTestingUtil = ImpaktfullDashboardAppTestingUtil();
     await appTestingUtil.upload(

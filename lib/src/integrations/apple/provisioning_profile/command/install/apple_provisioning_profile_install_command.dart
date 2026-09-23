@@ -22,7 +22,8 @@ class AppleProvisioningProfileInstallCommand
 
   @override
   Future<void> runCommand(
-      AppleProvisioningProfileInstallConfigData configData) async {
+    AppleProvisioningProfileInstallConfigData configData,
+  ) async {
     final plugin = AppleProvisioningProfilePlugin(processRunner: processRunner);
     await plugin.scanAndInstallProvisioningProfiles();
   }

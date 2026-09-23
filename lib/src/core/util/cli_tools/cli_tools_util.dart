@@ -9,29 +9,30 @@ class CliToolsUtil {
   const CliToolsUtil._();
 
   static List<InstalledCliTool> getInstalledCliTools(
-          List<InstalledCliTool> allCliTools) =>
-      allCliTools.where((element) => element.isInstalled).toList();
+    List<InstalledCliTool> allCliTools,
+  ) => allCliTools.where((element) => element.isInstalled).toList();
 
   static List<InstalledCliTool> getNotInstalledCliTools(
-          List<InstalledCliTool> allCliTools) =>
-      allCliTools.where((element) => !element.isInstalled).toList();
+    List<InstalledCliTool> allCliTools,
+  ) => allCliTools.where((element) => !element.isInstalled).toList();
 
   static bool isInstalled(
     CliTool cliTool,
     List<InstalledCliTool> allCliTools,
-  ) =>
-      allCliTools.any((element) {
-        if (element.cliTool != cliTool) return false;
-        return element.isInstalled;
-      });
+  ) => allCliTools.any((element) {
+    if (element.cliTool != cliTool) return false;
+    return element.isInstalled;
+  });
 
   static Future<List<InstalledCliTool>> checkInstalledTools(
-          ProcessRunner processRunner) async =>
-      CliTool.values
-          .where((element) => element.supportedOperatingSystems
-              .contains(OperatingSystem.current))
-          .map((cliTool) => _isToolInstalled(processRunner, cliTool))
-          .wait;
+    ProcessRunner processRunner,
+  ) async => CliTool.values
+      .where(
+        (element) =>
+            element.supportedOperatingSystems.contains(OperatingSystem.current),
+      )
+      .map((cliTool) => _isToolInstalled(processRunner, cliTool))
+      .wait;
 
   static Future<InstalledCliTool> _isToolInstalled(
     ProcessRunner processRunner,
@@ -55,7 +56,8 @@ class CliToolsUtil {
       );
     } catch (e) {
       ImpaktfullCliLogger.verbose(
-          'Failed to check if ${cliTool.commandName} is installed');
+        'Failed to check if ${cliTool.commandName} is installed',
+      );
       return InstalledCliTool.notInstalled(
         cliTool: cliTool,
       );

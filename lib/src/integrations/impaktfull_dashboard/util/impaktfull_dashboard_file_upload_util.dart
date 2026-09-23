@@ -46,7 +46,8 @@ class ImpaktfullDashboardFileUploadUtil {
     final json = jsonDecode(body) as Map<String, dynamic>;
     if (response.statusCode != 200) {
       throw ImpaktfullCliError(
-          'Failed to upload file: ${response.statusCode} - $body');
+        'Failed to upload file: ${response.statusCode} - $body',
+      );
     }
     return json;
   }

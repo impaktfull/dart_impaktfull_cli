@@ -9,7 +9,8 @@ abstract class CiCdSetupOsUtil {
 
   Future<void> install() async {
     final name = ImpaktfullCliLogger.askQuestion(
-        "Enter the username for your CI/CD device:");
+      "Enter the username for your CI/CD device:",
+    );
     validateName(name);
     await installOsDependencies();
     await installFvm();
@@ -34,7 +35,8 @@ abstract class CiCdSetupOsUtil {
     final validMacUsernameRegex = RegExp(r'^[a-z][a-z0-9_-]*$');
     if (!validMacUsernameRegex.hasMatch(name)) {
       throw ImpaktfullCliError(
-          "Name must start with a lowercase letter and can only contain lowercase letters, numbers, underscores and hyphens");
+        "Name must start with a lowercase letter and can only contain lowercase letters, numbers, underscores and hyphens",
+      );
     }
   }
 
@@ -65,7 +67,8 @@ abstract class CiCdSetupOsUtil {
 
   Future<void> setFlutterVersionAsGlobal(String version) async {
     ImpaktfullCliLogger.startSpinner(
-        "Setting flutter version `$version` as global");
+      "Setting flutter version `$version` as global",
+    );
     await processRunner.runProcess([
       'fvm',
       'global',

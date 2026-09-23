@@ -119,7 +119,8 @@ class CiCdSetupMacZshrcUtil {
     final zshrcFile = _getZshrcFile();
     if (!zshrcFile.existsSync()) {
       throw ImpaktfullCliError(
-          "Zshrc not found, install zsh first and try again");
+        "Zshrc not found, install zsh first and try again",
+      );
     }
   }
 }

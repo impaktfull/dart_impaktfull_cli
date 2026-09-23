@@ -18,21 +18,26 @@ class AndroidProject {
   void _checkIfGradleFileExits() {
     if (!gradleFile.existsSync()) {
       throw ImpaktfullCliError(
-          '${gradleFile.path} does not exist. Maybe your android project is corrupt');
+        '${gradleFile.path} does not exist. Maybe your android project is corrupt',
+      );
     }
   }
 
   void replacePackageName(String newPackageName) {
     var content = gradleFile.readAsStringSync();
     content = content.replaceAll(
-        RegExp(r'applicationId "[\w.]*"'), 'applicationId "$newPackageName"');
+      RegExp(r'applicationId "[\w.]*"'),
+      'applicationId "$newPackageName"',
+    );
     gradleFile.writeAsStringSync(content);
   }
 
   void replaceNamespace(String newNameSpace) {
     var content = gradleFile.readAsStringSync();
     content = content.replaceAll(
-        RegExp(r'namespace "[\w.]*"'), 'namespace "$newNameSpace"');
+      RegExp(r'namespace "[\w.]*"'),
+      'namespace "$newNameSpace"',
+    );
     gradleFile.writeAsStringSync(content);
   }
 
@@ -51,18 +56,25 @@ class AndroidProject {
     final allMatches = configBlockPattern.allMatches(content);
     final match = allMatches.first.group(0)!;
     final updatedMatch = match
-        .replaceFirst(RegExp(r'storePassword "(.*?)"'),
-            'storePassword "${keyStoreCredentials.password}"')
-        .replaceFirst(RegExp(r'keyAlias "(.*?)"'),
-            'keyAlias "${keyStoreCredentials.keyAlias}"')
-        .replaceFirst(RegExp(r'keyPassword "(.*?)"'),
-            'keyPassword "${keyStoreCredentials.password}"');
+        .replaceFirst(
+          RegExp(r'storePassword "(.*?)"'),
+          'storePassword "${keyStoreCredentials.password}"',
+        )
+        .replaceFirst(
+          RegExp(r'keyAlias "(.*?)"'),
+          'keyAlias "${keyStoreCredentials.keyAlias}"',
+        )
+        .replaceFirst(
+          RegExp(r'keyPassword "(.*?)"'),
+          'keyPassword "${keyStoreCredentials.password}"',
+        );
 
     final updatedContent = content.replaceAll(configBlockPattern, updatedMatch);
 
     if (updatedContent == content) {
       throw ImpaktfullCliError(
-          'No matching signing config named "$name" found or no changes necessary.');
+        'No matching signing config named "$name" found or no changes necessary.',
+      );
     }
 
     gradleFile.writeAsStringSync(updatedContent);

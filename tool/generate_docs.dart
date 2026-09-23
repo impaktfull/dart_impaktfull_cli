@@ -65,8 +65,9 @@ class DocsGenerator {
     Command<void> cmd,
   ) {
     for (final sub in cmd.subcommands.values) {
-      final sectionName =
-          sectionPrefix.isEmpty ? sub.name : '$sectionPrefix ${sub.name}';
+      final sectionName = sectionPrefix.isEmpty
+          ? sub.name
+          : '$sectionPrefix ${sub.name}';
       if (sub.subcommands.isEmpty) {
         buffer.write(_buildLeafSection(rootName, sectionName, sub));
       } else {
@@ -97,8 +98,9 @@ class DocsGenerator {
   }
 
   String buildOptionsTable(Command<void> cmd) {
-    final options =
-        cmd.argParser.options.values.where((o) => o.name != 'help').toList();
+    final options = cmd.argParser.options.values
+        .where((o) => o.name != 'help')
+        .toList();
 
     if (options.isEmpty) return '_No options._\n';
 
@@ -121,8 +123,9 @@ class DocsGenerator {
 
   List<String> extractEnvKeys(String source) {
     final regex = RegExp(
-        r"static const (?:String )?_?envKey\w+\s*=\s*'([^']+)'",
-        multiLine: true);
+      r"static const (?:String )?_?envKey\w+\s*=\s*'([^']+)'",
+      multiLine: true,
+    );
     return regex.allMatches(source).map((m) => m.group(1)!).toList();
   }
 
@@ -131,33 +134,44 @@ class DocsGenerator {
     buffer.writeln('# impaktfull_cli');
     buffer.writeln();
     buffer.writeln(
-        '> **impaktfull_cli is still unstable. Everything under 1.0.0 should not be used unless you want to test it.**');
+      '> **impaktfull_cli is still unstable. Everything under 1.0.0 should not be used unless you want to test it.**',
+    );
     buffer.writeln();
     buffer.writeln(
-        '[![pub package](https://img.shields.io/pub/v/impaktfull_cli.svg)](https://pub.dartlang.org/packages/impaktfull_cli)');
+      '[![pub package](https://img.shields.io/pub/v/impaktfull_cli.svg)](https://pub.dartlang.org/packages/impaktfull_cli)',
+    );
     buffer.writeln(
-        '[![test](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)');
+      '[![test](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)](https://github.com/impaktfull/dart_impaktfull_cli/actions/workflows/test.yaml/badge.svg)',
+    );
     buffer.writeln(
-        '[![docs](https://img.shields.io/badge/docs-docs.page-7D64F2)](https://docs.page/impaktfull/impaktfull_cli)');
+      '[![docs](https://img.shields.io/badge/docs-docs.page-7D64F2)](https://docs.page/impaktfull/impaktfull_cli)',
+    );
     buffer.writeln();
     buffer.writeln(
-        'A CLI that replaces `fastlane` by simplifying the CI/CD process for Flutter and Dart projects.');
+      'A CLI that replaces `fastlane` by simplifying the CI/CD process for Flutter and Dart projects.',
+    );
     buffer.writeln();
     buffer.writeln('## Documentation');
     buffer.writeln();
     buffer.writeln(
-        'Full documentation is available at **[docs.page/impaktfull/impaktfull_cli](https://docs.page/impaktfull/impaktfull_cli)**:');
+      'Full documentation is available at **[docs.page/impaktfull/impaktfull_cli](https://docs.page/impaktfull/impaktfull_cli)**:',
+    );
     buffer.writeln();
     buffer.writeln(
-        '- [Installation](https://docs.page/impaktfull/impaktfull_cli/installation)');
+      '- [Installation](https://docs.page/impaktfull/impaktfull_cli/installation)',
+    );
     buffer.writeln(
-        '- [Commands](https://docs.page/impaktfull/impaktfull_cli/commands/index)');
+      '- [Commands](https://docs.page/impaktfull/impaktfull_cli/commands/index)',
+    );
     buffer.writeln(
-        '- [Configuration / ENV variables](https://docs.page/impaktfull/impaktfull_cli/configuration)');
+      '- [Configuration / ENV variables](https://docs.page/impaktfull/impaktfull_cli/configuration)',
+    );
     buffer.writeln(
-        '- [Dart API](https://docs.page/impaktfull/impaktfull_cli/dart-api)');
+      '- [Dart API](https://docs.page/impaktfull/impaktfull_cli/dart-api)',
+    );
     buffer.writeln(
-        '- [Extending the CLI](https://docs.page/impaktfull/impaktfull_cli/extending)');
+      '- [Extending the CLI](https://docs.page/impaktfull/impaktfull_cli/extending)',
+    );
     buffer.writeln();
     buffer.writeln('## Commands');
     buffer.writeln();

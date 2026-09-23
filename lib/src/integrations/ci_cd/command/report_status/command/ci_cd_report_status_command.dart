@@ -34,7 +34,9 @@ class CiCdReportStatusCommand extends CliCommand<CiCdReportStatusConfigData> {
   }
 
   Future<void> sendSlackMessage(
-      String message, CiCdReportStatusConfigData configData) async {
+    String message,
+    CiCdReportStatusConfigData configData,
+  ) async {
     final plugin = SlackPlugin(processRunner: processRunner);
     final attachments = [
       SlackMessageAttachment(
@@ -45,7 +47,8 @@ class CiCdReportStatusCommand extends CliCommand<CiCdReportStatusConfigData> {
     final channelName = configData.slackChannelName;
     if (channelName == null) {
       throw ImpaktfullCliError(
-          '`${CiCdReportStatusCommandConfig.optionSlackChannelName}` is required');
+        '`${CiCdReportStatusCommandConfig.optionSlackChannelName}` is required',
+      );
     }
     await plugin.sendMessage(
       channelName: channelName,

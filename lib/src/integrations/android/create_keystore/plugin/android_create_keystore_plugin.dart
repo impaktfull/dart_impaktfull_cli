@@ -26,7 +26,8 @@ class AndroidCreateKeyStorePlugin extends ImpaktfullCliPlugin {
     final keystoreFile = File(join('android', 'keystore', '$name.keystore'));
     if (keystoreFile.existsSync()) {
       throw ImpaktfullCliError(
-          '${keystoreFile.path} already exist. Remove it and run the cli again if you are 100% sure you want to replace the old one.');
+        '${keystoreFile.path} already exist. Remove it and run the cli again if you are 100% sure you want to replace the old one.',
+      );
     }
     if (!keystoreFile.parent.existsSync()) {
       keystoreFile.parent.createSync(recursive: true);
@@ -67,7 +68,8 @@ class AndroidCreateKeyStorePlugin extends ImpaktfullCliPlugin {
     final androidProject = AndroidProject(Directory('.'));
     androidProject.validate();
     androidProject.replaceSigningConfig(
-        keyStoreCredentials: keyStoreCredentials);
+      keyStoreCredentials: keyStoreCredentials,
+    );
     return keyStoreCredentials;
   }
 }
