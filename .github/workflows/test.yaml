@@ -20,30 +20,28 @@ jobs:
   # Format, analyze, docs and a publish dry run: everything that does not
   # depend on the host platform.
   #
-  # Runs on the same toolchain and with the same commands as the publish in
-  # `publish_to_pubdev.yml` (Flutter stable on Ubuntu, `flutter pub`), so a
-  # release that passed this job on its release PR also publishes. Keep the
-  # two in sync when either changes.
+  # Uses the same setup as `publish_to_pubdev.yml` (Dart stable on Ubuntu), so
+  # a release that passed this job on its release pull request also publishes.
+  # Keep the two in sync.
   validate:
     name: Validate
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: dart-lang/setup-dart@v1
         with:
-          channel: stable
-          cache: true
-      - run: flutter pub get
+          sdk: stable
+      - run: dart pub get
       - run: dart format --set-exit-if-changed .
       - run: dart analyze
       - name: Check docs are up to date
         run: |
           dart run tool/generate_docs.dart
           git diff --exit-code docs/ README.md
-      # A warning fails the dry run, and the publish runs this same dry run
-      # before it publishes.
-      - run: flutter pub publish --dry-run
+      # Fails on warnings too. The publish itself uses `--force`, so this is
+      # the only place they are caught.
+      - run: dart pub publish --dry-run
 
   # impaktfull_cli starts other tools (flutter, fvm, git, ...) on every OS, and
   # how a process is started, found on the PATH and read from differs per OS.
