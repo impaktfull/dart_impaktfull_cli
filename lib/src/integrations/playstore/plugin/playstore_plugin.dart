@@ -3,20 +3,17 @@ import 'dart:io';
 
 import 'package:googleapis/androidpublisher/v3.dart';
 import "package:googleapis_auth/auth_io.dart";
-import 'package:impaktfull_cli/src/core/cli_constants.dart';
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 import 'package:impaktfull_cli/src/core/model/error/impaktfull_cli_error.dart';
 import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
+import 'package:impaktfull_cli/src/integrations/playstore/model/aab_manifest.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload_config.dart';
 import 'package:path/path.dart';
 
 class PlayStorePlugin extends ImpaktfullCliPlugin {
-  final _apkOutputDirectory = Directory(
-    join(CliConstants.buildFolderPath, 'aab_to_apk_output'),
-  );
   PlayStorePlugin({
     required super.processRunner,
   });
@@ -32,15 +29,16 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     if (!file.existsSync()) {
       throw ImpaktfullCliError('File `${file.path}` does not exists');
     }
-    ImpaktfullCliLogger.startSpinner('Get packageName from file');
-    final packageName = await _getPackageName(file);
-    ImpaktfullCliLogger.startSpinner('Get versionCode from file');
-    final versionCode = await _getVersionCode(file);
-    ImpaktfullCliLogger.startSpinner('Get versionName from file');
-    final versionName = await _getVersionName(file);
-    if (_apkOutputDirectory.existsSync()) {
-      _apkOutputDirectory.deleteSync(recursive: true);
+    if (extension(file.path) != '.aab') {
+      throw ImpaktfullCliError(
+        'Only Android App Bundles (.aab) can be uploaded to the Play Store, not `${file.path}`',
+      );
     }
+    ImpaktfullCliLogger.startSpinner('Read package name and version');
+    final manifest = AabManifest.fromFile(file);
+    final packageName = manifest.packageName;
+    final versionCode = manifest.versionCode.toString();
+    final versionName = manifest.versionName;
     ImpaktfullCliLogger.verbose('Detected package name: `$packageName`');
     ImpaktfullCliLogger.verbose('Detected version code: `$versionCode`');
     ImpaktfullCliLogger.verbose('Detected version name: `$versionName`');
@@ -79,7 +77,9 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
                 versionCodes: [
                   versionCode,
                 ],
-                name: '$versionName ($versionCode)',
+                name: versionName == null
+                    ? versionCode
+                    : '$versionName ($versionCode)',
                 status: releaseStatus.value,
               ),
             ],
@@ -158,89 +158,5 @@ class PlayStorePlugin extends ImpaktfullCliPlugin {
     }
     final serviceAccountCredentialsJson = jsonDecode(credentials.value);
     return ServiceAccountCredentials.fromJson(serviceAccountCredentialsJson);
-  }
-
-  Future<String> _getPackageName(File file) async {
-    final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess([
-      'aapt2',
-      'dump',
-      'badging',
-      apkFile.path,
-    ]);
-    const regex = r"package: name='([^']*)'";
-    final value = RegExp(regex).firstMatch(config)?.group(1);
-    if (value == null) {
-      throw ImpaktfullCliError('Package name not found');
-    }
-    return value;
-  }
-
-  Future<String> _getVersionCode(File file) async {
-    final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess([
-      'aapt2',
-      'dump',
-      'badging',
-      apkFile.path,
-    ]);
-    const regex = r"versionCode='(\d+)'";
-    final value = RegExp(regex).firstMatch(config)?.group(1);
-    if (value == null) {
-      throw ImpaktfullCliError('Version code not found');
-    }
-    return value;
-  }
-
-  Future<String> _getVersionName(File file) async {
-    final apkFile = await _getApk(file);
-    final config = await processRunner.runProcess([
-      'aapt2',
-      'dump',
-      'badging',
-      apkFile.path,
-    ]);
-    const regex = r"versionName='([^']*)'";
-    final value = RegExp(regex).firstMatch(config)?.group(1);
-    if (value == null) {
-      throw ImpaktfullCliError('Version name not found');
-    }
-    return value;
-  }
-
-  Future<File> _getApk(File file) async {
-    final fileExtension = extension(file.path);
-    if (fileExtension == '.aab') {
-      final apksFile = File('app.apks');
-      final apksZipFile = File('aab_to_apks.zip');
-      final baseApkFile = File(
-        join(_apkOutputDirectory.path, 'splits', 'base-master.apk'),
-      );
-      await processRunner.runProcess([
-        'bundletool',
-        'build-apks',
-        '--bundle=${file.path}',
-        '--output=${apksFile.path}',
-      ]);
-      apksFile.renameSync(apksZipFile.path);
-      if (_apkOutputDirectory.existsSync()) {
-        _apkOutputDirectory.deleteSync(recursive: true);
-      }
-      _apkOutputDirectory.createSync(recursive: true);
-      await processRunner.runProcess([
-        'unzip',
-        apksZipFile.path,
-        '-d',
-        _apkOutputDirectory.path,
-      ]);
-      apksZipFile.deleteSync(recursive: true);
-      return _getApk(baseApkFile);
-    } else if (fileExtension == '.apk') {
-      return file;
-    } else {
-      throw ImpaktfullCliError(
-        'Automatic detection of the package name is currently only supported for [.aab & .apk] files',
-      );
-    }
   }
 }

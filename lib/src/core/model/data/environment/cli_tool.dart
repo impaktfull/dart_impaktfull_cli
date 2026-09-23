@@ -27,11 +27,11 @@ enum CliTool {
   ),
   aapt2(
     name: 'Android Asset Packaging Tool',
-    commandName: 'aapt',
+    commandName: 'aapt2',
   ),
   bundleTool(
     name: 'Bundle Tool',
-    commandName: 'bundleTool',
+    commandName: 'bundletool',
     installationInstructions: {
       OperatingSystem.macOS: 'brew install bundletool',
     },
