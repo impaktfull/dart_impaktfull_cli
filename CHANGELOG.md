@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.0](https://github.com/impaktfull/dart_impaktfull_cli/compare/v0.31.2...v1.0.0) (2026-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* require Dart 3.9 or newer, with googleapis, googleapis_auth and lints updated ([#59](https://github.com/impaktfull/dart_impaktfull_cli/issues/59))
+
+### Features
+
+* fvm projects fall back to the flutter and dart on the PATH when fvm is not installed, and report whether that version matches the one fvm pins ([4f6880a](https://github.com/impaktfull/dart_impaktfull_cli/commit/4f6880a2793e7c7975749a38d2960808a462bc03))
+* require Dart 3.9 or newer, with googleapis, googleapis_auth and lints updated ([#59](https://github.com/impaktfull/dart_impaktfull_cli/issues/59)) ([2c4b451](https://github.com/impaktfull/dart_impaktfull_cli/commit/2c4b4512a7f72b8a5ecc95b8e13583e285a9c53d))
+
+
+### Bug Fixes
+
+* `flutter build` is called with `--obfuscate` instead of `obfuscate` ([68eb6ac](https://github.com/impaktfull/dart_impaktfull_cli/commit/68eb6ac8f0b13ad12b914661543d23af3ea9dbad))
+* `test_coverage` fails with a clear error when flutter or dart is not installed ([68eb6ac](https://github.com/impaktfull/dart_impaktfull_cli/commit/68eb6ac8f0b13ad12b914661543d23af3ea9dbad))
+* aapt2 and bundletool are detected under their real command names ([4f6880a](https://github.com/impaktfull/dart_impaktfull_cli/commit/4f6880a2793e7c7975749a38d2960808a462bc03))
+* output of subprocesses is no longer randomly lost, which made installed tools like flutter show up as not installed ([68eb6ac](https://github.com/impaktfull/dart_impaktfull_cli/commit/68eb6ac8f0b13ad12b914661543d23af3ea9dbad))
+* Play Store uploads read the package name and version from the .aab itself, so bundletool and aapt2 are no longer needed ([4f6880a](https://github.com/impaktfull/dart_impaktfull_cli/commit/4f6880a2793e7c7975749a38d2960808a462bc03))
+* the cli starts on Windows and finds flutter, fvm and other tools there ([68eb6ac](https://github.com/impaktfull/dart_impaktfull_cli/commit/68eb6ac8f0b13ad12b914661543d23af3ea9dbad))
+
 ## 0.31.2
 
 ### Added
