@@ -118,13 +118,14 @@ List<int> _varint(int value) {
 /// Built with `addFile`, the `ArchiveFile` constructor and `encode` — the
 /// members `archive` 3 and 4 both have, so the suite runs on either.
 ///
-/// The cast is what carries that across the majors: `encode` answers
-/// `List<int>?` on 3 and `List<int>` on 4, and a cast is the one form that is
-/// neither an unnecessary `!` on the newer one nor a type error on the older.
+/// `encode` answers `List<int>?` on 3 and `List<int>` on 4, so the result is
+/// held in a nullable local: against that declared type the `!` is necessary
+/// on either major, where a cast or a bare `!` is flagged on one of them.
 List<int> _zip(Map<String, List<int>> entries) {
   final archive = Archive();
   for (final entry in entries.entries) {
     archive.addFile(ArchiveFile(entry.key, entry.value.length, entry.value));
   }
-  return ZipEncoder().encode(archive) as List<int>;
+  final List<int>? encoded = ZipEncoder().encode(archive);
+  return encoded!;
 }
