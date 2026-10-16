@@ -26,16 +26,13 @@ void main() {
     test('reads the manifest from an .aab file', () {
       final tempDir = Directory.systemTemp.createTempSync('aab_manifest_test');
       addTearDown(() => tempDir.deleteSync(recursive: true));
-      final archive = Archive()
-        ..add(ArchiveFile.bytes('base/dex/classes.dex', [0, 1, 2]))
-        ..add(
-          ArchiveFile.bytes(
-            'base/manifest/AndroidManifest.xml',
-            manifestFixture,
-          ),
-        );
       final aab = File(join(tempDir.path, 'app-release.aab'))
-        ..writeAsBytesSync(ZipEncoder().encodeBytes(archive));
+        ..writeAsBytesSync(
+          _zip({
+            'base/dex/classes.dex': [0, 1, 2],
+            'base/manifest/AndroidManifest.xml': manifestFixture,
+          }),
+        );
 
       final manifest = AabManifest.fromFile(aab);
       expect(manifest.packageName, 'com.example.e2e_app');
@@ -65,10 +62,12 @@ void main() {
     test('throws for a file that is not an app bundle', () {
       final tempDir = Directory.systemTemp.createTempSync('aab_manifest_test');
       addTearDown(() => tempDir.deleteSync(recursive: true));
-      final archive = Archive()
-        ..add(ArchiveFile.bytes('AndroidManifest.xml', [0, 1, 2]));
       final apk = File(join(tempDir.path, 'app-release.aab'))
-        ..writeAsBytesSync(ZipEncoder().encodeBytes(archive));
+        ..writeAsBytesSync(
+          _zip({
+            'AndroidManifest.xml': [0, 1, 2],
+          }),
+        );
       expect(
         () => AabManifest.fromFile(apk),
         throwsA(isA<ImpaktfullCliError>()),
@@ -114,4 +113,14 @@ List<int> _varint(int value) {
   }
   bytes.add(value);
   return bytes;
+}
+
+/// Built with `addFile`, the `ArchiveFile` constructor and `encode` — the
+/// members `archive` 3 and 4 both have, so the suite runs on either.
+List<int> _zip(Map<String, List<int>> entries) {
+  final archive = Archive();
+  for (final entry in entries.entries) {
+    archive.addFile(ArchiveFile(entry.key, entry.value.length, entry.value));
+  }
+  return ZipEncoder().encode(archive)!;
 }

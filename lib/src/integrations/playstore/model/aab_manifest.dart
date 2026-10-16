@@ -24,20 +24,19 @@ class AabManifest {
     required this.versionName,
   });
 
+  /// Decoded from the bytes rather than streamed off disk, because
+  /// `decodeBytes`, `findFile` and `content` are the three archive members that
+  /// `archive` 3 and 4 both have — which is what lets this package resolve
+  /// beside one that is still held on `archive` 3.
   factory AabManifest.fromFile(File file) {
-    final input = InputFileStream(file.path);
-    try {
-      final archive = ZipDecoder().decodeStream(input);
-      final manifest = archive.findFile(_manifestPath)?.readBytes();
-      if (manifest == null) {
-        throw ImpaktfullCliError(
-          '`${file.path}` is not an Android App Bundle: $_manifestPath is missing',
-        );
-      }
-      return AabManifest.fromProto(manifest);
-    } finally {
-      input.closeSync();
+    final archive = ZipDecoder().decodeBytes(file.readAsBytesSync());
+    final manifest = archive.findFile(_manifestPath)?.content as List<int>?;
+    if (manifest == null) {
+      throw ImpaktfullCliError(
+        '`${file.path}` is not an Android App Bundle: $_manifestPath is missing',
+      );
     }
+    return AabManifest.fromProto(Uint8List.fromList(manifest));
   }
 
   /// Parses the manifest of a bundle module, which aapt2 stores as a protobuf
