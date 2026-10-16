@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.0...v1.0.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* resolve beside a package still held on archive 3 ([#68](https://github.com/impaktfull/dart_impaktfull_cli/issues/68)) ([298bb22](https://github.com/impaktfull/dart_impaktfull_cli/commit/298bb22cb81626f5ad3ba92a9fc8778f0face9e9))
+
 ## [1.0.0](https://github.com/impaktfull/dart_impaktfull_cli/compare/v0.31.2...v1.0.0) (2026-09-23)
 
 
