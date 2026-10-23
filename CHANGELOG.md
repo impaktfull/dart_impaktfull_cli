@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.1...v1.0.2) (2026-10-23)
+
+
+### Bug Fixes
+
+* fail the TestFlight upload when altool reports an error ([#70](https://github.com/impaktfull/dart_impaktfull_cli/issues/70)) ([d19de79](https://github.com/impaktfull/dart_impaktfull_cli/commit/d19de7908fb2a987c5caf6735cf5e6ec110c63d3))
+
 ## [1.0.1](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.0...v1.0.1) (2026-10-16)
 
 
