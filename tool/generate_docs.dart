@@ -207,6 +207,19 @@ class DocsGenerator {
     for (final key in envKeys) {
       buffer.writeln('| `$key` | |');
     }
+    buffer.writeln();
+    buffer.writeln('## 1Password service accounts');
+    buffer.writeln();
+    buffer.writeln(
+      'When a service account token is used (`OP_SERVICE_ACCOUNT_TOKEN` in the '
+      'environment, or passed by a command), impaktfull CLI runs `op` with '
+      '`OP_BIOMETRIC_UNLOCK_ENABLED=false`. Otherwise `op` also probes the '
+      '1Password desktop app when its CLI integration is on, and macOS asks '
+      'whether the runner may "access data from other apps", which blocks the '
+      'CI job until someone clicks Allow. Set `OP_BIOMETRIC_UNLOCK_ENABLED` '
+      'yourself to override this. Without a token, `op` keeps using the '
+      'desktop app (Touch ID).',
+    );
     return buffer.toString();
   }
 }
