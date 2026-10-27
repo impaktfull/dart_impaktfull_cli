@@ -12,6 +12,7 @@ class ImpaktfullCliEnvironmentVariables {
   static const _envKeyGoogleServiceAccountJsonRaw =
       'GOOGLE_SERVICE_ACCOUNT_JSON_RAW';
   static const envKeyOnePasswordAccountToken = 'OP_SERVICE_ACCOUNT_TOKEN';
+  static const envKeyOnePasswordBiometricUnlock = 'OP_BIOMETRIC_UNLOCK_ENABLED';
   static const _envKeySlackBotToken = 'SLACK_BOT_TOKEN';
   static const envKeySlackSendMessageChannel = 'SLACK_SEND_MESSAGE_CHANNEL';
   static const envKeyGithubBuildNr = 'GITHUB_RUN_NUMBER';

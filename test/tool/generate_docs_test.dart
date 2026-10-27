@@ -149,12 +149,12 @@ void main() {
       expect(keys, isNot(contains('jobName')));
     });
 
-    test('extracts all 10 keys from the actual env vars file', () {
+    test('extracts all 11 keys from the actual env vars file', () {
       final source = File(
         'lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart',
       ).readAsStringSync();
       final keys = generator.extractEnvKeys(source);
-      expect(keys.length, equals(10));
+      expect(keys.length, equals(11));
       expect(
         keys,
         containsAll([
@@ -165,6 +165,7 @@ void main() {
           'APPLE_APP_SPECIFIC_PASSWORD',
           'GOOGLE_SERVICE_ACCOUNT_JSON_RAW',
           'OP_SERVICE_ACCOUNT_TOKEN',
+          'OP_BIOMETRIC_UNLOCK_ENABLED',
           'SLACK_BOT_TOKEN',
           'SLACK_SEND_MESSAGE_CHANNEL',
           'GITHUB_RUN_NUMBER',

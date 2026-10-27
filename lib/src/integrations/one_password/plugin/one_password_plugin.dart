@@ -5,6 +5,7 @@ import 'package:impaktfull_cli/src/core/plugin/impaktfull_cli_plugin.dart';
 import 'package:impaktfull_cli/src/core/util/args/env/impaktfull_cli_environment_variables.dart';
 import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/model/testflight_credentials.dart';
+import 'package:meta/meta.dart';
 
 final _storedFilesToRemove = <File>[];
 
@@ -12,9 +13,17 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
   String get serviceAccountEnvKey =>
       ImpaktfullCliEnvironmentVariables.envKeyOnePasswordAccountToken;
 
+  String get biometricUnlockEnvKey =>
+      ImpaktfullCliEnvironmentVariables.envKeyOnePasswordBiometricUnlock;
+
+  final Map<String, String>? _environment;
+
+  Map<String, String> get environment => _environment ?? Platform.environment;
+
   const OnePasswordPlugin({
     required super.processRunner,
-  });
+    @visibleForTesting Map<String, String>? environment,
+  }) : _environment = environment;
 
   Future<String> _executeOnePasswordCommand<T>(
     List<String> args, {
@@ -25,12 +34,21 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
       '1Password: $log',
       skipPrefix: true,
     );
+    final hasServiceAccount =
+        rawServiceAccount != null ||
+        (environment[serviceAccountEnvKey]?.isNotEmpty ?? false);
     final result = await processRunner.runProcess(
       args,
       environment: {
         if (rawServiceAccount != null) ...{
           serviceAccountEnvKey: rawServiceAccount.value,
         },
+        // Service account mode: never use the 1Password desktop app
+        // integration. Probing the app reads its Group Container, which makes
+        // macOS show an "access data from other apps" prompt on CI runners.
+        if (hasServiceAccount &&
+            !environment.containsKey(biometricUnlockEnvKey))
+          biometricUnlockEnvKey: 'false',
       },
       maskOutput: true,
     );
