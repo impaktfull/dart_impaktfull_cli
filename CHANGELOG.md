@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.2...v1.0.3) (2026-10-27)
+
+
+### Bug Fixes
+
+* skip the 1Password desktop app in service account mode ([#72](https://github.com/impaktfull/dart_impaktfull_cli/issues/72)) ([a3942f4](https://github.com/impaktfull/dart_impaktfull_cli/commit/a3942f48de5abab461d14b7fbdfea4ba18446015))
+
 ## [1.0.2](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.1...v1.0.2) (2026-10-23)
 
 
