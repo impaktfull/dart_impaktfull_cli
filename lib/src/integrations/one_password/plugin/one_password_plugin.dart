@@ -47,8 +47,9 @@ class OnePasswordPlugin extends ImpaktfullCliPlugin {
         // integration. Probing the app reads its Group Container, which makes
         // macOS show an "access data from other apps" prompt on CI runners.
         if (hasServiceAccount &&
-            !environment.containsKey(biometricUnlockEnvKey))
+            !environment.containsKey(biometricUnlockEnvKey)) ...{
           biometricUnlockEnvKey: 'false',
+        },
       },
       maskOutput: true,
     );
