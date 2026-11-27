@@ -1,5 +1,8 @@
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_credentials.dart';
 
+@Deprecated(
+  'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+)
 class ImpaktfullDashboardAppTestingVersionUploadConfig {
   /// credentials to authenticate to impaktfull dashboard
   final ImpaktfullDashboardCredentials credentials;

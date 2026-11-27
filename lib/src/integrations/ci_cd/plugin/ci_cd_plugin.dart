@@ -16,6 +16,8 @@ import 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_buil
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_upload_config.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/plugin/impaktfull_appstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/playstore/model/playstore_upload_config.dart';
@@ -31,6 +33,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
   final TestFlightPlugin testflightPlugin;
   final PlayStorePlugin playStorePlugin;
   final ImpaktfullDashboardPlugin impaktfullDashboardPlugin;
+  final ImpaktfullAppstorePlugin impaktfullAppstorePlugin;
   final GitPlugin gitPlugin;
 
   const CiCdPlugin({
@@ -41,6 +44,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     required this.testflightPlugin,
     required this.playStorePlugin,
     required this.impaktfullDashboardPlugin,
+    required this.impaktfullAppstorePlugin,
     required this.gitPlugin,
     super.processRunner = const CliProcessRunner(),
   });
@@ -122,10 +126,17 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async => buildAndroid(
     flavor: flavor,
     mainDartFile: '$mainDartPrefix$flavor.dart',
@@ -136,6 +147,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     appCenterUploadConfig: appCenterUploadConfig,
     playStoreUploadConfig: playStoreUploadConfig,
     impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+    impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
   );
 
   Future<void> buildAndroid({
@@ -145,10 +157,17 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([CliTool.flutter]);
     final file = await flutterBuildPlugin.buildAndroid(
@@ -185,6 +204,12 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
             config: impaktfullDashboardUploadConfig,
           );
     }
+    if (impaktfullAppstoreUploadConfig != null) {
+      await impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
+        file: file,
+        config: impaktfullAppstoreUploadConfig,
+      );
+    }
   }
 
   Future<void> buildIosWithFlavor({
@@ -194,10 +219,17 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async => buildIos(
     flavor: flavor,
     mainDartFile: '$mainDartPrefix$flavor.dart',
@@ -208,6 +240,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     appCenterUploadConfig: appCenterUploadConfig,
     testflightUploadConfig: testflightUploadConfig,
     impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
+    impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
   );
 
   Future<void> buildIos({
@@ -217,10 +250,17 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
+    ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
   }) async {
     ImpaktfullCliEnvironment.requiresInstalledTools([
       CliTool.flutter,
@@ -260,6 +300,12 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
             file: file,
             config: impaktfullDashboardUploadConfig,
           );
+    }
+    if (impaktfullAppstoreUploadConfig != null) {
+      await impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
+        file: file,
+        config: impaktfullAppstoreUploadConfig,
+      );
     }
   }
 }

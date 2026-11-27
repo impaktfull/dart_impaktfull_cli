@@ -17,6 +17,7 @@ import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/flutter/build/plugin/flutter_build_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/git/plugin/git_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/plugin/impaktfull_appstore_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/one_password/plugin/one_password_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
@@ -26,6 +27,7 @@ import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/plugin/test_coverage_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/impaktfull_appstore_command.dart';
 
 typedef ImpaktfullCliRunner<T extends ImpaktfullCli> =
     Future<void> Function(T cli);
@@ -52,11 +54,16 @@ class ImpaktfullCli {
 
   FlutterBuildPlugin get flutterBuildPlugin => _getPlugin();
 
+  @Deprecated(
+    'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+  )
   AppCenterPlugin get appCenterPlugin => _getPlugin();
 
   TestFlightPlugin get testflightPlugin => _getPlugin();
 
   PlayStorePlugin get playStorePlugin => _getPlugin();
+
+  ImpaktfullAppstorePlugin get impaktfullAppstorePlugin => _getPlugin();
 
   CiCdPlugin get ciCdPlugin => _getPlugin();
 
@@ -97,6 +104,7 @@ class ImpaktfullCli {
       AndroidRootCommand(processRunner: processRunner),
       AppleRootCommand(processRunner: processRunner),
       CiCdRootCommand(processRunner: processRunner),
+      ImpaktfullAppstoreRootCommand(processRunner: processRunner),
       OpenSourceRootCommand(processRunner: processRunner),
       SlackRootCommand(processRunner: processRunner),
       TestCoverageRootCommand(processRunner: processRunner),
@@ -119,6 +127,9 @@ class ImpaktfullCli {
     final impaktfullDashboardPlugin = ImpaktfullDashboardPlugin(
       processRunner: processRunner,
     );
+    final impaktfullAppstorePlugin = ImpaktfullAppstorePlugin(
+      processRunner: processRunner,
+    );
     _defaultPlugins = {
       onePasswordPlugin,
       macOsKeyChainPlugin,
@@ -128,6 +139,7 @@ class ImpaktfullCli {
       testflightPlugin,
       playStorePlugin,
       impaktfullDashboardPlugin,
+      impaktfullAppstorePlugin,
       CiCdPlugin(
         onePasswordPlugin: onePasswordPlugin,
         macOsKeyChainPlugin: macOsKeyChainPlugin,
@@ -136,6 +148,7 @@ class ImpaktfullCli {
         testflightPlugin: testflightPlugin,
         playStorePlugin: playStorePlugin,
         impaktfullDashboardPlugin: impaktfullDashboardPlugin,
+        impaktfullAppstorePlugin: impaktfullAppstorePlugin,
         gitPlugin: gitPlugin,
         processRunner: processRunner,
       ),

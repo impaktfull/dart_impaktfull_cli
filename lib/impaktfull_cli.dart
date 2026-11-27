@@ -16,6 +16,11 @@ export 'package:impaktfull_cli/src/integrations/appcenter/model/appcenter_upload
 export 'package:impaktfull_cli/src/integrations/appcenter/plugin/appcenter_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/ci_cd/plugin/ci_cd_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/flutter/build/model/flutter_build_android_extension.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_build.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_ci_metadata.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_credentials.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_appstore/model/impaktfull_appstore_upload_config.dart';
+export 'package:impaktfull_cli/src/integrations/impaktfull_appstore/plugin/impaktfull_appstore_plugin.dart';
 export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
 export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_credentials.dart';
 export 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/plugin/impaktfull_dashboard_plugin.dart';

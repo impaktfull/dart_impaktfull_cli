@@ -1,0 +1,24 @@
+---
+title: appstore
+---
+
+Commands for the impaktfull appstore.
+
+## upload
+
+Upload an .ipa or .apk to the impaktfull appstore (the upload key is read from `IMPAKTFULL_APPSTORE_UPLOAD_KEY`)
+
+**Usage:**
+
+```bash
+dart run impaktfull_cli appstore upload [options]
+```
+
+| Option | Description | Required | Default | Allowed |
+|---|---|---|---|---|
+| `--file` | The .ipa or .apk to upload | Yes |  |  |
+| `--environment` | The environment name, e.g. `staging`. The platform comes from the file extension. | Yes |  |  |
+| `--url` | The appstore to upload to | No | https://appstore.impaktfull.com |  |
+| `--releaseNotes` | Release notes shown to testers | No |  |  |
+| `--[no-]wait` | Wait until the appstore has validated the build, and fail when it rejects it | No | true |  |
+

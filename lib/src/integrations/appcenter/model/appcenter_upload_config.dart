@@ -1,5 +1,8 @@
 import 'package:impaktfull_cli/src/core/model/data/secret.dart';
 
+@Deprecated(
+  'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+)
 class AppCenterUploadConfig {
   static const defaultDistributionGroup = 'Collaborators';
 

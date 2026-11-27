@@ -25,6 +25,7 @@ Full documentation is available at **[docs.page/impaktfull/impaktfull_cli](https
 | [android](https://docs.page/impaktfull/impaktfull_cli/commands/android) | Commands for Android integrations. |
 | [apple](https://docs.page/impaktfull/impaktfull_cli/commands/apple) | Commands for Apple integrations. |
 | [ci_cd](https://docs.page/impaktfull/impaktfull_cli/commands/ci_cd) | Commands for CI/CD integrations. |
+| [appstore](https://docs.page/impaktfull/impaktfull_cli/commands/appstore) | Commands for the impaktfull appstore. |
 | [open_source](https://docs.page/impaktfull/impaktfull_cli/commands/open_source) | Commands for open source projects. |
 | [slack](https://docs.page/impaktfull/impaktfull_cli/commands/slack) | Commands for Slack integrations. |
 | [test_coverage](https://docs.page/impaktfull/impaktfull_cli/commands/test_coverage) | Commands for test coverage integrations. |
