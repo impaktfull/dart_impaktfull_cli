@@ -88,6 +88,55 @@ void main(List<String> args) {
     });
   });
 
+  group('ProcessRunner.resolveExecutable', () {
+    test('finds an executable in the given path, not the parent PATH', () {
+      if (Platform.isWindows) return;
+      final first = Directory(join(tempDir.path, 'first'))..createSync();
+      final second = Directory(join(tempDir.path, 'second'))..createSync();
+      // Not executable: skipped, like a shell would.
+      File(join(first.path, 'tool')).writeAsStringSync('#!/bin/sh\n');
+      final tool = File(join(second.path, 'tool'))
+        ..writeAsStringSync('#!/bin/sh\n');
+      Process.runSync('chmod', ['+x', tool.path]);
+
+      expect(
+        ProcessRunner.resolveExecutable(
+          'tool',
+          path: '${first.path}:${second.path}',
+          isWindows: false,
+        ),
+        tool.path,
+      );
+    });
+
+    test('leaves a name it cannot find, a path, and Windows alone', () {
+      expect(
+        ProcessRunner.resolveExecutable(
+          'not-there',
+          path: tempDir.path,
+          isWindows: false,
+        ),
+        'not-there',
+      );
+      expect(
+        ProcessRunner.resolveExecutable(
+          './run.sh',
+          path: tempDir.path,
+          isWindows: false,
+        ),
+        './run.sh',
+      );
+      expect(
+        ProcessRunner.resolveExecutable(
+          'flutter',
+          path: r'C:\flutter\bin',
+          isWindows: true,
+        ),
+        'flutter',
+      );
+    });
+  });
+
   group('ProcessRunner.buildPath', () {
     test('appends the paths with `:` on macOS and Linux', () {
       final path = ProcessRunner.buildPath(
