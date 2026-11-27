@@ -5,6 +5,9 @@ import 'package:impaktfull_cli/src/core/util/logger/logger.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/model/impaktfull_dashboard_app_testing_version_upload_config.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_dashboard/util/impaktfull_dashboard_app_testing_util.dart';
 
+@Deprecated(
+  'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+)
 class ImpaktfullDashboardPlugin extends ImpaktfullCliPlugin {
   const ImpaktfullDashboardPlugin({
     required super.processRunner,

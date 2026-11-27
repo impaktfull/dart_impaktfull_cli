@@ -54,6 +54,9 @@ class ImpaktfullCli {
 
   FlutterBuildPlugin get flutterBuildPlugin => _getPlugin();
 
+  @Deprecated(
+    'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+  )
   AppCenterPlugin get appCenterPlugin => _getPlugin();
 
   TestFlightPlugin get testflightPlugin => _getPlugin();

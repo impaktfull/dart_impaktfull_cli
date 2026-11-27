@@ -126,8 +126,14 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
     ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
@@ -151,8 +157,14 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     PlayStoreUploadConfig? playStoreUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
     ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
@@ -207,8 +219,14 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPaths = 'lib/main_',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
     ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,
@@ -232,8 +250,14 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     bool obfuscate = true,
     String? splitDebugInfoPath = '.build/debug-info',
     int? buildNr,
+    @Deprecated(
+      'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+    )
     AppCenterUploadConfig? appCenterUploadConfig,
     TestFlightUploadConfig? testflightUploadConfig,
+    @Deprecated(
+      'App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use ImpaktfullAppstorePlugin instead.',
+    )
     ImpaktfullDashboardAppTestingVersionUploadConfig?
     impaktfullDashboardUploadConfig,
     ImpaktfullAppstoreUploadConfig? impaktfullAppstoreUploadConfig,

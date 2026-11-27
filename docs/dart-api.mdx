@@ -51,7 +51,7 @@ Future<void> buildAndroid({
 })
 ```
 
-Builds and optionally uploads an Android artifact. Pass an upload config to automatically push to the impaktfull appstore, App Center, the Play Store, or the impaktfull dashboard after building.
+Builds and optionally uploads an Android artifact. Pass an upload config to automatically push to the impaktfull appstore or the Play Store after building (App Center and the impaktfull dashboard still work but are deprecated).
 
 ### `buildAndroidWithFlavor`
 
@@ -229,9 +229,11 @@ await cli.impaktfullAppstorePlugin.uploadToImpaktfullAppstore(
 
 ---
 
-## AppCenterPlugin
+## AppCenterPlugin (deprecated)
 
-`cli.appCenterPlugin` — Uploads builds to Microsoft App Center. Retired by Microsoft in March 2025; new projects should use `ImpaktfullAppstorePlugin`.
+> **Deprecated.** App Center was retired by Microsoft in March 2025. Use [`ImpaktfullAppstorePlugin`](#impaktfullappstoreplugin) instead. `appCenterUploadConfig` on the `ciCdPlugin` build methods is deprecated with it.
+
+`cli.appCenterPlugin` — Uploads builds to Microsoft App Center.
 
 ### `uploadToAppCenter`
 
@@ -492,7 +494,9 @@ Runs tests, generates an lcov report, and returns a `TestCoverageReport` with th
 
 ---
 
-## ImpaktfullDashboardPlugin
+## ImpaktfullDashboardPlugin (deprecated)
+
+> **Deprecated.** App Testing in the impaktfull dashboard is replaced by the impaktfull appstore. Use [`ImpaktfullAppstorePlugin`](#impaktfullappstoreplugin) instead. `impaktfullDashboardUploadConfig` on the `ciCdPlugin` build methods is deprecated with it.
 
 Instantiate directly — not exposed on `ImpaktfullCli`:
 

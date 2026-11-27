@@ -26,6 +26,9 @@ const _extensionMimeTypeMapper = {
 /// Logic based on these 2 resources:
 /// - https://medium.com/@tranhuuphuc20051995/uploading-apk-files-to-appcenter-using-bash-script-bde8a796145d
 /// - https://gist.github.com/ouchadam/c74fa26c639a50d68bc35ee5749f868c
+@Deprecated(
+  'App Center was retired by Microsoft in March 2025. Use ImpaktfullAppstorePlugin (impaktfull appstore) instead.',
+)
 class AppCenterPlugin extends ImpaktfullPlugin {
   static const defaultDistributionGroups = ['Collaborators'];
   const AppCenterPlugin();
