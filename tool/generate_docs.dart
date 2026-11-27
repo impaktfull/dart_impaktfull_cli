@@ -8,6 +8,7 @@ import 'package:impaktfull_cli/src/integrations/ci_cd/ci_cd_command.dart';
 import 'package:impaktfull_cli/src/integrations/open_souce/open_source_command.dart';
 import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/impaktfull_appstore_command.dart';
 
 void main() => DocsGenerator().generate();
 
@@ -22,6 +23,7 @@ class DocsGenerator {
       AndroidRootCommand(processRunner: const CliProcessRunner()),
       AppleRootCommand(processRunner: const CliProcessRunner()),
       CiCdRootCommand(processRunner: const CliProcessRunner()),
+      ImpaktfullAppstoreRootCommand(processRunner: const CliProcessRunner()),
       OpenSourceRootCommand(processRunner: const CliProcessRunner()),
       SlackRootCommand(processRunner: const CliProcessRunner()),
       TestCoverageRootCommand(processRunner: const CliProcessRunner()),

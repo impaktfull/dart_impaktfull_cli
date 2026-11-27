@@ -149,12 +149,12 @@ void main() {
       expect(keys, isNot(contains('jobName')));
     });
 
-    test('extracts all 11 keys from the actual env vars file', () {
+    test('extracts all 12 keys from the actual env vars file', () {
       final source = File(
         'lib/src/core/util/args/env/impaktfull_cli_environment_variables.dart',
       ).readAsStringSync();
       final keys = generator.extractEnvKeys(source);
-      expect(keys.length, equals(11));
+      expect(keys.length, equals(12));
       expect(
         keys,
         containsAll([

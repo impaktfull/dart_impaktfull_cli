@@ -73,8 +73,8 @@ class ImpaktfullAppstoreCiMetadata {
   }
 
   Map<String, dynamic> toJson() => {
-        if (commitSha != null) 'commitSha': commitSha,
-        if (branch != null) 'branch': branch,
-        if (runUrl != null) 'runUrl': runUrl,
-      };
+    if (commitSha != null) 'commitSha': commitSha,
+    if (branch != null) 'branch': branch,
+    if (runUrl != null) 'runUrl': runUrl,
+  };
 }

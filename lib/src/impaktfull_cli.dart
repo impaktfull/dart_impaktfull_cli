@@ -27,6 +27,7 @@ import 'package:impaktfull_cli/src/integrations/slack/slack_command.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/plugin/test_coverage_plugin.dart';
 import 'package:impaktfull_cli/src/integrations/test_coverage/test_coverage_command.dart';
 import 'package:impaktfull_cli/src/integrations/testflight/plugin/testflight_plugin.dart';
+import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/impaktfull_appstore_command.dart';
 
 typedef ImpaktfullCliRunner<T extends ImpaktfullCli> =
     Future<void> Function(T cli);
@@ -100,6 +101,7 @@ class ImpaktfullCli {
       AndroidRootCommand(processRunner: processRunner),
       AppleRootCommand(processRunner: processRunner),
       CiCdRootCommand(processRunner: processRunner),
+      ImpaktfullAppstoreRootCommand(processRunner: processRunner),
       OpenSourceRootCommand(processRunner: processRunner),
       SlackRootCommand(processRunner: processRunner),
       TestCoverageRootCommand(processRunner: processRunner),
@@ -122,8 +124,9 @@ class ImpaktfullCli {
     final impaktfullDashboardPlugin = ImpaktfullDashboardPlugin(
       processRunner: processRunner,
     );
-    final impaktfullAppstorePlugin =
-        ImpaktfullAppstorePlugin(processRunner: processRunner);
+    final impaktfullAppstorePlugin = ImpaktfullAppstorePlugin(
+      processRunner: processRunner,
+    );
     _defaultPlugins = {
       onePasswordPlugin,
       macOsKeyChainPlugin,

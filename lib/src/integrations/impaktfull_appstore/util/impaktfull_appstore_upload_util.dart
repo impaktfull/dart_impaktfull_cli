@@ -187,8 +187,7 @@ class ImpaktfullAppstoreUploadUtil {
     ImpaktfullAppstoreApp app,
     String environmentName,
     File file,
-  ) =>
-      _resolveEnvironment(app, environmentName, file);
+  ) => _resolveEnvironment(app, environmentName, file);
 
   /// The environment named [environmentName] FOR THIS FILE'S PLATFORM.
   ///
@@ -239,8 +238,9 @@ class ImpaktfullAppstoreUploadUtil {
       extension(file.path).toLowerCase() == '.ipa' ? 'ios' : 'android';
 
   void _validateExtension(File file) {
-    final fileExtension =
-        extension(file.path).replaceAll('.', '').toLowerCase();
+    final fileExtension = extension(
+      file.path,
+    ).replaceAll('.', '').toLowerCase();
     if (fileExtension == 'aab') {
       // Its OWN message. An Android App Bundle is not installable on a device
       // at all, it is what goes to Google Play, and somebody who built one has

@@ -72,8 +72,17 @@ class ImpaktfullAppstoreBuildFailure {
       );
 
   @override
-  String toString() =>
-      detail == null ? '$message ($code)' : '$message ($code): $detail';
+  String toString() {
+    // The detail often repeats the message; only add it when it says more.
+    final extra = detail?.trim();
+    if (extra == null || extra.isEmpty || _plain(extra) == _plain(message)) {
+      return '$message ($code)';
+    }
+    return '$message ($code): $extra';
+  }
+
+  static String _plain(String text) =>
+      text.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
 }
 
 /// One environment an upload key may write to.

@@ -42,8 +42,14 @@ class ImpaktfullAppstorePlugin extends ImpaktfullCliPlugin {
 
     ImpaktfullCliLogger.clearSpinnerPrefix();
     ImpaktfullCliLogger.logSeperator();
+    // Without waiting the build is usually still processing, and saying
+    // "ready" would claim the one thing that has not been checked yet.
     ImpaktfullCliLogger.log(
-      'Build ${build.versionLabel ?? build.id} is ready!!! 🎉🎉🎉',
+      build.isReady
+          ? 'Build ${build.versionLabel ?? build.id} is ready!!! 🎉🎉🎉'
+          : 'Build ${build.versionLabel ?? build.id} is uploaded and is being '
+                'processed. It becomes installable once the appstore has '
+                'validated it.',
     );
     // The LINK, so a pipeline log carries something somebody can click rather
     // than an id they would have to go and look up.

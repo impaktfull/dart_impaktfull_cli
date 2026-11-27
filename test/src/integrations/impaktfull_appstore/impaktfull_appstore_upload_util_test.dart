@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:impaktfull_cli/impaktfull_cli.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/util/impaktfull_appstore_api.dart';
 import 'package:impaktfull_cli/src/integrations/impaktfull_appstore/util/impaktfull_appstore_upload_util.dart';
@@ -24,11 +27,11 @@ void main() {
   }
 
   ImpaktfullAppstoreUploadConfig config() => ImpaktfullAppstoreUploadConfig(
-        credentials: ImpaktfullAppstoreCredentials(
-          uploadKey: Secret('ifas_uk_test'),
-        ),
-        environmentName: 'staging',
-      );
+    credentials: ImpaktfullAppstoreCredentials(
+      uploadKey: Secret('ifas_uk_test'),
+    ),
+    environmentName: 'staging',
+  );
 
   group('the file has to be installable at all', () {
     test('an .aab is refused with its own message', () async {
@@ -36,8 +39,10 @@ void main() {
       // both an .aab and an .apk will happily hand over the wrong one, and
       // "unsupported extension" would send somebody looking for a setting.
       await expectLater(
-        const ImpaktfullAppstoreUploadUtil()
-            .upload(file: artifact('app.aab'), config: config()),
+        const ImpaktfullAppstoreUploadUtil().upload(
+          file: artifact('app.aab'),
+          config: config(),
+        ),
         throwsA(
           isA<ImpaktfullCliError>().having(
             (error) => error.message,
@@ -50,8 +55,10 @@ void main() {
 
     test('an unrelated extension is refused', () async {
       await expectLater(
-        const ImpaktfullAppstoreUploadUtil()
-            .upload(file: artifact('app.zip'), config: config()),
+        const ImpaktfullAppstoreUploadUtil().upload(
+          file: artifact('app.zip'),
+          config: config(),
+        ),
         throwsA(isA<ImpaktfullCliError>()),
       );
     });
@@ -125,8 +132,11 @@ void main() {
         ],
       });
       expect(
-        () => const ImpaktfullAppstoreUploadUtil()
-            .debugResolveEnvironment(iosOnly, 'alpha', File('build/app.apk')),
+        () => const ImpaktfullAppstoreUploadUtil().debugResolveEnvironment(
+          iosOnly,
+          'alpha',
+          File('build/app.apk'),
+        ),
         throwsA(
           isA<ImpaktfullCliError>().having(
             (error) => error.message,
@@ -139,8 +149,11 @@ void main() {
 
     test('an unknown name lists what this key can write to', () {
       expect(
-        () => const ImpaktfullAppstoreUploadUtil()
-            .debugResolveEnvironment(app, 'stagng', File('build/app.ipa')),
+        () => const ImpaktfullAppstoreUploadUtil().debugResolveEnvironment(
+          app,
+          'stagng',
+          File('build/app.ipa'),
+        ),
         throwsA(
           isA<ImpaktfullCliError>().having(
             (error) => error.message,
@@ -216,6 +229,61 @@ void main() {
 
     test('points at the production instance', () {
       expect(config().baseUrl.toString(), 'https://appstore.impaktfull.com');
+    });
+  });
+  group('what the server answers', () {
+    test('a refused key names the variable, not the web session', () async {
+      final api = ImpaktfullAppstoreApi(
+        baseUrl: Uri.parse('https://appstore.example.test'),
+        uploadKey: Secret('ifas_uk_wrong'),
+        client: MockClient(
+          (_) async => http.Response(
+            jsonEncode({
+              'error': {'code': 'unauthenticated', 'message': 'no session'},
+            }),
+            401,
+          ),
+        ),
+      );
+      await expectLater(
+        api.getApp(),
+        throwsA(
+          isA<ImpaktfullCliError>().having(
+            (e) => e.toString(),
+            'message',
+            allOf(
+              contains('IMPAKTFULL_APPSTORE_UPLOAD_KEY'),
+              isNot(contains('no session')),
+            ),
+          ),
+        ),
+      );
+    });
+
+    test('a rejection does not repeat itself', () {
+      const failure = ImpaktfullAppstoreBuildFailure(
+        code: 'identifier_mismatch',
+        message:
+            'This build is com.other.app, but Android · staging expects '
+            'com.acme.app.staging.',
+        detail:
+            'this build is com.other.app, but Android · staging expects '
+            'com.acme.app.staging',
+      );
+      expect(
+        failure.toString(),
+        'This build is com.other.app, but Android · staging expects '
+        'com.acme.app.staging. (identifier_mismatch)',
+      );
+    });
+
+    test('a detail that says more is kept', () {
+      const failure = ImpaktfullAppstoreBuildFailure(
+        code: 'corrupt_archive',
+        message: 'The file is not a valid archive.',
+        detail: 'central directory not found',
+      );
+      expect(failure.toString(), endsWith(': central directory not found'));
     });
   });
 }

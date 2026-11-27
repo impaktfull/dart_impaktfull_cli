@@ -141,7 +141,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     appCenterUploadConfig: appCenterUploadConfig,
     playStoreUploadConfig: playStoreUploadConfig,
     impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
-        impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
+    impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
   );
 
   Future<void> buildAndroid({
@@ -222,7 +222,7 @@ class CiCdPlugin extends ImpaktfullCliPlugin {
     appCenterUploadConfig: appCenterUploadConfig,
     testflightUploadConfig: testflightUploadConfig,
     impaktfullDashboardUploadConfig: impaktfullDashboardUploadConfig,
-        impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
+    impaktfullAppstoreUploadConfig: impaktfullAppstoreUploadConfig,
   );
 
   Future<void> buildIos({

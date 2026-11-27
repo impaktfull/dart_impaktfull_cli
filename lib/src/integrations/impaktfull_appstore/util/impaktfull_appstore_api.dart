@@ -65,7 +65,7 @@ class ImpaktfullAppstoreApi {
         'fileName': fileName,
         'sizeBytes': sizeBytes,
         'sha256': sha256,
-        if (releaseNotes != null) 'releaseNotes': releaseNotes,
+        'releaseNotes': ?releaseNotes,
         if (ci != null && ci.isNotEmpty) 'ci': ci,
       }),
     );
@@ -97,17 +97,20 @@ class ImpaktfullAppstoreApi {
 
     var sent = 0;
     unawaited(
-      file.openRead().forEach((chunk) {
-        request.sink.add(chunk);
-        sent += chunk.length;
-        onProgress?.call(sent, sizeBytes);
-      }).then(
-        (_) => request.sink.close(),
-        onError: (Object error, StackTrace trace) {
-          request.sink.addError(error, trace);
-          return request.sink.close();
-        },
-      ),
+      file
+          .openRead()
+          .forEach((chunk) {
+            request.sink.add(chunk);
+            sent += chunk.length;
+            onProgress?.call(sent, sizeBytes);
+          })
+          .then(
+            (_) => request.sink.close(),
+            onError: (Object error, StackTrace trace) {
+              request.sink.addError(error, trace);
+              return request.sink.close();
+            },
+          ),
     );
 
     final response = await _client.send(request);
@@ -172,10 +175,10 @@ class ImpaktfullAppstoreApi {
   }
 
   Map<String, String> _headers({bool json = false}) => {
-        'Authorization': 'Bearer ${uploadKey.value}',
-        'Accept': 'application/json',
-        if (json) 'Content-Type': 'application/json',
-      };
+    'Authorization': 'Bearer ${uploadKey.value}',
+    'Accept': 'application/json',
+    if (json) 'Content-Type': 'application/json',
+  };
 
   /// Decodes a response, turning the server's error envelope into a message.
   ///
@@ -196,16 +199,19 @@ class ImpaktfullAppstoreApi {
       return body ?? <String, dynamic>{};
     }
 
+    // A 401 is always the key, whatever the envelope says: the server's own
+    // message ("no session") is written for the web app, not for a pipeline.
+    if (response.statusCode == 401) {
+      throw ImpaktfullCliError(
+        'Failed to $what: the upload key in '
+        '`IMPAKTFULL_APPSTORE_UPLOAD_KEY` was refused. It may be mistyped, '
+        'revoked or expired, or belong to another appstore than $baseUrl.',
+      );
+    }
     final error = body?['error'];
     if (error is Map<String, dynamic>) {
       throw ImpaktfullCliError(
         'Failed to $what: ${error['message']} (${error['code']})',
-      );
-    }
-    if (response.statusCode == 401) {
-      throw ImpaktfullCliError(
-        'Failed to $what: the upload key was refused. It may have been revoked '
-        'or it may belong to another instance.',
       );
     }
     throw ImpaktfullCliError(
@@ -260,8 +266,9 @@ class ImpaktfullAppstoreUpload {
   });
 
   factory ImpaktfullAppstoreUpload.fromJson(Map<String, dynamic> json) {
-    final headers = (json['headers'] as Map<String, dynamic>? ?? {})
-        .map((key, value) => MapEntry(key, value.toString()));
+    final headers = (json['headers'] as Map<String, dynamic>? ?? {}).map(
+      (key, value) => MapEntry(key, value.toString()),
+    );
     return ImpaktfullAppstoreUpload(
       url: Uri.parse(json['url'] as String),
       headers: headers,
