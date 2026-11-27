@@ -37,6 +37,38 @@ abstract class ProcessRunner {
     );
   }
 
+  /// The absolute path of [executable] in [path], or [executable] unchanged.
+  ///
+  /// Needed because the PATH a child gets is not the PATH its executable is
+  /// looked up in everywhere: since Dart 3.14, `Process.start` on macOS
+  /// searches the PARENT's PATH, so a tool in a directory added with
+  /// [updatePath] (fvm, flutter, the pub cache) was "No such file or
+  /// directory". Resolving it here makes the lookup ours on every platform.
+  ///
+  /// Windows is left alone: it starts through the shell, which already looks
+  /// the name up in the PATH it is given, `.bat` and `.exe` included. A name
+  /// with a separator in it is a path already.
+  @visibleForTesting
+  static String resolveExecutable(
+    String executable, {
+    required String? path,
+    required bool isWindows,
+  }) {
+    if (isWindows || path == null || executable.contains('/')) {
+      return executable;
+    }
+    for (final directory in path.split(':')) {
+      if (directory.isEmpty) continue;
+      final candidate = '$directory/$executable';
+      final stat = FileStat.statSync(candidate);
+      // Any execute bit (owner, group, other): 0x49 is 0o111.
+      if (stat.type == FileSystemEntityType.file && stat.mode & 0x49 != 0) {
+        return candidate;
+      }
+    }
+    return executable;
+  }
+
   @visibleForTesting
   static String buildPath({
     required String? currentPath,
@@ -88,7 +120,11 @@ class CliProcessRunner extends ProcessRunner {
     }
     ImpaktfullCliLogger.verboseSeperator();
     final process = await Process.start(
-      args.first,
+      ProcessRunner.resolveExecutable(
+        args.first,
+        path: _path,
+        isWindows: Platform.isWindows,
+      ),
       args.length > 1 ? args.sublist(1) : [],
       environment: {
         ...?environment,
