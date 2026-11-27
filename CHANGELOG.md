@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.3...v1.0.4) (2026-11-27)
+
+
+### Bug Fixes
+
+* find tools in the added PATH on macOS with Dart 3.14 ([#75](https://github.com/impaktfull/dart_impaktfull_cli/issues/75)) ([a70cb8f](https://github.com/impaktfull/dart_impaktfull_cli/commit/a70cb8f0152b5b8acd1854301aa8e627a3ef6b9c))
+
 ## [1.0.3](https://github.com/impaktfull/dart_impaktfull_cli/compare/v1.0.2...v1.0.3) (2026-10-27)
 
 
